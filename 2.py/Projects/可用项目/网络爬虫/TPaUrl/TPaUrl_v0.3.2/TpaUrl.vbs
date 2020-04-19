@@ -1,0 +1,1 @@
+CreateObject("WScript.Shell").Run "cmd /c e:\WorkSpace\Python\Web\TpaUrl\TPaUrl_v0.3.2\TpaUrl.bat",0

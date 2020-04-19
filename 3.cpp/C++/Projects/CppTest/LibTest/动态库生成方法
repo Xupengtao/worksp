@@ -1,0 +1,6 @@
+g++ -O -fpic -shared -o libfoobar.so foo.c bar.c
+g++ main.c -L. -lfoobar -o main.o
+sudo vim /etc/ld.so.conf
+sudo ldconfig
+ldd main.o
+nm libfoobar.so

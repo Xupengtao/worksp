@@ -1,0 +1,39 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "g++ build active file",
+            "command": "nvcc",
+            "args": [
+                "-arch=sm_35",
+                "-rdc=true",            //强制生成可重定位的设备代码，这是动态并行的一个要求
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.out",
+                "-I",
+                "usr/local/cuda/include",
+                "-I",
+                "usr/local/cuda/sample/common/inc",
+                "-L",
+                "/usr/local/cuda/lib64",
+                "-L",
+                "/usr/local/cuda/samples/common/lib",
+                "-l",
+                "cudart",               //动态并行是由设备运行时库所支持的
+                "-l",
+                "cublas",
+                "-l",
+                "cudnn",
+                "-l",
+                "curand",
+                "-D_MWAITXINTRIN_H_INCLUDED"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

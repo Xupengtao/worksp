@@ -1,0 +1,22 @@
+run Function:save**************************************************************************************************************date: 2018.12.29 02:04
+url = www.baidu.com
+urltype = 0
+type = open,down,next
+htmlpath = 
+baseurl = 
+filepath = E:\WorkSpace\Python\Web\TPaUrl\TPaUrl_v1.0\log.txt
+times = 1
+nextstr = 
+filetype = 1
+filename = 0
+srchtmclass = 1
+baseurlopen = 2
+baseurlnext = 2
+nexttype = 2
+genLink = 2
+db_name = 
+collection = 
+modbkey = 
+inserttype = 1
+*************************************************************************************************************************************************************
+

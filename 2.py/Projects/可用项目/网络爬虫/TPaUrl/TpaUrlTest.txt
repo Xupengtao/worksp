@@ -1,0 +1,63 @@
+http://www.meizitu.com/a/more_1.html
+open,down,next
+div[class="con"] div[class="pic"] a,div#picture p img,div#wp_page_numbers li
+http://www.meizitu.com/a/
+E:\meizitu
+1
+下一页
+get jpg next
+
+url = ['http://taohuabt.cc/forum-42-1.html',
+       'http://taohuabt.cc/forum-56-1.html',
+       'http://taohuabt.cc/forum-57-1.html',
+       'http://taohuabt.cc/forum-221-100.html',
+       'http://taohuabt.cc/forum-239-1.html']
+type = ['open','down','next']
+htmpath = ['ul#waterfall li div a[class="z"]','td[class="t_f"] img','div#pgbtn a']
+baseurl = 'http://taohuabt.cc/'
+filetype = 'jpg'
+filepath = ['E:\PyDownTest\网上自拍',
+            'E:\PyDownTest\人体写真',
+            'E:\PyDownTest\街头抓拍',
+            'E:\PyDownTest\欧美图片',
+            'E:\PyDownTest\AV美图']
+filename = 'auto'
+srchtmclass = 'file'
+times = [977,1078,7,1600,226]
+
+for i in range(5):
+    Tp = TPaUrl(url[i],type,htmpath,baseurl,filetype = filetype,filepath = filepath[i],
+            filename = filename,srchtmclass = srchtmclass)
+    t = threading.Thread(target=Tp.run,args=(times[i],))
+    t.start()
+
+url = ['https://www.754ee.com/htm/piclist1/',
+       'https://www.754ee.com/htm/piclist2/',
+       'https://www.754ee.com/htm/piclist3/']
+urltype = 'get'
+type = ['open','down','next']
+htmpath = ['div[class="mainArea"] ul[class="textList"] li a','div[class="mainAreaBlack"] div[class="picContent"] img','']
+baseurl = 'https://www.754ee.com'
+baseurltype = [2,2]
+nexttype = 2
+nextstr = '下一页'
+filetype = 'jpg'
+filepath = ['E:\pic754ee\自拍偷拍',
+            'E:\pic754ee\亚洲色图',
+            'E:\pic754ee\欧美色图']
+filename = 'auto'
+srchtmclass = 'src'
+times = [917,856,997]
+
+for i in range(3):
+    Tp = TPaUrl(url[i],urltype,type,htmpath,baseurl,baseurltype,nexttype,
+                nextstr,filetype,filepath[i],filename,srchtmclass)
+    t = threading.Thread(target=Tp.run,args=(times[i],))
+    t.start()
+
+https://www.119ju.com/htm/mp4list8/
+open,down,next
+div[class="item"] ul[class="clearfix"] li a,div[class="downurl"] a,
+https://www.119ju.com
+E:\119ju
+1

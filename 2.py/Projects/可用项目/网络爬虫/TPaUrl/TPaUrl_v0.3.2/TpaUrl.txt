@@ -1,0 +1,10 @@
+http://www.122fu.com/htm/mp4list4
+open,down,next
+div[class="item"] ul[class="clearfix"] li a,div[class="downurl"] a
+http://www.122fu.com
+E:\pic754ee\亚洲色图
+12
+下一页
+mp4
+auto
+a

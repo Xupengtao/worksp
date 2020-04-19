@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="dpdk"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/admin/workspace/dpdk/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/admin/workspace/dpdk/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/admin/workspace/dpdk/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hello">
+				<Option output="/home/admin/workspace/dpdk/cmake-build-debug/hello" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/admin/workspace/dpdk/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_GNU_SOURCE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE2"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE3"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSSE3"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE4_1"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE4_2"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AES"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_PCLMULQDQ"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AVX"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_FSGSBASE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_F16C"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AVX2"/>
+					<Add directory="/root/soft/dpdk-19.02/build/include/dpdk"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/ipp/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/mkl/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/pstl/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/tbb/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/daal/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 hello"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hello/fast">
+				<Option output="/home/admin/workspace/dpdk/cmake-build-debug/hello" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/admin/workspace/dpdk/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_GNU_SOURCE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE2"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE3"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSSE3"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE4_1"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE4_2"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AES"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_PCLMULQDQ"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AVX"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_FSGSBASE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_F16C"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AVX2"/>
+					<Add directory="/root/soft/dpdk-19.02/build/include/dpdk"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/ipp/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/mkl/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/pstl/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/tbb/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/daal/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 hello/fast"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="api">
+				<Option output="/home/admin/workspace/dpdk/cmake-build-debug/api" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/admin/workspace/dpdk/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_GNU_SOURCE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE2"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE3"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSSE3"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE4_1"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE4_2"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AES"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_PCLMULQDQ"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AVX"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_FSGSBASE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_F16C"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AVX2"/>
+					<Add directory="/root/soft/dpdk-19.02/build/include/dpdk"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/ipp/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/mkl/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/pstl/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/tbb/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/daal/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 api"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="api/fast">
+				<Option output="/home/admin/workspace/dpdk/cmake-build-debug/api" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/admin/workspace/dpdk/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_GNU_SOURCE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE2"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE3"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSSE3"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE4_1"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_SSE4_2"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AES"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_PCLMULQDQ"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AVX"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_FSGSBASE"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_F16C"/>
+					<Add option="-DRTE_MACHINE_CPUFLAG_AVX2"/>
+					<Add directory="/root/soft/dpdk-19.02/build/include/dpdk"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/ipp/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/mkl/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/pstl/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/tbb/include"/>
+					<Add directory="/opt/intel/compilers_and_libraries_2019.1.144/linux/daal/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 api/fast"/>
+					<CompileFile command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j12 -f &quot;/home/admin/workspace/dpdk/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/admin/workspace/dpdk/helloworld.c">
+			<Option target="hello"/>
+		</Unit>
+		<Unit filename="/home/admin/workspace/dpdk/jz_dpdk_api.c">
+			<Option target="api"/>
+		</Unit>
+		<Unit filename="/home/admin/workspace/dpdk/jz_dpdk_api.h">
+			<Option target="api"/>
+		</Unit>
+		<Unit filename="/home/admin/workspace/dpdk/main.cpp">
+			<Option target="api"/>
+		</Unit>
+		<Unit filename="/home/admin/workspace/dpdk/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

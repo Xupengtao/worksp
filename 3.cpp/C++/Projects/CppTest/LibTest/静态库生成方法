@@ -1,0 +1,4 @@
+g++ -c foo.c -o foo.o
+g++ -c bar.c -o bar.o
+ar rcs libfoobar.a foo.o bar.o
+gcc -o main.o main.c libfoobar.a

@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "get /var/cache/rpm/*.rpm"
+find /var/cache/yum/ -name *.rpm -exec cp '{}' /home/xpt/imzcyrpm-lib/ \;
+ll /home/xpt/imzcyrpm-lib/

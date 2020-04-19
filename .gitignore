@@ -1,0 +1,14 @@
+#文件类型
+1.Docs
+Docker
+5.Source
+Data
+Analysis
+Download
+nvvp_workspace
+
+#文件类型
+*.bmp
+*.o
+*.out
+core*

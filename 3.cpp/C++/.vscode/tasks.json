@@ -1,0 +1,27 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "g++ build",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-std=c++11",
+                "${file}",
+                "-lpthread",
+                "$(pkg-config", "--cflags", "--libs", "opencv)",
+                "$(pkg-config", "--cflags", "--libs", "boost)",
+                "-Wl,-Bdynamic",
+                "-o",
+                "/home/xpt/WorkSp/3.cpp/C++/.out/${fileBasenameNoExtension}.o"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        }
+    ],
+    "version": "2.0.0"
+}

@@ -1,0 +1,1 @@
+/usr/bin/c++  -msse4.2 -mavx2 -g   CMakeFiles/api.dir/jz_dpdk_api.c.o CMakeFiles/api.dir/main.cpp.o  -o api  -L/root/soft/dpdk-19.02/build/lib 
