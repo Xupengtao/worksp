@@ -26,7 +26,7 @@ struct _TargetLoc
 {
     USHORT      Row;                            // 行号
     USHORT      Col;                            // 列号
-    UCHAR       TargeNum;                       // 目标号
+    UCHAR       TargeNo;                        // 目标号
     UCHAR       FindAtFrameCircularNo;          // 激活时运行帧号
     USHORT      PulseNums;                      // 累计脉冲数
 
@@ -46,7 +46,7 @@ struct _TargetLoc
     {
         Row         = 0;
         Col         = 0;
-        TargeNum    = 0;
+        TargeNo     = 0;
         PulseNums   = 0;
         FindAtFrameCircularNo = 0;
     }
@@ -61,12 +61,13 @@ class _PdwRfPwMap
     static CUINT        PW_AS_COL               = 0xFFF;        // RfPwMat列数
     static CUINT        DOA_TOLERANCE           = 10;           // Doa容差范围
     static CUINT        PIXEL_THRESHOLD         = 10;           // RfPwMat像素点激活阈值
+    static CUINT        PIXEL_ACTIVE_VALUE      = 0xFF;         // RfPwMat像素点已激活值
     static CUINT        DISAPPERTIME_THRESHOLD  = 10;           // RfPwMat由于累计未激活而导致Doa丢失阈值
     static CUINT        FRAMENO_DIFF_THRESHOLD  = 10;           // 像素值帧号容差范围
     static CUINT        TARGET_LOCVEC_MAXSIZE   = 0x100;        // 目标号-RfPwMat位置索引Vec最大长度
     static CUINT        PDW_TARGETVEC_MAXSIZE   = 100000;       // PDW-目标号索引Vec最大长度
     _CvTools            CvTools;                                // Cv算法封装类对象
-    CUCHAR&             FrameCircularNo;                        // 循环累加运行帧号引用
+    CUCHAR&             FrameCircularNo;                        // Read Only, 循环累加运行帧号引用
     bool                ValidSign;                              // RfPwMat有效标志，若无效，代表可回收
     bool                ActiveSign;                             // 当前帧RfPwMat激活标记
     Mat                 RfPwMat;                                // RfPw映射图(4通道, 通道0:目标号; 通道1:目标激活前为脉冲数,激活后为0xFF,激活阈值为PIXEL_THRESHOLD,通道2:;通道3:循环运行帧号)
@@ -102,6 +103,7 @@ public:
         TargetNums      = 0;
         RfPwMat.setTo(Scalar(0, 0, 0, 0));
         TargetLocVec.clear();
+        TargetLocVec.push_back(_TargetLoc());
         PdwTargetVec.clear();
     }
     bool GetValidSign() const {return ValidSign;}
@@ -201,7 +203,7 @@ public:
     template<typename _PdwType, CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
     void PdwVecMap(vector<_PdwType>& srcPdwVec, _cvTextImage<FontFace>& AnalysisTextMat)
     {
-        if(CvTools.GetMatChannels() != 4)
+        if(CvTools.GetMatChannels(srcPdwVec) != 4)
         {
             ERRORMSG("Check srcPdwVec`s channels!");
             return;
@@ -216,18 +218,63 @@ public:
             PixelTmp = srcPdwVec.at<cv::Vec4b>(RfRow, PwCol);
             if(PixelTmp[3] == FrameCircularNo)                                      // RfPwPixel的A通道当前帧以命中
             {
-
+                if(PixelTmp[1] == PIXEL_ACTIVE_VALUE)                               // RfPwPixel已激活
+                {
+                    if(PixelTmp[0] == 0)                                            // 尚未创建目标号
+                    {
+                        PixelTmp[0] = FindOrNewTarget(srcPdwVec, AnalysisTextMat, RfRow, PwCol);    // 附近寻找是否有已经创建的目标号, 如果没有则创建新的目标号
+                    }
+                    else                                                            // 已有目标号
+                    {
+                        ;
+                    }
+                    TargetProcess(PixelTmp[0]);
+                }
+                else                                                                // RfPwPixel未激活
+                {
+                    PixelTmp[1]++;
+                    if(PixelTmp[1] > PIXEL_THRESHOLD)
+                    {
+                        PixelTmp[1] = PIXEL_ACTIVE_VALUE;
+                    }
+                }
             }
             else if(FrameCircularNo - PixelTmp[3] < FRAMENO_DIFF_THRESHOLD)         // RfPwPixel的A通道当前帧未命中，距上一次命中帧数少于FRAMENO_DIFF_THRESHOLD
             {
-
+                PixelTmp[3] = FrameCircularNo;
+                PixelTmp[1] = 1;
             }
             else
             {
                 
             }
-            
+            srcPdwVec.at<cv::Vec4b>(RfRow, PwCol) = PixelTmp;
         }
+    }
+    template<typename _PdwType, CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
+    UCHAR FindOrNewTarget(vector<_PdwType>& srcPdwVec, _cvTextImage<FontFace>& AnalysisTextMat, UINT RfRow, UINT PwCol)
+    {
+                        if(PixelTmp[0] < TargetLocVec.size())
+                        {
+
+                        }
+                        else if(PixelTmp[0] == TargetLocVec.size())
+                        {
+                            TargetLocVec.push_back(_TargetLoc());
+                        }
+                        else
+                        {
+                            ERRORMSG("");
+                        }
+    }
+    inline void TargetProcess(UCHAR TargetNo)
+    {
+        if(TargetLocVec[TargetNo].TargetNo != TargetNo)
+        {
+            ERRORMSG("TargetLocVec[TargetNo].TargetNo != TargetNo!");
+        }
+        TargetLocVec[TargetNo].PulseNums++;
+        PdwTargetVec.push_back(TargetNo);
     }
     void EndFrameProcess()
     {
