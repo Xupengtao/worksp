@@ -50,7 +50,7 @@ int main(int argc, char **argv)
              .SaveBGRAPolarImage(savepath + "Polar_z_1.bmp", 1, 0, CV_PI/512, 100, 1000)
              .SaveDensityImage(savepath + "Density_z.bmp")
              .SaveImage(savepath + "z.bmp")
-             .ContourAnalyVideo(savepath + "AddSaveHistogramVideo_z1.avi", 0, 10);
+             .ContourAnalyVideo(savepath + "AddSaveHistogramVideo_z1.avi", 0, 100);
 	// _LocVec	AzElDis;
 	// AzElDis.resize(10);
 	// for(UINT i = 0; i < 10; i++)

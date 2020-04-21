@@ -2,7 +2,7 @@
  * @Author: xpt 
  * @Date: 2020-01-11 15:59:32 
  * @Last Modified by: xpt
- * @Last Modified time: 2020-04-16 21:49:47
+ * @Last Modified time: 2020-04-21 20:36:22
  * 
  * @idea note
  * 2020.01.17 02:57 动态生成视频 左图片 右数据和映射位置及B、G、R值，用虚线将BGR Circle连接至映射位置 (*)
@@ -20,14 +20,16 @@
 using namespace cv;
 #include"../imageTools/CvTools.hpp"
 #include "../Timeit.h"
+#include "../CircularQueue.hpp"
 #include <boost/progress.hpp>
 
-#define UCHAR_CYCLE_SUB(x, y)  (((x) > (y)) ? ((x) - (y)) : (0x100 + (x) - (y)))
+inline UCHAR ucharCycleSub(UCHAR x, UCHAR y)
+{
+    return(x > y) ? (x - y) : (0x100 + x - y);
+}
 
 struct _TargetLoc
 {
-    static CUSHORT  RFROW_TOLERANCE = 10;           // RfRow容差
-    static CUSHORT  PWCOL_TOLERANCE = 10;           // PwCol容差
     USHORT          Row;                            // 行号
     USHORT          Col;                            // 列号
     USHORT          RowMin;                         // 行号
@@ -66,48 +68,74 @@ struct _TargetLoc
     {
         PulseNums = 0;
     }
-    inline bool IsAtTargetTlrcArea(UINT RfRow, UINT PwCol)
+    inline bool IsAtTargetTlrcArea(USHORT Row_, CUSHORT RowTlrc,  USHORT Col_,CUSHORT ColTlrc, UCHAR FrameCircularNo, CUCHAR FrameCircularNoTlrc)
     {
-        if()
+        if((abs(Row_ - Row) <= RowTlrc) && (abs(Col_ - Col) <= ColTlrc) && (ucharCycleSub(FrameCircularNo , FindAtFrameCircularNo) <= FrameCircularNoTlrc))
         {
-
+            ASSERT(FrameCircularNo != 0, "ASSERT Failed!");
+            FindAtFrameCircularNo = FrameCircularNo;
+            RowMax = (Row_ > RowMax) ? Row_ : RowMax;
+            ColMax = (Col_ > ColMax) ? Col_ : ColMax;
+            RowMin = (Row_ < RowMin) ? Row_ : RowMin;
+            ColMin = (Col_ < ColMin) ? Col_ : ColMin;
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 };
 class _PdwRfPwMap
 {
-    static CUINT        RF_AS_ROW               = 0xFFF;        // RfPwMat行数
-    static CUINT        PW_AS_COL               = 0xFFF;        // RfPwMat列数
-    static CUINT        DOA_TOLERANCE           = 10;           // Doa容差范围
-    static CUINT        PIXEL_THRESHOLD         = 10;           // RfPwMat像素点激活阈值
-    static CUINT        PIXEL_ACTIVE_VALUE      = 0xFF;         // RfPwMat像素点已激活值
-    static CUINT        DISAPPERTIME_THRESHOLD  = 10;           // RfPwMat由于累计未激活而导致Doa丢失阈值
-    static CUINT        FRAMENO_DIFF_THRESHOLD  = 10;           // 像素值帧号容差范围
-    static CUINT        TARGET_LOCVEC_MAXSIZE   = 0x100;        // 目标号-RfPwMat位置索引Vec最大长度
-    static CUINT        PDW_TARGETVEC_MAXSIZE   = 100000;       // PDW-目标号索引Vec最大长度
-    _CvTools            CvTools;                                // Cv算法封装类对象
-    CUCHAR&             FrameCircularNo;                        // Read Only, 循环累加运行帧号引用
-    bool                ValidSign;                              // RfPwMat有效标志，若无效，代表可回收
-    bool                ActiveSign;                             // 当前帧RfPwMat激活标记
-    Mat                 RfPwMat;                                // RfPw映射图(4通道, 通道0:目标号; 通道1:目标激活前为脉冲数,激活后为0xFF,激活阈值为PIXEL_THRESHOLD,通道2:;通道3:循环运行帧号)
-    UINT                DoaSt;                                  // RfPwMat Doa起始值，每帧进行动态调整
-    UINT                DoaEd;                                  // RfPwMat Doa末尾值，每帧进行动态调整
-    UINT                DisappearTimes;                         // RfPwMat累计未激活次数, RfPwMat丢失标记阈值DISAPPERTIME_THRESHOLD
-    UCHAR               TargetNums;                             // 目标数, 1 - 255
-    vector<_TargetLoc>  TargetLocVec;                           // 目标号-RfPwMat位置索引Vec, 最大长度为TARGET_LOCVEC_MAXSIZE
-    vector<UCHAR>       PdwTargetVec;                           // PDW-目标号索引Vec, 最大长度为PDW_TARGETVEC_MAXSIZE
-public:
-    _PdwRfPwMap(CUCHAR& FrameCircularNo_):FrameCircularNo(FrameCircularNo_)
+    enum _PixelChannel
     {
+        FrameNoCh   = 0,
+        TargetNoCh  = 1,
+        ActiveNoCh  = 2
+    };
+    static CUINT                    RF_AS_ROW               = 0xFFF;        // RfPwMat行数
+    static CUINT                    PW_AS_COL               = 0xFFF;        // RfPwMat列数
+    static CUINT                    RFROW_TOLERANCE         = 10;           // RfRow容差
+    static CUINT                    PWCOL_TOLERANCE         = 10;           // PwCol容差
+    static CUINT                    DOA_TOLERANCE           = 10;           // Doa容差范围
+    static CUINT                    PIXEL_THRESHOLD         = 10;           // RfPwMat像素点激活阈值
+    static CUINT                    PIXEL_ACTIVE_VALUE      = 0xFF;         // RfPwMat像素点已激活值
+    static CUINT                    DISAPPERTIME_THRESHOLD  = 10;           // RfPwMat由于累计未激活而导致Doa丢失阈值
+    static CUINT                    FRAMENO_DIFF_THRESHOLD  = 100;          // 像素值帧号容差范围
+    static CUINT                    NEW_TARGETNOS_FRAMESIZE = 10;           // 帧新目标号Queue长度
+    static CUINT                    TARGET_LOCVEC_MAXSIZE   = 0x100;        // 目标号-RfPwMat位置索引Vec最大长度
+    static CUINT                    PDW_TARGETVEC_MAXSIZE   = 100000;       // PDW-目标号索引Vec最大长度
+    _CvTools                        CvTools;                                // Cv算法封装类对象
+    UCHAR*                          pFrameCircularNo;                       // Read Only, 循环累加运行帧号指针
+    bool                            ValidSign;                              // RfPwMat有效标志，若无效，代表可回收
+    bool                            ActiveSign;                             // 当前帧RfPwMat激活标记
+    Mat                             RfPwMat;                                // RfPw映射图(4通道, 通道0:目标号; 通道1:目标激活前为脉冲数,激活后为0xFF,激活阈值为PIXEL_THRESHOLD,通道2:;通道3:循环运行帧号)
+    UINT                            DoaSt;                                  // RfPwMat Doa起始值，每帧进行动态调整
+    UINT                            DoaEd;                                  // RfPwMat Doa末尾值，每帧进行动态调整
+    UINT                            DisappearTimes;                         // RfPwMat累计未激活次数, RfPwMat丢失标记阈值DISAPPERTIME_THRESHOLD
+    UCHAR                           TargetNums;                             // 目标数, 1 - 255
+    vector<UCHAR>                   NewTargetNoVec;                         // 当前帧新目标号Vec
+    _CircularQueue<vector<UCHAR> >  NewTargetNosQueue;                      // 帧新目标号Queue
+    vector<_TargetLoc>              TargetLocVec;                           // 目标号-RfPwMat位置索引Vec, 最大长度为TARGET_LOCVEC_MAXSIZE
+    vector<UCHAR>                   PdwTargetVec;                           // PDW-目标号索引Vec, 最大长度为PDW_TARGETVEC_MAXSIZE
+public:
+    _PdwRfPwMap():RfPwMat(RF_AS_ROW, PW_AS_COL, CV_8UC4), NewTargetNosQueue(NEW_TARGETNOS_FRAMESIZE)
+    {
+        pFrameCircularNo = NULL;
         Init();
     }
     virtual ~_PdwRfPwMap()
     {
-        ;
+        pFrameCircularNo = NULL;
+    }
+    void SetFrameCircularNoAddr(UCHAR* pFrameCircularNo_)
+    {
+        pFrameCircularNo = pFrameCircularNo_;
     }
     void Init()
     {
-        RfPwMat.create(RF_AS_ROW, PW_AS_COL, CV_8UC4);
+        NewTargetNoVec.reserve(TARGET_LOCVEC_MAXSIZE);
         TargetLocVec.reserve(TARGET_LOCVEC_MAXSIZE);
         PdwTargetVec.reserve(PDW_TARGETVEC_MAXSIZE);
         Clear();
@@ -121,12 +149,17 @@ public:
         DisappearTimes  = 0;
         TargetNums      = 0;
         RfPwMat.setTo(Scalar(0, 0, 0, 0));
+        NewTargetNoVec.clear();
+        NewTargetNosQueue.clear();
         TargetLocVec.clear();
         TargetLocVec.push_back(_TargetLoc());
         PdwTargetVec.clear();
     }
-    inline bool GetValidSign() const {return ValidSign;}
-    inline void ClearPdwTargetVec()                             // PdwVec映射前清空上一帧PdwTargetVec缓存和ActiveSign
+    inline UINT GetDoaSt() const {return DoaSt;}
+    inline UINT GetDoaEd() const {return DoaEd;}
+    inline bool GetValidSign()  const {return ValidSign;}
+    inline bool GetActiveSign() const {return ActiveSign;}
+    inline void ClearPdwTargetVec()                                                     // PdwVec映射前清空上一帧PdwTargetVec缓存和ActiveSign
     {
         ActiveSign = false;
         for(UINT i = 0; i < TargetLocVec.size(); i++)
@@ -135,10 +168,15 @@ public:
         }
         PdwTargetVec.clear();
     }
-    inline bool DoaAdapt(UINT DoaSt_, UINT DoaEd_)              // Doa适配检测,!表示DoaSt_和DoaEd_,|表示DoaSt和DoaEd
+    inline void NewFrameInit()                                                          // 帧起始初始化操作
+    {
+        NewTargetNoVec.clear();
+        ClearPdwTargetVec();
+    }
+    inline bool DoaAdapt(UINT DoaSt_, UINT DoaEd_)                                      // Doa适配检测,!表示DoaSt_和DoaEd_,|表示DoaSt和DoaEd
     {
         bool RtnBool = false;
-        if(ValidSign = true)
+        if(ValidSign == true)
         {
             if(DoaEd_ <= DoaSt)                                             // ! ! | |
             {
@@ -204,7 +242,7 @@ public:
         }
         return RtnBool;
     }
-    inline bool CanCreateOrRecycle(UINT DoaSt_, UINT DoaEd_)    // 是否未使用或者可以回收当前对象数据用于创建新的RfPwMat
+    inline bool CanCreateOrRecycle(UINT DoaSt_, UINT DoaEd_)                            // 是否未使用或者可以回收当前对象数据用于创建新的RfPwMat
     {
         if(ValidSign == false)
         {
@@ -219,8 +257,8 @@ public:
             return false;
         }
     }
-    template<typename _PdwType, CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
-    void PdwVecMap(vector<_PdwType>& srcPdwVec, _cvTextImage<FontFace>& AnalysisTextMat)
+    template<typename _PdwType>
+    void PdwVecMap(vector<_PdwType>& srcPdwVec)
     {
         if(CvTools.GetMatChannels(RfPwMat) != 4)
         {
@@ -228,85 +266,138 @@ public:
             return;
         }
         cv::Vec4b PixelTmp;
-        UINT PdwSize = srcPdwVec.size();
-        UINT RfRow = 0, PwCol = 0;
-        UCHAR TargetNoTmp = 0;
+        UINT    PdwSize = srcPdwVec.size();
+        UINT    RfRow = 0, PwCol = 0;
+        UCHAR   TargetNoTmp = 0;
         for(UINT i = 0; i < PdwSize; i++)
         {
+            if((srcPdwVec[i].Rf > 0xFFFF) || (srcPdwVec[i].Pw > 0xFFFF))
+            {
+                continue;
+            }
             RfRow       = srcPdwVec[i].Rf >> 4;
             PwCol       = srcPdwVec[i].Pw >> 4;
-            for(UINT i = 0; i < TargetLocVec.size(); i++)
+            PixelTmp    = RfPwMat.at<cv::Vec4b>(RfRow, PwCol);
+            if(PixelTmp[TargetNoCh] != 0)
             {
-                if(TargetLocVec[i].IsAtTargetTlrcArea(RfRow, PwCol))
+                TargetNoTmp = 0xFF - PixelTmp[TargetNoCh];
+                if(PixelTmp[FrameNoCh] == *pFrameCircularNo)
                 {
-                    TargetNoTmp = TargetLocVec[i].TargetNo;
-                    TargetProcess(TargetNoTmp);
-                }
-                else
-                {
-                    PixelTmp    = RfPwMat.at<cv::Vec4b>(RfRow, PwCol);
-                    if(PixelTmp[2] == FrameCircularNo)                                      // RfPwPixel的R通道当前帧以命中
+                    if(TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD))
                     {
-                        if(PixelTmp[1] == PIXEL_ACTIVE_VALUE)                               // RfPwPixel已激活
-                        {
-                            if(PixelTmp[0] == 0)                                            // 尚未创建目标号
-                            {
-                                PixelTmp[0] = 0xFF - FindOrNewTarget(RfPwMat, AnalysisTextMat, RfRow, PwCol);           // 附近寻找是否有已经创建的目标号, 如果没有则创建新的目标号
-                                MatChannelDrawRectArea(RfPwMat, PixelTmp[0], RfRow, PwCol, );                           // RfPwMat记忆RfPwPixel的TargetNo矩形区域
-                            }
-                            TargetProcess(0xFF - PixelTmp[0]);
-                        }
-                        else                                                                // RfPwPixel未激活
-                        {
-                            PixelTmp[1]++;
-                            if(PixelTmp[1] > PIXEL_THRESHOLD)
-                            {
-                                PixelTmp[1] = PIXEL_ACTIVE_VALUE;
-                            }
-                        }
-                    }
-                    else if(FrameCircularNo - PixelTmp[2] < FRAMENO_DIFF_THRESHOLD)         // RfPwPixel的R通道当前帧未命中，距上一次命中帧数少于FRAMENO_DIFF_THRESHOLD
-                    {
-                        PixelTmp[2] = FrameCircularNo;
-                        CvTools.MatChannelDrawRectArea(RfPwMat, FrameCircularNo, RfRow, PwCol, 2);
-                        PixelTmp[1] = 1;
+                        TargetProcess(TargetNoTmp);
                     }
                     else
                     {
-                        
+                        TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD);
+                        COUT(UINT(TargetNoTmp), RfRow, PwCol, TargetLocVec[TargetNoTmp].Row, TargetLocVec[TargetNoTmp].Col, UINT(*pFrameCircularNo), UINT(TargetLocVec[TargetNoTmp].FindAtFrameCircularNo));
                     }
-                    RfPwMat.at<cv::Vec4b>(RfRow, PwCol) = PixelTmp;
                 }
+                else
+                {
+                    if(TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD))
+                    {
+                        if(TargetNoTmp!= TargetLocVec[TargetNoTmp].TargetNo)
+                        {
+                            COUT(UINT(TargetNoTmp), UINT(TargetLocVec[TargetNoTmp].TargetNo));
+                        }
+                        ASSERT(TargetNoTmp == TargetLocVec[TargetNoTmp].TargetNo, "assert failed!");
+                        CvTools.drawRectAreaAtMatChannel(RfPwMat, TargetLocVec[TargetNoTmp].Row, RFROW_TOLERANCE, TargetLocVec[TargetNoTmp].Col, PWCOL_TOLERANCE, *pFrameCircularNo, FrameNoCh);
+                        TargetProcess(TargetNoTmp);
+                    }
+                    else
+                    {
+                        TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD);
+                        COUT(UINT(TargetNoTmp), RfRow, PwCol, TargetLocVec[TargetNoTmp].Row, TargetLocVec[TargetNoTmp].Col, UINT(*pFrameCircularNo), UINT(TargetLocVec[TargetNoTmp].FindAtFrameCircularNo));
+                    }
+                }
+                continue;
+            }
+            else                                                                                                // 尚未创建目标号
+            {
+                if(PixelTmp[FrameNoCh] == *pFrameCircularNo)
+                {
+                    if(PixelTmp[ActiveNoCh] == PIXEL_ACTIVE_VALUE)                                              // RfPwPixel已激活
+                    {
+                        TargetNoTmp = NewTarget(RfRow, PwCol);
+                        if(TargetNoTmp == 0)
+                        {
+                            COUTS("Cannot create new Target!");
+                            return;
+                        }
+                        PixelTmp[TargetNoCh] = 0xFF - TargetNoTmp;                                              // 创建新的目标号
+                        PixelTmp[FrameNoCh] = *pFrameCircularNo;
+                        CvTools.drawRectAreaAtMatChannel(RfPwMat, RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, PixelTmp[TargetNoCh], TargetNoCh);
+                        CvTools.drawRectAreaAtMatChannel(RfPwMat, RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FrameNoCh);
+                        TargetProcess(TargetNoTmp);
+                    }
+                    else
+                    {
+                        PixelTmp[ActiveNoCh]++;
+                        if(PixelTmp[ActiveNoCh] > PIXEL_THRESHOLD)
+                        {
+                            PixelTmp[ActiveNoCh] = PIXEL_ACTIVE_VALUE;
+                        }
+                    }
+                }
+                else
+                {
+                    PixelTmp[FrameNoCh] = *pFrameCircularNo;
+                    PixelTmp[ActiveNoCh] = 1;
+                }
+                RfPwMat.at<cv::Vec4b>(RfRow, PwCol) = PixelTmp;
             }
         }
     }
-    template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
-    inline UCHAR FindOrNewTarget(Mat& srcMat, _cvTextImage<FontFace>& AnalysisTextMat, UINT RfRow, UINT PwCol)
+    inline UCHAR NewTarget(UINT RfRow, UINT PwCol)
     {
-                        if(PixelTmp[0] < TargetLocVec.size())
-                        {
-
-                        }
-                        else if(PixelTmp[0] == TargetLocVec.size())
-                        {
-                            TargetLocVec.push_back(_TargetLoc());
-                        }
-                        else
-                        {
-                            ERRORMSG("");
-                        }
-    }
-    inline void TargetProcess(UCHAR TargetNo)
-    {
-        if(TargetLocVec[TargetNo].TargetNo != TargetNo)
+        UCHAR NewTargetNo = 0;
+        if(TargetNums == 0xFF)
         {
-            ERRORMSG("TargetLocVec[TargetNo].TargetNo != TargetNo!");
+            for(UINT i = 1; i < TargetNums; i++)
+            {
+                if(ucharCycleSub(*pFrameCircularNo, TargetLocVec[i].FindAtFrameCircularNo) > FRAMENO_DIFF_THRESHOLD)
+                {
+                    NewTargetNo = i;
+                    NewTargetNoVec.push_back(NewTargetNo);
+                    break;
+                }
+            }
         }
+        else
+        {
+            TargetNums++;
+            NewTargetNo = TargetNums;
+            NewTargetNoVec.push_back(NewTargetNo);
+            TargetLocVec.push_back(_TargetLoc());
+        }
+        TargetLocVec[NewTargetNo].Row       = RfRow;
+        TargetLocVec[NewTargetNo].Col       = PwCol;
+        TargetLocVec[NewTargetNo].RowMin    = RfRow;
+        TargetLocVec[NewTargetNo].RowMax    = RfRow;
+        TargetLocVec[NewTargetNo].ColMin    = PwCol;
+        TargetLocVec[NewTargetNo].ColMax    = PwCol;
+        TargetLocVec[NewTargetNo].ColMax    = PwCol;
+        TargetLocVec[NewTargetNo].TargetNo  = NewTargetNo;
+        TargetLocVec[NewTargetNo].PulseNums = 1;
+        TargetLocVec[NewTargetNo].FindAtFrameCircularNo = *pFrameCircularNo;
+        return NewTargetNo;
+    }
+    inline void TargetProcess(UCHAR TargetNo)                                               // 脉冲目标号操作
+    {
+        ASSERT((TargetNo != 0), "assert failed!");
+        ASSERT((TargetLocVec[TargetNo].TargetNo == TargetNo), "assert failed!");
+        ActiveSign = true;
         TargetLocVec[TargetNo].PulseNums++;
         PdwTargetVec.push_back(TargetNo);
     }
-    inline void EndFrameProcess()
+    template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
+    inline UINT EndFrameProcess(_cvTextImage<FontFace>& AnalysisTextMat)                    // 帧结束处理
     {
+        UINT    rtnNewTargetNums   = 0;                                 // 返回最近NEW_TARGETNOS_FRAMESIZE帧新目标总数
+        UINT    FrameNewTargetNums = 0;
+        UCHAR   IndTmp = 0;
+        NewTargetNosQueue.Push(NewTargetNoVec);
         if(ValidSign == true)
         {
             DisappearTimes = (ActiveSign == false) ? (DisappearTimes + 1) : 0;
@@ -321,17 +412,65 @@ public:
             ActiveSign      = false;
             DisappearTimes  = 0;
         }
+        if(ActiveSign == true)
+        {
+            for(UINT i = 0; i < NewTargetNosQueue.GetSize(); i++)
+            {
+                FrameNewTargetNums  = NewTargetNosQueue[i].size();
+                rtnNewTargetNums    += FrameNewTargetNums;
+                for(UINT j = 0; j < FrameNewTargetNums; j++)
+                {
+                    IndTmp = NewTargetNosQueue[i][j];
+                    string Str = "New Target(Rf : " + tostring(TargetLocVec[IndTmp].Row << 4) + 
+                                 ", " + "Pw : " + tostring(TargetLocVec[IndTmp].Col << 4) +")";
+                    AnalysisTextMat.BGRCircleText(Scalar(TargetLocVec[IndTmp].Row/16, TargetLocVec[IndTmp].Col/16, 255), Str);
+                }
+            }
+        }
+        return rtnNewTargetNums;
+    }
+    inline void showRfPwMat(UINT ZoomLevel)
+    {
+        if(ValidSign == true)
+        {
+            string Str = "RfPwMat(Doa : " + tostring(DoaSt) + " - " + tostring(DoaEd) + ")";
+            Mat pyrDownRfPwMat;
+            switch(ZoomLevel)
+            {
+            case 0:
+                cv::imshow(Str, RfPwMat);
+                break;
+            case 1:
+                cv::pyrDown(RfPwMat, pyrDownRfPwMat);
+                cv::imshow(Str, pyrDownRfPwMat);
+                break;
+            case 2:
+                cv::pyrDown(RfPwMat, pyrDownRfPwMat);
+                cv::pyrDown(pyrDownRfPwMat, pyrDownRfPwMat);
+                cv::imshow(Str, pyrDownRfPwMat);
+                break;
+            default:
+                cv::imshow(Str, RfPwMat);
+                break;
+            }
+        }
     }
 };
 class _PdwRfPwMapClt
 {
-    static CUINT        PDW_RFPWMAPVEC_SIZE = 100;
-    vector<_PdwRfPwMap> PdwRfPwMapVec;
-    UCHAR               FrameCircularNo;                        // 运行帧号循环累加
-    vector<bool>        PdwRfPwMapValidVec;
+    static CUINT                    NEW_TARGETNOS_FRAMESIZE = 10;           // 帧新目标号Queue长度
+    static CUINT                    PDW_RFPWMAPVEC_SIZE     = 100;
+    _CvTools                        CvTools;
+    Mat                             FindNewTargetMat;
+    UCHAR                           FrameCircularNo;                        // 运行帧号循环累加, 跳过0
+    vector<_PdwRfPwMap>             PdwRfPwMapVec;
+    vector<UCHAR>                   NewDoaTargetNoVec;                      // 当前帧新目标号Vec
+    _CircularQueue<vector<UCHAR> >  NewDoaTargetNosQueue;                   // 帧新目标号Queue
+    vector<bool>                    PdwRfPwMapValidVec;
 public:
-    _PdwRfPwMapClt()
+    _PdwRfPwMapClt():NewDoaTargetNosQueue(NEW_TARGETNOS_FRAMESIZE)
     {
+        FindNewTargetMat = cv::imread("/home/admin/WorkSp/3.cpp/Tools/Imagesrc/FindNewTarget.png");
         Init();
     }
     virtual ~_PdwRfPwMapClt()
@@ -340,55 +479,50 @@ public:
     }
     void Init()
     {
-        PdwRfPwMapVec.resize(PDW_RFPWMAPVEC_SIZE, _PdwRfPwMap(FrameCircularNo));
+        PdwRfPwMapVec.resize(PDW_RFPWMAPVEC_SIZE);
+        for(UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
+        {
+            PdwRfPwMapVec[i].SetFrameCircularNoAddr(&FrameCircularNo);
+        }
+        NewDoaTargetNoVec.reserve(PDW_RFPWMAPVEC_SIZE);
         PdwRfPwMapValidVec.resize(PDW_RFPWMAPVEC_SIZE, false);
         Clear();
     }
     inline void Clear()
     {
-        FrameCircularNo = 0;
-        PdwRfPwMapValidVec.assign(PDW_RFPWMAPVEC_SIZE, false);
+        FrameCircularNo = 1;
         for(UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
         {
             PdwRfPwMapVec[i].Clear();
         }
+        PdwRfPwMapValidVec.assign(PDW_RFPWMAPVEC_SIZE, false);
+        NewDoaTargetNoVec.clear();
+        NewDoaTargetNosQueue.clear();
     }
-    inline void NewFrameInit()                                                                          // 帧起始初始化操作
+    void drawFindNewTarget(Mat& srcMat, Mat& srcFindNewTargetMat, UINT row, UINT col, UINT FindNewTargetNums)
     {
+        Mat srcRectMat = srcMat(Rect(row, col, srcFindNewTargetMat.cols, srcFindNewTargetMat.rows));
+        CvTools.cvAddWeighted(srcFindNewTargetMat, srcRectMat, srcRectMat, 0.7);
+        string Str = tostring(FindNewTargetNums);
+        cv::putText(srcRectMat, Str, Point(68, 86),
+                    cv::FONT_HERSHEY_COMPLEX_SMALL, 0.9,
+                    Scalar(50, 100, 200), 1.5, LINE_AA, false);      
+    }
+    inline void NewFrameInit()                                                              // 帧起始初始化操作
+    {
+        NewDoaTargetNoVec.clear();
         for (UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
         {
-            PdwRfPwMapVec[i].ClearPdwTargetVec();
+            PdwRfPwMapVec[i].NewFrameInit();
         }
     }
-    template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
-    inline void EndFrameProcess(Mat& srcMat, _cvTextImage<FontFace>& AnalysisTextMat)                   // 帧结束处理
-    {
-        FrameCircularNo++;
-        for(UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
-        {
-            PdwRfPwMapVec[i].EndFrameProcess();
-        }
-        for(UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
-        {
-            if(PdwRfPwMapValidVec[i] == true)
-            {
-                PdwRfPwMapValidVec[i] = PdwRfPwMapVec[i].GetValidSign();
-                if(PdwRfPwMapValidVec[i] == false)
-                {
-                    string Str = "Doa(Miss targets) : " + tostring(DoaSt) + " - " + tostring(DoaEd);
-                    AnalysisTextMat.Title(Str);
-                }
-            }
-        }
-    }
-    template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
-    UINT VecDoaAdaptInd(Mat& srcMat, _cvTextImage<FontFace>& AnalysisTextMat, UINT DoaSt, UINT DoaEd)   // Doa适配
+    UINT VecDoaAdaptInd(UINT DoaSt, UINT DoaEd)                                             // Doa适配
     {
         bool FindSign = false;
         UINT i;
         for (i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
         {
-            FindSign = PdwRfPwMapVec[i].DoaAdaptation(DoaSt, DoaEd);
+            FindSign = PdwRfPwMapVec[i].DoaAdapt(DoaSt, DoaEd);
             if(FindSign == true)
             {
                 break;
@@ -396,14 +530,7 @@ public:
         }
         if(FindSign == false)
         {
-            string Str = "Doa(New targets) : " + tostring(DoaSt) + " - " + tostring(DoaEd);
-            AnalysisTextMat.Title(Str);
             i = NewRfPwMap(DoaSt, DoaEd);
-        }
-        else
-        {
-            string Str = "Doa : " + tostring(DoaSt) + " - " + tostring(DoaEd);
-            AnalysisTextMat.Title(Str);
         }
         return i;
     }
@@ -416,22 +543,96 @@ public:
             NewSign = PdwRfPwMapVec[i].CanCreateOrRecycle(DoaSt, DoaEd);
             if(NewSign == true)
             {
+                NewDoaTargetNoVec.push_back(i);
                 break;
             }
         }
         if(NewSign == false)
         {
-            i = PDW_RFPWMAPVEC_SIZE - 1;
+            i = PDW_RFPWMAPVEC_SIZE;
             ERRORMSG("PdwRfPwMapVec is full!");
         }
         return i;
     }
-    template<typename _PdwType, CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
-    inline void PdwVecDoaMap(vector<_PdwType>& srcPdwVec, Mat& srcMat,                                  // 以Doa提取PdwVec映射至PdwRfPwMap,并将结果显示在srcMat、srcPdwVec
-                      _cvTextImage<FontFace>& AnalysisTextMat, UINT DoaSt, UINT DoaEd)
+    template<typename _PdwType>
+    inline void PdwVecDoaMap(vector<_PdwType>& srcPdwVec, UINT DoaSt, UINT DoaEd)           // 以Doa提取PdwVec映射至PdwRfPwMap,并将结果显示在srcMat、srcPdwVec
     {
-        UINT i = VecDoaAdaptInd(srcMat, AnalysisTextMat, DoaSt, DoaEd);
-        PdwRfPwMapVec[i].PdwVecMap(srcPdwVec, AnalysisTextMat);
+        UINT i = VecDoaAdaptInd(DoaSt, DoaEd);
+        if(i == PDW_RFPWMAPVEC_SIZE)
+        {
+            ERRORMSG("PdwRfPwMapVec is full!");
+            return;
+        }
+        PdwRfPwMapVec[i].PdwVecMap<_PdwType>(srcPdwVec);
+    }
+    template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
+    inline void EndFrameProcess(Mat& srcMat, _cvTextImage<FontFace>& AnalysisTextMat)       // 帧结束处理
+    {
+        NewDoaTargetNosQueue.Push(NewDoaTargetNoVec);
+        FrameCircularNo++;
+        if(FrameCircularNo == 0)
+        {
+            FrameCircularNo = 1;
+        }
+        bool    FindNewDoaTargetSign = false;
+        for(UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
+        {
+            FindNewDoaTargetSign = false;
+            for(UINT j = 0; j < NewDoaTargetNosQueue.GetSize(); j++)
+            {
+                for(UINT l = 0; l < NewDoaTargetNosQueue[j].size(); l++)
+                {
+                    if(i == NewDoaTargetNosQueue[j][l])
+                    {
+                        FindNewDoaTargetSign = true;
+                        break;
+                    }
+                }
+                if(FindNewDoaTargetSign == true)
+                {
+                    break;
+                }
+            }
+            if(PdwRfPwMapVec[i].GetActiveSign() == true)
+            {
+                if(FindNewDoaTargetSign == true)
+                {
+                    string Str = "Doa(New targets) : " + 
+                                tostring(PdwRfPwMapVec[i].GetDoaSt()) + " - " + 
+                                tostring(PdwRfPwMapVec[i].GetDoaEd()) + " No." + tostring(i);
+                    AnalysisTextMat.Title(Str);
+                }
+                else
+                {
+                    string Str = "Doa : " + 
+                                tostring(PdwRfPwMapVec[i].GetDoaSt()) + " - " + 
+                                tostring(PdwRfPwMapVec[i].GetDoaEd()) + " No." + tostring(i);
+                    AnalysisTextMat.Title(Str);
+                }
+            }
+            PdwRfPwMapVec[i].EndFrameProcess<FontFace>(AnalysisTextMat);
+        }
+        for(UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
+        {
+            if(PdwRfPwMapValidVec[i] == true)
+            {
+                PdwRfPwMapValidVec[i] = PdwRfPwMapVec[i].GetValidSign();
+                if(PdwRfPwMapValidVec[i] == false)
+                {
+                    string Str = "Doa(Miss targets) : " + 
+                                 tostring(PdwRfPwMapVec[i].GetDoaSt()) + " - " +
+                                 tostring(PdwRfPwMapVec[i].GetDoaEd()) + " No." + tostring(i);
+                    AnalysisTextMat.Title(Str);
+                }
+            }
+        }
+    }
+    inline void ShowVaildMat(UINT ZoomLevel)
+    {
+        for(UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
+        {
+            PdwRfPwMapVec[i].showRfPwMat(ZoomLevel);
+        }
     }
 };
 
@@ -929,6 +1130,12 @@ public:
             cv::drawContours(BGRMat, Contours, -1, Scalar(0, 255, 0), 2, CV_AA);		// 在图像BGRMat上绘制轮廓组Contours
             CvTools.Remap(BGRMat, RemapBGRMat, xMapImage, yMapImage, BackGround);	    // 图像重映射
             writer.write(VideoFrameMat);												// 将图像VideoFrameMat写入视频帧
+            // showImage(BGRMat);
+            // cv::imshow("DensityBinMat", DensityBinMat);
+            // cv::imshow("DensityBinInvMat", DensityBinInvMat);
+            // PdwRfPwMapClt.ShowVaildMat(0);
+            // cvTextMat.showImage();
+            // cv::waitKey();
         }
         Timeit.End(5);
         return *this;
@@ -1011,31 +1218,25 @@ public:
                 }
                 if(ContourScanNos.size() > 3)                                                               // 扫描信号分析
                 {
-                    string TitleStr = "Doa(Scan): " + tostring(DoaSt) +
-                                        " - " + tostring(DoaEd);
-                    AnalysisTextMat.Title(TitleStr);
                     PdwAnalyVec.clear();
                     for(int i = ContourScanNos.size() - 1; i >= 0; i--)
                     {
                         ClctPdwToAnalyVec(Rectangles[ContourScanNos[i]]);
                     }
-                    PdwVecProcess<FontFace>(srcMat, PdwRfPwMapClt, DoaSt, DoaEd, AnalysisTextMat);
+                    PdwVecProcess(PdwAnalyVec, PdwRfPwMapClt, DoaSt, DoaEd);
                 }
                 if(ContourTraceNos.size() > 0)                                                              // 跟踪信号分析
                 {
-                    string TitleStr = "Doa(Trac): " + tostring(DoaSt) +
-                                        " - " + tostring(DoaEd);
-                    AnalysisTextMat.Title(TitleStr);
                     PdwAnalyVec.clear();
                     for(int i = ContourTraceNos.size() - 1; i >= 0; i--)
                     {
                         ClctPdwToAnalyVec(Rectangles[ContourTraceNos[i]]);
                     }
-                    PdwVecProcess<FontFace>(srcMat, PdwRfPwMapClt, DoaSt, DoaEd, AnalysisTextMat);
+                    PdwVecProcess(PdwAnalyVec, PdwRfPwMapClt, DoaSt, DoaEd);
                 }
             }
         }
-        PdwRfPwMapClt.EndFrameProcess(srcMat, AnalysisTextMat);
+        PdwRfPwMapClt.EndFrameProcess<FontFace>(srcMat, AnalysisTextMat);
         return *this;
     }
     // template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
@@ -1056,13 +1257,9 @@ public:
     //     CvTools.CalcMatHistogram(rstROIMat, ROIHistogramMat, BackGround);
     //     return *this;
     // }
-    template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
-    _ThisType& PdwVecProcess(vector<_PdwType>& srcPdwVec,
-                             _PdwRfPwMapClt& PdwRfPwMapClt_,
-                             UINT DoaSt, UINT DoaEd,
-                             _cvTextImage<FontFace> &AnalysisTextMat_)
+    _ThisType& PdwVecProcess(vector<_PdwType>& srcPdwVec, _PdwRfPwMapClt& PdwRfPwMapClt_, UINT DoaSt, UINT DoaEd)
     {
-        PdwRfPwMapClt_.PdwVecDoaMap(srcPdwVec, DoaSt, DoaEd, AnalysisTextMat_);
+        PdwRfPwMapClt_.PdwVecDoaMap<_PdwType>(srcPdwVec, DoaSt, DoaEd);
         return *this;
     }
     /****************************************** PdwAnalysis Area End ************************************/
@@ -1071,19 +1268,16 @@ public:
     _ThisType& showImage()                                                                              // 图像ImageMat show
     {
         cv::imshow("ImageMat", ImageMat);
-        cv::waitKey();
         return *this;
     }
     _ThisType& showImage(Mat &ImageTmp)                                                                 // 图像show
     {
         cv::imshow("showImage", ImageTmp);
-        cv::waitKey();
         return *this;
     }
     _ThisType& showRemapImage()                                                                         // 重映射图像show
     {
         cv::imshow("RemapImage", RemapImageMat);
-        cv::waitKey();
         return *this;
     }
     _ThisType& showData(int st, int ed)                                                                 // 文件数据show

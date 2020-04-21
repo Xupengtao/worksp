@@ -54,7 +54,7 @@ public:
         MatTmp.setTo(ScalarTmp);
     }
     template<typename _CvVecType>
-    _CvVecType GetMatPixelRef(Mat &srcMat, UINT Row, UINT Col) {return srcMat.at<_CvVecType>(Row, Col);};
+    _CvVecType& GetMatPixelRef(Mat &srcMat, UINT Row, UINT Col) {return srcMat.at<_CvVecType>(Row, Col);}
     UINT GetMatChannels(Mat &srcMat) const {return srcMat.channels();}
     void Remap(Mat& srcMat, Mat& dstMat, Mat& xMapImage, Mat& yMapImage, int BackGround)       // 图像srcMat以BackGround_为背景参数重映射至dstMat
     {
@@ -388,6 +388,20 @@ public:
             srcROIRectMat.copyTo(dstROIRectMat);
         }
     }
+    void drawRectAreaAtMatChannel(Mat &srcMat, UINT Row, UINT RowRange, UINT Col, UINT ColRange, UCHAR Val, UINT ChannelNo)
+    {
+        UINT RowSt = ((Row > RowRange) ? (Row - RowRange) : 0);
+        UINT RowEd = ((Row + RowRange) < srcMat.rows ? (Row + RowRange) : srcMat.rows);
+        UINT ColSt = ((Col > ColRange) ? (Col - ColRange) : 0);
+        UINT ColEd = ((Col + ColRange) < srcMat.cols ? (Col + ColRange) : srcMat.cols);
+        for(int i = RowSt; i <= RowEd; i++)
+        {
+            for(int j = ColSt; j <= ColEd; j++)
+            {
+                srcMat.at<cv::Vec4b>(i, j)[ChannelNo] = Val;
+            }
+        }
+    }
     cv::Scalar CalcMatRectangleMean(Mat &srcMat)                                                // 计算srcMat的像素平均值
     {
         if(srcMat.channels() != 4)
@@ -494,6 +508,29 @@ public:
         UINT s = DilateSize * 2 + 1;
         Mat structureElement = cv::getStructuringElement(MORPH_RECT, Size(s, s), Point(-1, -1));    //创建结构元
         cv::dilate(srcMat, dstMat, structureElement, Point(-1, -1), 1);
+    }
+    void cvAddWeighted(Mat& srcMat1, Mat& srcMat2, Mat& dstMat, double alpha)                   // cv图像叠加
+    {
+        if(!srcMat1.data)
+        {
+            ERRORMSG("!srcMat1.data Error!");
+            return;
+        }
+        if(!srcMat2.data)
+        {
+            ERRORMSG("！srcMat2.data Error!");
+            return;
+        }
+        if(srcMat1.channels() != srcMat2.channels())
+        {
+            ERRORMSG("srcMat1.channels != srcMat2.channels Error!");
+            return;
+        }
+        if(srcMat1.rows != srcMat2.rows || srcMat1.cols != srcMat2.cols)
+        {
+            ERRORMSG("srcMat1.rows != srcMat2.rows || srcMat1.cols != srcMat2.cols Error!");
+        }
+        cv::addWeighted(srcMat1, alpha, srcMat2, 1 - alpha, 0.0, dstMat);
     }
     void cvVconcat(Mat &srcMat1, Mat &srcMat2, Mat &dstMat)                                     // cv图像水平拼接
     {
