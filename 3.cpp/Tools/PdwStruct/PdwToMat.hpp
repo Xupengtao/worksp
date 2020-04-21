@@ -461,7 +461,8 @@ class _PdwRfPwMapClt
     static CUINT                    NEW_TARGETNOS_FRAMESIZE = 10;           // 帧新目标号Queue长度
     static CUINT                    PDW_RFPWMAPVEC_SIZE     = 100;
     _CvTools                        CvTools;
-    Mat                             FindNewTargetMat;
+    Mat                             NewDoaTargetMat;
+    Mat                             NewDiscoverTargetMat;
     UCHAR                           FrameCircularNo;                        // 运行帧号循环累加, 跳过0
     vector<_PdwRfPwMap>             PdwRfPwMapVec;
     vector<UCHAR>                   NewDoaTargetNoVec;                      // 当前帧新目标号Vec
@@ -470,7 +471,8 @@ class _PdwRfPwMapClt
 public:
     _PdwRfPwMapClt():NewDoaTargetNosQueue(NEW_TARGETNOS_FRAMESIZE)
     {
-        FindNewTargetMat = cv::imread("/home/admin/WorkSp/3.cpp/Tools/Imagesrc/FindNewTarget.png");
+        NewDoaTargetMat      = cv::imread("/home/xpt/WorkSp/3.cpp/Tools/Imagesrc/NewDoaTarget.jpg");
+        NewDiscoverTargetMat = cv::imread("/home/xpt/WorkSp/3.cpp/Tools/Imagesrc/FindNewTarget.jpg");
         Init();
     }
     virtual ~_PdwRfPwMapClt()
@@ -499,14 +501,35 @@ public:
         NewDoaTargetNoVec.clear();
         NewDoaTargetNosQueue.clear();
     }
-    void drawFindNewTarget(Mat& srcMat, Mat& srcFindNewTargetMat, UINT row, UINT col, UINT FindNewTargetNums)
+    void drawNewDoaTarget(Mat& srcMat, Mat& srcNewTargetMat, UINT row, UINT col)
     {
-        Mat srcRectMat = srcMat(Rect(row, col, srcFindNewTargetMat.cols, srcFindNewTargetMat.rows));
-        CvTools.cvAddWeighted(srcFindNewTargetMat, srcRectMat, srcRectMat, 0.7);
-        string Str = tostring(FindNewTargetNums);
-        cv::putText(srcRectMat, Str, Point(68, 86),
+        UINT drawRow = row, drawCol = (col > 12) ? (col - 12) : 0;
+        if((drawRow + srcNewTargetMat.rows > srcMat.rows) || (drawCol + srcNewTargetMat.cols > srcMat.cols))
+        {
+            ERRORMSG("(drawRow + srcNewTargetMat.rows > srcMat.rows) || (drawCol + srcNewTargetMat.cols > srcMat.cols)");
+            return;
+        }
+        Mat srcRectMat = srcMat(Rect(drawCol, drawRow, srcNewTargetMat.cols, srcNewTargetMat.rows));
+        CvTools.cvAddWeighted(srcNewTargetMat, srcRectMat, srcRectMat, 0.9);
+    }
+    void drawNewDiscoverTarget(Mat& srcMat, Mat& srcNewTargetMat, UINT row, UINT col, UINT DiscoverDoa, UINT FindNewTargetNums)
+    {
+        UINT drawRow = row, drawCol = (col > 20) ? (col - 20) : 0;
+        if((drawRow + srcNewTargetMat.rows > srcMat.rows) || (drawCol + srcNewTargetMat.cols > srcMat.cols))
+        {
+            ERRORMSG("(drawRow + srcNewTargetMat.rows > srcMat.rows) || (drawCol + srcNewTargetMat.cols > srcMat.cols)");
+            return;
+        }
+        Mat srcRectMat = srcMat(Rect(drawCol, drawRow, srcNewTargetMat.cols, srcNewTargetMat.rows));
+        CvTools.cvAddWeighted(srcNewTargetMat, srcRectMat, srcRectMat, 0.9);
+        string Str = tostring(DiscoverDoa);
+        cv::putText(srcRectMat, Str, Point(191, 136),
                     cv::FONT_HERSHEY_COMPLEX_SMALL, 0.9,
-                    Scalar(50, 100, 200), 1.5, LINE_AA, false);      
+                    Scalar(255, 255, 255), 1.5, LINE_AA, false);
+        Str = tostring(FindNewTargetNums);
+        cv::putText(srcRectMat, Str, Point(250, 160),
+                    cv::FONT_HERSHEY_COMPLEX_SMALL, 0.9,
+                    Scalar(255, 255, 255), 1.5, LINE_AA, false);
     }
     inline void NewFrameInit()                                                              // 帧起始初始化操作
     {
@@ -575,6 +598,7 @@ public:
             FrameCircularNo = 1;
         }
         bool    FindNewDoaTargetSign = false;
+        UINT    NewTargetNumTmp = 0;
         for(UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
         {
             FindNewDoaTargetSign = false;
@@ -601,6 +625,7 @@ public:
                                 tostring(PdwRfPwMapVec[i].GetDoaSt()) + " - " + 
                                 tostring(PdwRfPwMapVec[i].GetDoaEd()) + " No." + tostring(i);
                     AnalysisTextMat.Title(Str);
+                    drawNewDoaTarget(srcMat, NewDoaTargetMat, 290, PdwRfPwMapVec[i].GetDoaSt());
                 }
                 else
                 {
@@ -610,7 +635,11 @@ public:
                     AnalysisTextMat.Title(Str);
                 }
             }
-            PdwRfPwMapVec[i].EndFrameProcess<FontFace>(AnalysisTextMat);
+            NewTargetNumTmp = PdwRfPwMapVec[i].EndFrameProcess<FontFace>(AnalysisTextMat);
+            if(NewTargetNumTmp > 0)
+            {
+                drawNewDiscoverTarget(srcMat, NewDiscoverTargetMat, 10, PdwRfPwMapVec[i].GetDoaSt(), PdwRfPwMapVec[i].GetDoaSt(), NewTargetNumTmp);
+            }
         }
         for(UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
         {
@@ -1129,6 +1158,7 @@ public:
             }
             cv::drawContours(BGRMat, Contours, -1, Scalar(0, 255, 0), 2, CV_AA);		// 在图像BGRMat上绘制轮廓组Contours
             CvTools.Remap(BGRMat, RemapBGRMat, xMapImage, yMapImage, BackGround);	    // 图像重映射
+            PdwRfPwMapClt.EndFrameProcess<cv::FONT_HERSHEY_COMPLEX_SMALL>(RemapBGRMat, cvTextMat);
             writer.write(VideoFrameMat);												// 将图像VideoFrameMat写入视频帧
             // showImage(BGRMat);
             // cv::imshow("DensityBinMat", DensityBinMat);
@@ -1236,7 +1266,6 @@ public:
                 }
             }
         }
-        PdwRfPwMapClt.EndFrameProcess<FontFace>(srcMat, AnalysisTextMat);
         return *this;
     }
     // template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
