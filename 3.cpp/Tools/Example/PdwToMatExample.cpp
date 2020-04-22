@@ -14,8 +14,8 @@ UINT	_RadarBuffer::SortTimes = 0;
 
 typedef _Pdw<UINT, UINT, UINT, UINT, UINT>      PdwType;
 
-std::string filepath("/home/xpt/WorkSp/Data/");
-std::string savepath("/home/xpt/WorkSp/Analysis/");
+std::string filepath("/home/admin/WorkSp/Data/");
+std::string savepath("/home/admin/WorkSp/Analysis/");
 
 int main(int argc, char **argv)
 {

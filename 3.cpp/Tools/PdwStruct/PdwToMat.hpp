@@ -168,6 +168,57 @@ public:
         }
         PdwTargetVec.clear();
     }
+    void drawTargetDescribed()
+    {
+        _CvTools CvTools;
+        Mat      srcMat(1080 , 1920, CV_8UC3, Scalar(255, 255, 255));
+        Mat      TargetDescribedMat = cv::imread("/home/admin/WorkSp/3.cpp/Tools/Imagesrc/TargetDescribed.jpg");
+        UCHAR    IndTmp = 0, TargetNums = 0;
+        UINT     FrameNewTargetNums = 0;
+        UINT     drawRow = 100, drawCol = 100;
+        for(UINT i = 0; i < NewTargetNosQueue.GetSize(); i++)
+        {
+            FrameNewTargetNums  = NewTargetNosQueue[i].size();
+            for(UINT j = 0; j < FrameNewTargetNums; j++)
+            {
+                if(TargetNums > 10)
+                {
+                    break;
+                }
+                IndTmp = NewTargetNosQueue[i][j];
+                Mat srcRectMat = srcMat(Rect(drawCol + 350 * (TargetNums % 5), drawRow + 250 * (TargetNums / 5),
+                                             TargetDescribedMat.cols, TargetDescribedMat.rows));
+                CvTools.cvAddWeighted(TargetDescribedMat, srcRectMat, srcRectMat, 0.9);
+                string Str = tostring(UINT(IndTmp));                                // TargetNo
+                cv::putText(srcRectMat, Str, Point(152, 33),
+                            cv::FONT_HERSHEY_COMPLEX_SMALL, 1.2,
+                            Scalar(100, 100, 100), 2.0, LINE_AA, false);
+                Str = tostring(TargetLocVec[IndTmp].Row << 4);                      // Rf
+                cv::putText(srcRectMat, Str, Point(185, 55),
+                            cv::FONT_HERSHEY_COMPLEX_SMALL, 0.7,
+                            Scalar(50, 50, 50), 1.0, LINE_AA, false);
+                Str = tostring(TargetLocVec[IndTmp].Col << 4);                      // Pw
+                cv::putText(srcRectMat, Str, Point(185, 80),
+                            cv::FONT_HERSHEY_COMPLEX_SMALL, 0.7,
+                            Scalar(50, 50, 50), 1.0, LINE_AA, false);
+                Str = tostring(DoaSt);                                              // Doa
+                cv::putText(srcRectMat, Str, Point(185, 105),
+                            cv::FONT_HERSHEY_COMPLEX_SMALL, 0.7,
+                            Scalar(50, 50, 50), 1.0, LINE_AA, false);
+                Str = tostring(TargetLocVec[IndTmp].PulseNums);                     // Pulse Density
+                cv::putText(srcRectMat, Str, Point(185, 130),
+                            cv::FONT_HERSHEY_COMPLEX_SMALL, 0.7,
+                            Scalar(50, 50, 50), 1.0, LINE_AA, false);
+                Str = tostring(UINT(TargetLocVec[IndTmp].FindAtFrameCircularNo));   // Timestamp
+                cv::putText(srcRectMat, Str, Point(185, 155),
+                            cv::FONT_HERSHEY_COMPLEX_SMALL, 0.7,
+                            Scalar(50, 50, 50), 1.0, LINE_AA, false);
+                TargetNums++;
+            }
+        }
+        cv::imshow("Target", srcMat);
+        cv::waitKey();
+    }
     inline void NewFrameInit()                                                          // 帧起始初始化操作
     {
         NewTargetNoVec.clear();
@@ -426,6 +477,7 @@ public:
                     AnalysisTextMat.BGRCircleText(Scalar(TargetLocVec[IndTmp].Row/16, TargetLocVec[IndTmp].Col/16, 255), Str);
                 }
             }
+            // drawTargetDescribed();
         }
         return rtnNewTargetNums;
     }
@@ -1130,7 +1182,7 @@ public:
                 pd.restart(readSize);
                 pd += SizeTemp;
             }
-            AddBGRAImageAndPdwMatrix(ToaDoa, 1, 0, 1.0, 0, 1, 2000, 255, 0, 1);	        // 以时进拼接方式生成图片
+            AddBGRAImageAndPdwMatrix(ToaDoa, 1, 0, 1.0, 0, 1, 2000, 255, 0, 10);	    // 以时进拼接方式生成图片
             cv::mixChannels(&ImageMat, 1, ChannelOutMat, 2, from_to, 4);				// ImageMat多通道分离至ChannelOutMat中的BGRMat, DensityMat
             CvTools.CalcMatHistogram(BGRMat, BGRHistogram, BackGround);				    // 计算BGRMat的直方图BGRHistogram
             CvTools.CalcMatHistogram(DensityMat, DensityHistogram, BackGround);		    // 计算DensityMat的直方图DensityHistogram
@@ -1139,11 +1191,13 @@ public:
             cv::threshold(DensityMat, DensityBinInvMat, Threshold,0, THRESH_TOZERO_INV);// 密度图以Threshold为最大阈值进行阈值操作(高于阈值像素值设置为0)生成生成DensityBinInvMat
             cv::threshold(DensityBinInvMat, DensityBinInvMat, 0, 255, THRESH_BINARY);	// DensityBinInvMat以Threshold为最小阈值进行阈值操作生成二值图DensityBinInvMat
             CvTools.cvDilate(DensityBinMat, DensityDilateMat);					        // DensityBinMat进行图像膨胀操作
+            // Analysis
+            PdwImageAnalysis<cv::FONT_HERSHEY_COMPLEX_SMALL>(BGRMat, DensityDilateMat, cvTextMat, PixelToaUnit);   // 图像分析
+            // Generage VideoFrame
+            CvTools.MatInv(DensityMat, DensityMat);
+            CvTools.MatInv(DensityDilateMat, DensityDilateMat);
             cv::cvtColor(DensityMat, BGRDensityMat, COLOR_GRAY2BGR);					// 灰度图DensityMat转BGR图BGRDensityMat以实现图像组合
             cv::cvtColor(DensityDilateMat, BGRDensityDilateMat, COLOR_GRAY2BGR);		// 灰度图DensityDilateMat转BGR图BGRDensityDilateMat以实现图像组合
-            // Analysis
-            PdwImageAnalysis<cv::FONT_HERSHEY_COMPLEX_SMALL>(BGRMat, DensityDilateMat, BGRDensityDilateMat, cvTextMat, PixelToaUnit);   // 图像分析
-            // Generage VideoFrame
             if(ImageMat.rows == ImageMat.cols)
             {
                 CvTools.Remap(BGRDensityMat, RemapBGRDensityMat, xMapImage, yMapImage, BackGround);			    // 图像重映射
@@ -1181,7 +1235,6 @@ public:
     template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
     _ThisType& PdwImageAnalysis(Mat &srcMat,                                                            // 脉冲映射图像分析
                                 Mat &srcBinMat,
-                                Mat& LabelMat,
                                 _cvTextImage<FontFace> &AnalysisTextMat,
                                 const float PixelToaUnit)
     {
