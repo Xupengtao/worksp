@@ -9,19 +9,20 @@
  */
 #ifndef _PDWTOMAT_HPP
 #define _PDWTOMAT_HPP
-#include "../PdwStruct/PdwStruct.hpp"
-#include "../imageTools/cvTextImage.hpp"
-#include "../fileStream/binaryFileStream.hpp"
 #include <vector>
 #include <opencv2/core.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
 using namespace cv;
-#include"../imageTools/CvTools.hpp"
+#include <boost/progress.hpp>
+#include "../PdwStruct/PdwStruct.hpp"
+#include "../fileStream/binaryFileStream.hpp"
+#include "../imageTools/cvTextImage.hpp"
+#include "../imageTools/cvCoordinateMap.hpp"
+#include "../imageTools/CvTools.hpp"
 #include "../Timeit.h"
 #include "../CircularQueue.hpp"
-#include <boost/progress.hpp>
 
 inline UCHAR ucharCycleSub(UCHAR x, UCHAR y)
 {
@@ -523,8 +524,8 @@ class _PdwRfPwMapClt
 public:
     _PdwRfPwMapClt():NewDoaTargetNosQueue(NEW_TARGETNOS_FRAMESIZE)
     {
-        NewDoaTargetMat      = cv::imread("/home/xpt/WorkSp/3.cpp/Tools/Imagesrc/NewDoaTarget.jpg");
-        NewDiscoverTargetMat = cv::imread("/home/xpt/WorkSp/3.cpp/Tools/Imagesrc/FindNewTarget.jpg");
+        NewDoaTargetMat      = cv::imread("/home/admin/WorkSp/3.cpp/Tools/Imagesrc/NewDoaTarget.jpg");
+        NewDiscoverTargetMat = cv::imread("/home/admin/WorkSp/3.cpp/Tools/Imagesrc/FindNewTarget.jpg");
         Init();
     }
     virtual ~_PdwRfPwMapClt()
@@ -1115,22 +1116,58 @@ public:
     {
         int rows = ImageMat.rows;
         int cols = ImageMat.cols;
-        Mat BGRMat(rows, cols, CV_8UC3, cv::Scalar::all(0));                                            // BGR
-        Mat DensityMat(rows, cols, CV_8UC1);                                                            // 密度图，为ImageMat的alpha通道
-        Mat DensityBinMat(rows, cols, CV_8UC1);                                                         // 二值图
-        Mat DensityBinInvMat(rows, cols, CV_8UC1);                                                      // 二值互斥图
-        Mat DensityDilateMat(rows, cols, CV_8UC1);                                                      // 密度膨胀图
-        Mat BGRDensityMat(rows, cols, CV_8UC3);                                                         // 密度BGR图
-        Mat BGRDensityDilateMat(rows, cols, CV_8UC3);                                                   // 密度BGR膨胀图
-        Mat RemapBGRDensityMat(rows, cols, CV_8UC3);                                                    // 密度BGR映射图
-        Mat RemapBGRDensityDilateMat(rows, cols, CV_8UC3);                                              // 密度BGR膨胀映射图
-        Mat VideoFrameMat(cols, 3 * rows, CV_8UC3, cv::Scalar::all(0));                                 // 视频写入帧
-        Mat RemapBGRMat             = VideoFrameMat(Rect(0, 0, cols, rows));                            // BGR映射图
-        Mat pyrDownDensityMat       = VideoFrameMat(Rect(rows-1, 0, rows/2, cols/2));                   // 密度图ParDown
-        Mat pyrDownDensityDilateMat = VideoFrameMat(Rect(rows-1, cols/2-1, rows/2, cols/2));            // 密度膨胀图ParDown
-        Mat BGRHistogram            = VideoFrameMat(Rect(rows + rows/2-1, 0, rows/2, cols/2));          // 颜色直方图
-        Mat DensityHistogram        = VideoFrameMat(Rect(rows + rows/2-1, cols/2-1, rows/2, cols/2));   // 密度直方图
-        Mat AnalysisTextMat         = VideoFrameMat(Rect(2 * rows - 1, 0, rows, cols));                 // 分析图
+        Mat BGRMat                      (rows, cols, CV_8UC3, cv::Scalar::all(0));                  // BGR
+        Mat DensityMat                  (rows, cols, CV_8UC1);                                      // 密度图，为ImageMat的alpha通道
+        Mat DensityBinMat               (rows, cols, CV_8UC1);                                      // 二值图
+        Mat DensityBinInvMat            (rows, cols, CV_8UC1);                                      // 二值互斥图
+        Mat DensityDilateMat            (rows, cols, CV_8UC1);                                      // 密度膨胀图
+        Mat BGRDensityMat               (rows, cols, CV_8UC3);                                      // 密度BGR图
+        Mat BGRDensityDilateMat         (rows, cols, CV_8UC3);                                      // 密度BGR膨胀图
+        Mat RemapBGRDensityMat          (rows, cols, CV_8UC3);                                      // 密度BGR映射图
+        Mat RemapBGRDensityDilateMat    (rows, cols, CV_8UC3);                                      // 密度BGR膨胀映射图
+        Mat VideoFrameMat(cols + 400, 3 * rows + 600, CV_8UC3, cv::Scalar::all(255));               // 视频写入帧
+        Mat VideoFrame1  = VideoFrameMat(Rect(0, 100, rows+200, cols+200));                         // BGR映射图
+        Mat VideoFrame21 = VideoFrameMat(Rect(rows+199, 0, rows/2+200, cols/2+200));                // 密度图ParDown
+        Mat VideoFrame22 = VideoFrameMat(Rect(rows+199, cols/2+199, rows/2+200, cols/2+200));       // 密度膨胀图ParDown
+        Mat VideoFrame31 = VideoFrameMat(Rect(rows+rows/2+399, 0, rows/2+200, cols/2+200));         // 颜色直方图
+        Mat VideoFrame32 = VideoFrameMat(Rect(rows+rows/2+399, cols/2+199, rows/2+200, cols/2+200));// 密度直方图
+        Mat AnalysisTextMat = VideoFrameMat(Rect(2 * rows +599, 200, rows, cols));                  // 分析图
+        Mat RemapBGRMat;
+        Mat pyrDownDensityMat;
+        Mat pyrDownDensityDilateMat;
+        Mat BGRHistogram;
+        Mat DensityHistogram;
+        _cvCoordinateMap<> CoordinateVideoFrame1(RemapBGRMat, VideoFrame1, rows, cols);
+        {
+            CoordinateVideoFrame1.xlabel("DOA", Scalar(100, 50, 50), 0, 1024, 10);
+            CoordinateVideoFrame1.ylabel("TOA(s)", Scalar(100, 50, 50), 10, 0, 10);
+            CoordinateVideoFrame1.title("DOA-TOA Analysis");
+        }
+        _cvCoordinateMap<> CoordinateVideoFrame21(pyrDownDensityMat, VideoFrame21, rows/2, cols/2);
+        {
+            CoordinateVideoFrame21.xlabel("DOA", Scalar(100, 50, 50), 0, 1024, 10);
+            CoordinateVideoFrame21.ylabel("TOA(s)", Scalar(100, 50, 50), 10, 0, 10);
+            CoordinateVideoFrame21.title("Density Map");
+        }
+        _cvCoordinateMap<> CoordinateVideoFrame22(pyrDownDensityDilateMat, VideoFrame22, rows/2, cols/2);
+        {
+            CoordinateVideoFrame22.xlabel("DOA", Scalar(100, 50, 50), 0, 1024, 10);
+            CoordinateVideoFrame22.ylabel("TOA(s)", Scalar(100, 50, 50), 10, 0, 10);
+            CoordinateVideoFrame22.title("Density Dilate Map");
+        }
+        _cvCoordinateMap<> CoordinateVideoFrame31(BGRHistogram, VideoFrame31, rows/2, cols/2);
+        {
+            CoordinateVideoFrame31.xlabel("Pixel value", Scalar(100, 50, 50), 0, 255, 10);
+            CoordinateVideoFrame31.ylabel("NaN", Scalar(100, 50, 50), 0, 100, 10);
+            CoordinateVideoFrame31.title("Channels Histogram");
+        }
+        _cvCoordinateMap<> CoordinateVideoFrame32(DensityHistogram, VideoFrame32, rows/2, cols/2);
+        {
+            CoordinateVideoFrame32.xlabel("Pixel value", Scalar(100, 50, 50), 0, 255, 10);
+            CoordinateVideoFrame32.ylabel("NaN", Scalar(100, 50, 50), 0, 500, 10);
+            CoordinateVideoFrame32.title("Density Histogram");
+        }
+
         _cvTextImage<> cvTextMat(AnalysisTextMat, 36, 3, BackGround);					                // 分析cvTextImage对象
         Mat ChannelOutMat[] = {BGRMat, DensityMat};										                // 输出通道
         int from_to[] = {0,0,1,1,2,2,3,3};												                // 0, 1, 2 -> BGRMat; 3 -> DensityMat

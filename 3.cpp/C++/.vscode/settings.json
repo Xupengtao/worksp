@@ -61,7 +61,8 @@
         "typeinfo": "cpp",
         "__nullptr": "cpp",
         "optional": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "locale": "cpp"
     },
     "cmake.configureOnOpen": true
 }
