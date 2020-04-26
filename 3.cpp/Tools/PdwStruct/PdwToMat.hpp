@@ -102,7 +102,7 @@ class _PdwRfPwMap
     static CUINT                    DOA_TOLERANCE           = 10;           // Doa容差范围
     static CUINT                    PIXEL_THRESHOLD         = 10;           // RfPwMat像素点激活阈值
     static CUINT                    PIXEL_ACTIVE_VALUE      = 0xFF;         // RfPwMat像素点已激活值
-    static CUINT                    DISAPPERTIME_THRESHOLD  = 10;           // RfPwMat由于累计未激活而导致Doa丢失阈值
+    static CUINT                    DISAPPERTIME_THRESHOLD  = 1000;         // RfPwMat由于累计未激活而导致Doa丢失阈值
     static CUINT                    FRAMENO_DIFF_THRESHOLD  = 100;          // 像素值帧号容差范围
     static CUINT                    NEW_TARGETNOS_FRAMESIZE = 10;           // 帧新目标号Queue长度
     static CUINT                    TARGET_LOCVEC_MAXSIZE   = 0x100;        // 目标号-RfPwMat位置索引Vec最大长度
@@ -342,7 +342,13 @@ public:
                     else
                     {
                         TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD);
-                        COUT(UINT(TargetNoTmp), RfRow, PwCol, TargetLocVec[TargetNoTmp].Row, TargetLocVec[TargetNoTmp].Col, UINT(*pFrameCircularNo), UINT(TargetLocVec[TargetNoTmp].FindAtFrameCircularNo));
+                        COUTSWIDTH(5,   "TargetNoTmp: "               , UINT(TargetNoTmp),
+                                        ", RfRow: "                   , RfRow,
+                                        ", TargetRow: "               , TargetLocVec[TargetNoTmp].Row,
+                                        ", PwCol: "                   , PwCol,
+                                        ", TargetCol: "               , TargetLocVec[TargetNoTmp].Col,
+                                        ", FrameCircularNo: "         , UINT(*pFrameCircularNo),
+                                        ", FindAtFrameCircularNo: "   , UINT(TargetLocVec[TargetNoTmp].FindAtFrameCircularNo));
                     }
                 }
                 else
@@ -360,7 +366,13 @@ public:
                     else
                     {
                         TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD);
-                        COUT(UINT(TargetNoTmp), RfRow, PwCol, TargetLocVec[TargetNoTmp].Row, TargetLocVec[TargetNoTmp].Col, UINT(*pFrameCircularNo), UINT(TargetLocVec[TargetNoTmp].FindAtFrameCircularNo));
+                        COUTSWIDTH(5,   "TargetNoTmp: "               , UINT(TargetNoTmp),
+                                        ", RfRow: "                   , RfRow,
+                                        ", TargetRow: "               , TargetLocVec[TargetNoTmp].Row,
+                                        ", PwCol: "                   , PwCol,
+                                        ", TargetCol: "               , TargetLocVec[TargetNoTmp].Col,
+                                        ", FrameCircularNo: "         , UINT(*pFrameCircularNo),
+                                        ", FindAtFrameCircularNo: "   , UINT(TargetLocVec[TargetNoTmp].FindAtFrameCircularNo));
                     }
                 }
                 continue;
@@ -670,21 +682,28 @@ public:
                     break;
                 }
             }
-            if(PdwRfPwMapVec[i].GetActiveSign() == true)
+            if(FindNewDoaTargetSign == true)
             {
-                if(FindNewDoaTargetSign == true)
-                {
-                    string Str = "Doa(New targets) : " + 
-                                tostring(PdwRfPwMapVec[i].GetDoaSt()) + " - " + 
-                                tostring(PdwRfPwMapVec[i].GetDoaEd()) + " No." + tostring(i);
-                    AnalysisTextMat.Title(Str);
-                    drawNewDoaTarget(srcMat, NewDoaTargetMat, 290, PdwRfPwMapVec[i].GetDoaSt());
-                }
-                else
+                string Str = "Doa(New targets) : " + 
+                            tostring(PdwRfPwMapVec[i].GetDoaSt()) + " - " + 
+                            tostring(PdwRfPwMapVec[i].GetDoaEd()) + " No." + tostring(i);
+                AnalysisTextMat.Title(Str);
+                drawNewDoaTarget(srcMat, NewDoaTargetMat, 290, PdwRfPwMapVec[i].GetDoaSt());
+            }
+            else
+            {
+                if(PdwRfPwMapVec[i].GetActiveSign() == true)
                 {
                     string Str = "Doa : " + 
                                 tostring(PdwRfPwMapVec[i].GetDoaSt()) + " - " + 
                                 tostring(PdwRfPwMapVec[i].GetDoaEd()) + " No." + tostring(i);
+                    AnalysisTextMat.Title(Str);
+                }
+                else if(PdwRfPwMapVec[i].GetValidSign() == true)
+                {
+                    string Str = "Doa(Miss targets) : " + 
+                                 tostring(PdwRfPwMapVec[i].GetDoaSt()) + " - " +
+                                 tostring(PdwRfPwMapVec[i].GetDoaEd()) + " No." + tostring(i);
                     AnalysisTextMat.Title(Str);
                 }
             }
@@ -699,13 +718,6 @@ public:
             if(PdwRfPwMapValidVec[i] == true)
             {
                 PdwRfPwMapValidVec[i] = PdwRfPwMapVec[i].GetValidSign();
-                if(PdwRfPwMapValidVec[i] == false)
-                {
-                    string Str = "Doa(Miss targets) : " + 
-                                 tostring(PdwRfPwMapVec[i].GetDoaSt()) + " - " +
-                                 tostring(PdwRfPwMapVec[i].GetDoaEd()) + " No." + tostring(i);
-                    AnalysisTextMat.Title(Str);
-                }
             }
         }
     }
@@ -1002,14 +1014,16 @@ public:
         PdwMap2D.SetToaPara(PdwAddr[0].Toa, ToaNormalUnit);
         return *this;
     }
-    _ThisType& ClctPdwToAnalyVec(Rect& srcRect)                                                         // 收集图像Rect内反射原始脉冲至PdwAnalyArray（不清空）
+    _ThisType& ClctPdwToAnalyVec(Rect& srcRect, vector<_PdwType>& PdwAnalyVec_, UINT xMin = 0, UINT yMin = 0)   // 收集图像Rect内反射原始脉冲至PdwAnalyArray（不清空）
     {
-        UINT Left = srcRect.x, Right = srcRect.x + srcRect.width;
-        UINT Up = srcRect.y, Down = srcRect.y + srcRect.height;
-        PdwMatrix.Filter(PdwAnalyVec, Left, Right, Up, Down);
+        UINT Left   = (srcRect.x > xMin) ? srcRect.x : xMin;
+        UINT Up     = (srcRect.y > yMin) ? srcRect.y : yMin;
+        UINT Right  = srcRect.x + srcRect.width;
+        UINT Down   = srcRect.y + srcRect.height;
+        PdwMatrix.Filter(PdwAnalyVec_, Left, Right, Up, Down);
         return *this;
     }
-    _ThisType& AddPdwMatrixMat(Mat&         srcMat,                                                     // 生成AddCol脉冲映射BGRA图像帧和相应图像反射原始数据矩阵
+    _ThisType& AddPdwMatrixMat(Mat&         srcMat,                                                             // 生成AddCol脉冲映射BGRA图像帧和相应图像反射原始数据矩阵
                                _MatPdwMatrix<_PdwType>& PdwMatrix_,
                                _PdwType*    PdwBuf,
                                UINT         PdwBufSize,
@@ -1168,18 +1182,19 @@ public:
             CoordinateVideoFrame32.title("Density Histogram");
         }
 
-        _cvTextImage<> cvTextMat(AnalysisTextMat, 36, 3, BackGround);					                // 分析cvTextImage对象
-        Mat ChannelOutMat[] = {BGRMat, DensityMat};										                // 输出通道
-        int from_to[] = {0,0,1,1,2,2,3,3};												                // 0, 1, 2 -> BGRMat; 3 -> DensityMat
-        int nPairs = 4;																	                // 四通道
-        const float  PixelToaUnit = float(AddTime_ms)/AddCol;							                // 像素值Toa单位
-        double Threshold = (PixelToaUnit<=0xFE) ? ((PixelToaUnit > 1) ? PixelToaUnit : 1) : 0xFE;       // 像素点阈值
+        _cvTextImage<>  cvTextMat(AnalysisTextMat, 36, 3, BackGround);					                // 分析cvTextImage对象
+        Mat         ChannelOutMat[] = {BGRMat, DensityMat};										        // 输出通道
+        UINT        CurrentFrameNo = 0;                                                                 // 当前帧数
+        int         from_to[] = {0,0,1,1,2,2,3,3};												        // 0, 1, 2 -> BGRMat; 3 -> DensityMat
+        int         nPairs = 4;																	        // 四通道
+        const float PixelToaUnit = float(AddTime_ms)/AddCol;							                // 像素值Toa单位
+        double      Threshold = (PixelToaUnit<=0xFE) ? ((PixelToaUnit > 1) ? PixelToaUnit : 1) : 0xFE;  // 像素点阈值
+        int         SizeTemp = 0;																        // 数据文件读取长度值
+        VideoWriter writer;																                // 创建视频流对象
+        int         codec = VideoWriter::fourcc('M', 'J', 'P', 'G');							        // 设置视频流格式
+        double      fps = 10.0;																            // 设置视频流帧数
         ReadDataResize(ReadDataSize_);													                // 调整数据文件读取缓存区大小
         binaryFile.seekg(seekst);														                // 设置数据文件读取起始位置
-        int SizeTemp = 0;																                // 数据文件读取长度值
-        VideoWriter writer;																                // 创建视频流对象
-        int codec = VideoWriter::fourcc('M', 'J', 'P', 'G');							                // 设置视频流格式
-        double fps = 10.0;																                // 设置视频流帧数
         writer.open(save_path, codec, fps, VideoFrameMat.size(), true);					                // 创建视频流文件
         if (!writer.isOpened())
         {
@@ -1219,6 +1234,13 @@ public:
                 pd.restart(readSize);
                 pd += SizeTemp;
             }
+            cvTextMat.Clear();											                // 清空分析结果区图像
+            PdwRfPwMapClt.NewFrameInit();
+            string Str = "CurrentFrameNo : " + tostring(CurrentFrameNo);
+            cvTextMat.Title(Str);
+            Str = " ";
+            cvTextMat.Title(Str);                                                       // 空行
+            cvTextMat.Title(Str);
             AddBGRAImageAndPdwMatrix(ToaDoa, 1, 0, 1.0, 0, 1, 2000, 255, 0, 10);	    // 以时进拼接方式生成图片
             cv::mixChannels(&ImageMat, 1, ChannelOutMat, 2, from_to, 4);				// ImageMat多通道分离至ChannelOutMat中的BGRMat, DensityMat
             CvTools.CalcMatHistogram(BGRMat, BGRHistogram, BackGround);				    // 计算BGRMat的直方图BGRHistogram
@@ -1229,7 +1251,7 @@ public:
             cv::threshold(DensityBinInvMat, DensityBinInvMat, 0, 255, THRESH_BINARY);	// DensityBinInvMat以Threshold为最小阈值进行阈值操作生成二值图DensityBinInvMat
             CvTools.cvDilate(DensityBinMat, DensityDilateMat);					        // DensityBinMat进行图像膨胀操作
             // Analysis
-            PdwImageAnalysis<cv::FONT_HERSHEY_COMPLEX_SMALL>(BGRMat, DensityDilateMat, cvTextMat, PixelToaUnit);   // 图像分析
+            PdwImageAnalysis<cv::FONT_HERSHEY_COMPLEX_SMALL>(BGRMat, DensityDilateMat, PdwRfPwMapClt, cvTextMat, PixelToaUnit); // 图像分析
             // Generage VideoFrame
             CvTools.MatInv(DensityMat, DensityMat);
             CvTools.MatInv(DensityDilateMat, DensityDilateMat);
@@ -1250,6 +1272,7 @@ public:
             cv::drawContours(BGRMat, Contours, -1, Scalar(0, 255, 0), 2, CV_AA);		// 在图像BGRMat上绘制轮廓组Contours
             CvTools.Remap(BGRMat, RemapBGRMat, xMapImage, yMapImage, BackGround);	    // 图像重映射
             PdwRfPwMapClt.EndFrameProcess<cv::FONT_HERSHEY_COMPLEX_SMALL>(RemapBGRMat, cvTextMat);
+            CurrentFrameNo++;
             writer.write(VideoFrameMat);												// 将图像VideoFrameMat写入视频帧
             // showImage(BGRMat);
             // cv::imshow("DensityBinMat", DensityBinMat);
@@ -1270,8 +1293,9 @@ public:
 
     /****************************************** PdwAnalysis Area Beg ************************************/
     template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
-    _ThisType& PdwImageAnalysis(Mat &srcMat,                                                            // 脉冲映射图像分析
-                                Mat &srcBinMat,
+    _ThisType& PdwImageAnalysis(Mat& srcMat,                                                            // 脉冲映射图像分析
+                                Mat& srcBinMat,
+                                _PdwRfPwMapClt& PdwRfPwMapClt_,
                                 _cvTextImage<FontFace> &AnalysisTextMat,
                                 const float PixelToaUnit)
     {
@@ -1306,8 +1330,6 @@ public:
         }
         CvTools.CalcAxisHistogram(srcBinMat, RowAxisPixelNums);										        // 输入图srcBinMat生成按行统计二值图像素和vector
         CvTools.findSectAtHistogram(RowAxisPixelNums, HistogramBinLocs, 5, 10);					            // 区间检测，阈值为5，最小间隔为10
-        AnalysisTextMat.Clear();																			// 清空分析结果区图像
-        PdwRfPwMapClt.NewFrameInit();
         for(UINT i = 0; i < HistogramBinLocs.size(); i++)
         {
             UINT DoaSt = HistogramBinLocs[i].first, DoaEd = HistogramBinLocs[i].second;
@@ -1341,18 +1363,18 @@ public:
                     PdwAnalyVec.clear();
                     for(int i = ContourScanNos.size() - 1; i >= 0; i--)
                     {
-                        ClctPdwToAnalyVec(Rectangles[ContourScanNos[i]]);
+                        ClctPdwToAnalyVec(Rectangles[ContourScanNos[i]], PdwAnalyVec, Col - AddCol, 0);
                     }
-                    PdwVecProcess(PdwAnalyVec, PdwRfPwMapClt, DoaSt, DoaEd);
+                    PdwVecProcess(PdwAnalyVec, PdwRfPwMapClt_, DoaSt, DoaEd);
                 }
                 if(ContourTraceNos.size() > 0)                                                              // 跟踪信号分析
                 {
                     PdwAnalyVec.clear();
                     for(int i = ContourTraceNos.size() - 1; i >= 0; i--)
                     {
-                        ClctPdwToAnalyVec(Rectangles[ContourTraceNos[i]]);
+                        ClctPdwToAnalyVec(Rectangles[ContourTraceNos[i]], PdwAnalyVec, Col - AddCol, 0);
                     }
-                    PdwVecProcess(PdwAnalyVec, PdwRfPwMapClt, DoaSt, DoaEd);
+                    PdwVecProcess(PdwAnalyVec, PdwRfPwMapClt_, DoaSt, DoaEd);
                 }
             }
         }

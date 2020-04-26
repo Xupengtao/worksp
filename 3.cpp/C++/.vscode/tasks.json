@@ -6,6 +6,7 @@
             "command": "/usr/bin/g++",
             "args": [
                 "-std=c++11",
+                "-fopenmp",
                 "${file}",
                 "-lpthread",
                 "$(pkg-config", "--cflags", "--libs", "opencv)",

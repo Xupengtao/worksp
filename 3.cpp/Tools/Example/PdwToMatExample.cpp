@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     //          .SaveDensityImage(savepath + "Density.bmp")
     //          .SaveImage(savepath + "文件32.bmp")
     //          .AddSaveVideo(savepath + "文件32.avi", 0, 100, 80, 1000000,25000000);
-    _PdwToMat<_xyg_z, PdwType, cv::Vec4b> PdwToMat2(filepath + "Task20180811105114_ch3_20180811105215", 0, 6553600, 1024, 1024);
+    _PdwToMat<_xyg_z, PdwType, cv::Vec4b> PdwToMat2(filepath + "z", 0, 6553600, 1024, 1024);
     PdwToMat2.ReadData(100)
              .showData(0,100)
              .SetBackGround(White)
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
              .SaveBGRAPolarImage(savepath + "Polar_z_1.bmp", 1, 0, CV_PI/512, 100, 1000)
              .SaveDensityImage(savepath + "Density_z.bmp")
              .SaveImage(savepath + "z.bmp")
-             .ContourAnalyVideo(savepath + "AddSaveHistogramVideo_z1.avi", 0, 10);
+             .ContourAnalyVideo(savepath + "AddSaveHistogramVideo_z1.avi", 0, 100);
 	// _LocVec	AzElDis;
 	// AzElDis.resize(10);
 	// for(UINT i = 0; i < 10; i++)
