@@ -6,7 +6,7 @@ Data
 Analysis
 Download
 nvvp_workspace
-
+build*
 #文件类型
 *.bmp
 *.o
