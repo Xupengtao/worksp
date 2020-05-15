@@ -181,49 +181,42 @@ public:
         CINT    AddTime = AddTime_ms*(1000000/ToaUnit_ns);
         UINT    ToaSt = 0, ToaTmp;
         bool    ExceedTimeTag = false;
-        if((_FileMsgTy::lineHead != 0) && (_FileMsgTy::lineTail != 0))
+        for(i = 0; !ExceedTimeTag; i++)
         {
-            for(i = 0; !ExceedTimeTag; i++)
+            if(i >= ReadDataSize)
             {
-                if(i >= ReadDataSize)
+                break;
+            }
+            binfile.read((char *)&line, FileMsgTySize);             // 将文件头读出
+            if((line.head == _FileMsgTy::lineHead) && (line.tail == _FileMsgTy::lineTail))
+            {
+                ReadData[i] = line;
+                if(ToaSt == 0)
                 {
-                    break;
-                }
-                binfile.read((char *)&line, FileMsgTySize);             // 将文件头读出
-                if((line.head == _FileMsgTy::lineHead) && (line.tail == _FileMsgTy::lineTail))
-                {
-                    ReadData[i] = line;
-                    if(ToaSt == 0)
+                    if(ReadData[i].ToaS != -1)
                     {
-                        if(ReadData[i].ToaS != -1)
-                        {
-                            ToaSt = ReadData[i].Toa;
-                        }
-                    }
-                    else
-                    {
-                        if(ReadData[i].ToaS != -1)
-                        {
-                            ToaTmp = ReadData[i].Toa;
-                            if(ToaTmp - ToaSt > AddTime)
-                            {
-                                ExceedTimeTag = true;
-                            }
-                        }
+                        ToaSt = ReadData[i].Toa;
                     }
                 }
                 else
                 {
-                    fileStatus = readend;
-                    ERRORMSG("文件读取格式错误!");
-                    COUT(i);
-                    break;
+                    if(ReadData[i].ToaS != -1)
+                    {
+                        ToaTmp = ReadData[i].Toa;
+                        if(ToaTmp - ToaSt > AddTime)
+                        {
+                            ExceedTimeTag = true;
+                        }
+                    }
                 }
             }
-        }
-        else
-        {
-            ERRORMSG("首尾标志数据缺失，读取结束操作未定义!");
+            else
+            {
+                fileStatus = readend;
+                ERRORMSG("文件读取格式错误!");
+                COUT(i);
+                break;
+            }
         }
         curLine     = curLine + i;
         ReadLines   = i;

@@ -97,14 +97,14 @@ class _PdwRfPwMap
     };
     static CUINT                    RF_AS_ROW               = 0xFFF;        // RfPwMat行数
     static CUINT                    PW_AS_COL               = 0xFFF;        // RfPwMat列数
-    static CUINT                    RFROW_TOLERANCE         = 10;           // RfRow容差
-    static CUINT                    PWCOL_TOLERANCE         = 10;           // PwCol容差
+    static CUINT                    RFROW_TOLERANCE         = 12;           // RfRow容差
+    static CUINT                    PWCOL_TOLERANCE         = 20;           // PwCol容差
     static CUINT                    DOA_TOLERANCE           = 10;           // Doa容差范围
-    static CUINT                    PIXEL_THRESHOLD         = 10;           // RfPwMat像素点激活阈值
+    static CUINT                    PIXEL_THRESHOLD         = 20;           // RfPwMat像素点激活阈值
     static CUINT                    PIXEL_ACTIVE_VALUE      = 0xFF;         // RfPwMat像素点已激活值
     static CUINT                    DISAPPERTIME_THRESHOLD  = 1000;         // RfPwMat由于累计未激活而导致Doa丢失阈值
     static CUINT                    FRAMENO_DIFF_THRESHOLD  = 100;          // 像素值帧号容差范围
-    static CUINT                    NEW_TARGETNOS_FRAMESIZE = 10;           // 帧新目标号Queue长度
+    static CUINT                    NEW_TARGETNOS_FRAMESIZE = 20;           // 帧新目标号Queue长度
     static CUINT                    TARGET_LOCVEC_MAXSIZE   = 0x100;        // 目标号-RfPwMat位置索引Vec最大长度
     static CUINT                    PDW_TARGETVEC_MAXSIZE   = 100000;       // PDW-目标号索引Vec最大长度
     _CvTools                        CvTools;                                // Cv算法封装类对象
@@ -333,47 +333,25 @@ public:
             if(PixelTmp[TargetNoCh] != 0)
             {
                 TargetNoTmp = 0xFF - PixelTmp[TargetNoCh];
-                if(PixelTmp[FrameNoCh] == *pFrameCircularNo)
+                if(TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD))
                 {
-                    if(TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD))
+                    if(PixelTmp[FrameNoCh] != *pFrameCircularNo)
                     {
-                        TargetProcess(TargetNoTmp);
+                        ASSERT(TargetNoTmp == TargetLocVec[TargetNoTmp].TargetNo, "assert failed!");
+                        CvTools.drawRectAreaAtMatChannel(RfPwMat, TargetLocVec[TargetNoTmp].Row, RFROW_TOLERANCE, TargetLocVec[TargetNoTmp].Col, PWCOL_TOLERANCE, *pFrameCircularNo, FrameNoCh);
                     }
-                    else
-                    {
-                        TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD);
-                        COUTSWIDTH(5,   "TargetNoTmp: "               , UINT(TargetNoTmp),
-                                        ", RfRow: "                   , RfRow,
-                                        ", TargetRow: "               , TargetLocVec[TargetNoTmp].Row,
-                                        ", PwCol: "                   , PwCol,
-                                        ", TargetCol: "               , TargetLocVec[TargetNoTmp].Col,
-                                        ", FrameCircularNo: "         , UINT(*pFrameCircularNo),
-                                        ", FindAtFrameCircularNo: "   , UINT(TargetLocVec[TargetNoTmp].FindAtFrameCircularNo));
-                    }
+                    TargetProcess(TargetNoTmp);
                 }
                 else
                 {
-                    if(TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD))
-                    {
-                        if(TargetNoTmp!= TargetLocVec[TargetNoTmp].TargetNo)
-                        {
-                            COUT(UINT(TargetNoTmp), UINT(TargetLocVec[TargetNoTmp].TargetNo));
-                        }
-                        ASSERT(TargetNoTmp == TargetLocVec[TargetNoTmp].TargetNo, "assert failed!");
-                        CvTools.drawRectAreaAtMatChannel(RfPwMat, TargetLocVec[TargetNoTmp].Row, RFROW_TOLERANCE, TargetLocVec[TargetNoTmp].Col, PWCOL_TOLERANCE, *pFrameCircularNo, FrameNoCh);
-                        TargetProcess(TargetNoTmp);
-                    }
-                    else
-                    {
-                        TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD);
-                        COUTSWIDTH(5,   "TargetNoTmp: "               , UINT(TargetNoTmp),
-                                        ", RfRow: "                   , RfRow,
-                                        ", TargetRow: "               , TargetLocVec[TargetNoTmp].Row,
-                                        ", PwCol: "                   , PwCol,
-                                        ", TargetCol: "               , TargetLocVec[TargetNoTmp].Col,
-                                        ", FrameCircularNo: "         , UINT(*pFrameCircularNo),
-                                        ", FindAtFrameCircularNo: "   , UINT(TargetLocVec[TargetNoTmp].FindAtFrameCircularNo));
-                    }
+                    TargetLocVec[TargetNoTmp].IsAtTargetTlrcArea(RfRow, RFROW_TOLERANCE, PwCol, PWCOL_TOLERANCE, *pFrameCircularNo, FRAMENO_DIFF_THRESHOLD);
+                    COUTSWIDTH(5,   "TargetNoTmp: "               , UINT(TargetNoTmp),
+                                    ", RfRow: "                   , RfRow,
+                                    ", TargetRow: "               , TargetLocVec[TargetNoTmp].Row,
+                                    ", PwCol: "                   , PwCol,
+                                    ", TargetCol: "               , TargetLocVec[TargetNoTmp].Col,
+                                    ", FrameCircularNo: "         , UINT(*pFrameCircularNo),
+                                    ", FindAtFrameCircularNo: "   , UINT(TargetLocVec[TargetNoTmp].FindAtFrameCircularNo));
                 }
                 continue;
             }
@@ -494,11 +472,14 @@ public:
         }
         return rtnNewTargetNums;
     }
-    inline void showRfPwMat(UINT ZoomLevel)
+    inline void showRfPwMat(UINT ZoomLevel, string Str = "")
     {
         if(ValidSign == true)
         {
-            string Str = "RfPwMat(Doa : " + tostring(DoaSt) + " - " + tostring(DoaEd) + ")";
+            if(Str == "")
+            {
+                string Str = "RfPwMat(Doa : " + tostring(DoaSt) + " - " + tostring(DoaEd) + ")";
+            }
             Mat pyrDownRfPwMat;
             switch(ZoomLevel)
             {
@@ -523,7 +504,7 @@ public:
 };
 class _PdwRfPwMapClt
 {
-    static CUINT                    NEW_TARGETNOS_FRAMESIZE = 10;           // 帧新目标号Queue长度
+    static CUINT                    NEW_TARGETNOS_FRAMESIZE = 20;           // 帧新目标号Queue长度
     static CUINT                    PDW_RFPWMAPVEC_SIZE     = 100;
     _CvTools                        CvTools;
     Mat                             NewDoaTargetMat;
@@ -715,10 +696,7 @@ public:
         }
         for(UINT i = 0; i < PDW_RFPWMAPVEC_SIZE; i++)
         {
-            if(PdwRfPwMapValidVec[i] == true)
-            {
-                PdwRfPwMapValidVec[i] = PdwRfPwMapVec[i].GetValidSign();
-            }
+            PdwRfPwMapValidVec[i] = PdwRfPwMapVec[i].GetValidSign();
         }
     }
     inline void ShowVaildMat(UINT ZoomLevel)

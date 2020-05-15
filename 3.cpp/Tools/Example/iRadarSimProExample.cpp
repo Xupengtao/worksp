@@ -1,5 +1,6 @@
 #include "../iRadarSimPro/iRadarSimPro.h"
 #include "../PdwStruct/PdwStruct.hpp"
+#include "../fileStream/binaryFileStream.hpp"
 
 UINT 	_RadarBuffer::GlobalToaH = 0;
 UINT 	_RadarBuffer::GlobalToaL = 0;
@@ -10,23 +11,25 @@ typedef _Pdw<UINT, UINT, UINT, UINT, UINT>      PdwType;
 int main()
 {
 	_LocVec	AzElDis0, AzElDis1;
-	AzElDis0.resize(10);
-	for(UINT i = 0; i < 10; i++)
+	AzElDis0.resize(100);
+	for(UINT i = 0; i < 100; i++)
 	{
-		AzElDis0[i].Az 		  = 100 + i * 10;
-		AzElDis0[i].El 		  = 100 + i * 10;
-		AzElDis0[i].Distance  = 100 + i * 10;
-		AzElDis0[i].SortTimes = i;
+		AzElDis0[i].Az 		  	= 100 + i;
+		AzElDis0[i].El 		  	= 100 + i;
+		AzElDis0[i].Distance  	= 100 + i;
+		AzElDis0[i].JitterRange	= 10;
+		AzElDis0[i].SortTimes 	= i;
 	}
 	AzElDis1.resize(10);
 	for(UINT i = 0; i < 10; i++)
 	{
-		AzElDis1[i].Az 		  = i * 10;
-		AzElDis1[i].El 		  = i * 10;
-		AzElDis1[i].Distance  = i * 10;
-		AzElDis1[i].SortTimes = i;
+		AzElDis1[i].Az 		  	= i * 10;
+		AzElDis1[i].El 		  	= i * 10;
+		AzElDis1[i].Distance  	= i * 10;
+		AzElDis1[i].JitterRange	= 10;
+		AzElDis1[i].SortTimes 	= i;
 	}
-	_iRadarSimPro<PdwType> iRadarSimPro;
+	_iRadarSimPro<PdwType> iRadarSimPro, iRadarSimPro1;
 	/* 单通道 3 载频固定重频固定  */
 	iRadarSimPro.PriTypeModify(PRI_FIX,1000);
 	iRadarSimPro.GetPlatForm(0).SetAzElDis(AzElDis0);
@@ -55,6 +58,19 @@ int main()
 	// iRadarSimPro.RadarModify(20);
 	iRadarSimPro.run_onetimes();
 	iRadarSimPro.CoutStatus();
-	iRadarSimPro.ShowOutBuffer(0,1000,11);
+	iRadarSimPro.ShowOutBuffer(5000,6000,11);
+    iRadarSimPro1.PriTypeModify(PRI_FIX,1000);
+	iRadarSimPro1.GetPlatForm(0).SetAzElDis(AzElDis0);
+	// iRadarSimPro1.GetPlatForm(0).SetRadarStTime(0, 10);
+	iRadarSimPro1.RadarModify(0);
+	iRadarSimPro1.WriteFile("/home/admin/WorkSp/Data/iRadarSimProGenData.data", 1000);
+    _binaryFile<PdwType, PdwType> binaryFile("/home/admin/WorkSp/Data/iRadarSimProGenData.data", 0, 9965650);
+    binaryFile.showFileHeader();
+    binaryFile.showStatus();
+    binaryFile.read();
+    binaryFile.registShowDataFunc(PrintPdw<PdwType>);
+    binaryFile.showData(0, 100);
+    binaryFile.showStatus();
+    binaryFile.close();
 	return 1;
 }

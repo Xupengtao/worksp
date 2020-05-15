@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<iostream>
+#include <fstream>
 #include<vector>
 #include<iomanip>
 using namespace std;
@@ -177,7 +178,16 @@ struct _LocCoordinate
 	UINT 			Az;
 	UINT 			El;
 	UINT 			Distance;
+	UINT			JitterRange;
 	UINT			SortTimes;
+	_LocCoordinate()
+	{
+		Az 			= 0;
+		El 			= 0;
+		Distance 	= 0;
+		JitterRange	= 0;
+		SortTimes	= 0;
+	}
 };
 typedef vector<_LocCoordinate> _LocVec;
 struct _AzElDis
@@ -188,10 +198,11 @@ struct _AzElDis
 	_AzElDis()
 	{
 		SetVec.resize(1);
-		SetVec[0].Az 		= 0;
-		SetVec[0].El 		= 0;
-		SetVec[0].Distance 	= 1000;
-		SetVec[0].SortTimes = 0;
+		SetVec[0].Az 			= 0;
+		SetVec[0].El 			= 0;
+		SetVec[0].Distance 		= 1000;
+		SetVec[0].JitterRange	= 0;
+		SetVec[0].SortTimes 	= 0;
 		CalcAzElDis();
 	}
 	void Set(_LocVec &SetVec_)
@@ -238,6 +249,19 @@ struct _AzElDis
 			return SortVec[Loc].Distance;
 		}
 	}
+	UINT GetJitter(UINT Loc) const
+	{
+		Loc = (Loc >= SortVecEd) ? SortVecEd : Loc;
+		if(SortVec[Loc].SortTimes != Loc)
+		{
+			ERRORMSG("SortVec[Loc].SortTimes != Loc");
+			return 0;
+		}
+		else
+		{
+			return SortVec[Loc].JitterRange;
+		}
+	}
 	void CalcAzElDis()
 	{
 		UINT SetVecSize = SetVec.size();
@@ -250,10 +274,11 @@ struct _AzElDis
 		SortVecEd = SortVec.size() - 1;
 		if(SetVecSize == 1)
 		{
-			SortVec[0].Az		 = SetVec[0].Az;
-			SortVec[0].El 		 = SetVec[0].El;
-			SortVec[0].Distance	 = SetVec[0].Distance;
-			SortVec[0].SortTimes = SetVec[0].SortTimes;
+			SortVec[0].Az		 	= SetVec[0].Az;
+			SortVec[0].El 		 	= SetVec[0].El;
+			SortVec[0].Distance	 	= SetVec[0].Distance;
+			SortVec[0].JitterRange	= SetVec[0].JitterRange;
+			SortVec[0].SortTimes 	= SetVec[0].SortTimes;
 		}
 		else
 		{
@@ -266,10 +291,11 @@ struct _AzElDis
 				}
 				for(UINT j = SetVec[i].SortTimes; j <= SetVec[i+1].SortTimes; j++)
 				{
-					SortVec[j].Az 		 = StraightDataGen(SetVec[i].Az, SetVec[i+1].Az, SetVec[i].SortTimes, SetVec[i+1].SortTimes, j);
-					SortVec[j].El 		 = StraightDataGen(SetVec[i].El, SetVec[i+1].El, SetVec[i].SortTimes, SetVec[i+1].SortTimes, j);
-					SortVec[j].Distance	 = StraightDataGen(SetVec[i].Distance, SetVec[i+1].Distance, SetVec[i].SortTimes, SetVec[i+1].SortTimes, j);
-					SortVec[j].SortTimes = j;
+					SortVec[j].Az 		 	= StraightDataGen(SetVec[i].Az, SetVec[i+1].Az, SetVec[i].SortTimes, SetVec[i+1].SortTimes, j);
+					SortVec[j].El 		 	= StraightDataGen(SetVec[i].El, SetVec[i+1].El, SetVec[i].SortTimes, SetVec[i+1].SortTimes, j);
+					SortVec[j].Distance	 	= StraightDataGen(SetVec[i].Distance, SetVec[i+1].Distance, SetVec[i].SortTimes, SetVec[i+1].SortTimes, j);
+					SortVec[j].JitterRange 	= SetVec[i].JitterRange;
+					SortVec[j].SortTimes 	= j;
 				}
 			}
 		}

@@ -32,8 +32,50 @@ int main(int argc, char **argv)
     //          .SaveDensityImage(savepath + "Density.bmp")
     //          .SaveImage(savepath + "文件32.bmp")
     //          .AddSaveVideo(savepath + "文件32.avi", 0, 100, 80, 1000000,25000000);
-    _PdwToMat<_xyg_z, PdwType, cv::Vec4b> PdwToMat2(filepath + "z", 0, 6553600, 1024, 1024);
-    PdwToMat2.ReadData(100)
+    // _PdwToMat<_xyg_z, PdwType, cv::Vec4b> PdwToMat2(filepath + "z", 0, 6553600, 1024, 1024);
+    // PdwToMat2.ReadData(100)
+    //          .showData(0,100)
+    //          .SetBackGround(White)
+    //          .GenImage()
+    //         //  .showImage()
+    //          .ImageMatTranslation(100,0)
+    //         //  .showImage()
+    //          .GenBGRAImage(10,0)
+    //         //  .showImage()
+    //          .GenBGRAImageAndPdwMatrix(100, 0)
+    //         //  .showPdwMatrix()
+    //         //  .showImage()
+    //          .Remap()
+    //         //  .showRemapImage()
+    //          .SaveBGRAPolarImage(savepath + "Polar_z_1.bmp", 1, 0, CV_PI/512, 100, 1000)
+    //          .SaveDensityImage(savepath + "Density_z.bmp")
+    //          .SaveImage(savepath + "z.bmp")
+    //          .ContourAnalyVideo(savepath + "AddSaveHistogramVideo_z1.avi", 0, 100);
+	// _LocVec	AzElDis;
+	// AzElDis.resize(100);
+	// for(UINT i = 0; i < 100; i++)
+	// {
+	// 	AzElDis[i].Az 		   = 100+i;
+	// 	AzElDis[i].El 		   = i;
+	// 	AzElDis[i].Distance    = i;
+    //     AzElDis[i].JitterRange = i;
+	// 	AzElDis[i].SortTimes   = i;
+	// }
+	// _iRadarSimPro<PdwType> iRadarSimPro;
+	// /* 单通道 3 载频捷变重频固定  */
+	// iRadarSimPro.PriTypeModify();
+	// iRadarSimPro.RfTypeModify(RF_FIX,1000);
+	// iRadarSimPro.PwTypeModify(PW_FIX,50);
+	// size_t Tmp[] = {11,12,13,14,15,16,17,18,19};
+	// iRadarSimPro.RadarModify(Tmp,9);
+	// iRadarSimPro.GetPlatForm(1).SetAzElDis(AzElDis);
+	// iRadarSimPro.run_onetimes();
+	// iRadarSimPro.CoutStatus();
+	// iRadarSimPro.ShowOutBuffer(0,100);
+    // _PdwToMat<_xyg_z, PdwType, cv::Vec4b> PdwToMat3(iRadarSimPro, 1024, 1024);
+    // PdwToMat3.SetBackGround(White).ContourAnalyVideo(savepath + "AddSaveHistogramVideo_z1.avi", 0, 100);
+    _PdwToMat<PdwType, PdwType, cv::Vec4b> PdwToMat4(filepath + "iRadarSimProGenData.data", 0, 6553600, 1024, 1024);
+    PdwToMat4.ReadData(100)
              .showData(0,100)
              .SetBackGround(White)
              .GenImage()
@@ -51,27 +93,5 @@ int main(int argc, char **argv)
              .SaveDensityImage(savepath + "Density_z.bmp")
              .SaveImage(savepath + "z.bmp")
              .ContourAnalyVideo(savepath + "AddSaveHistogramVideo_z1.avi", 0, 100);
-	// _LocVec	AzElDis;
-	// AzElDis.resize(10);
-	// for(UINT i = 0; i < 10; i++)
-	// {
-	// 	AzElDis[i].Az 		 = i * 10;
-	// 	AzElDis[i].El 		 = i * 10;
-	// 	AzElDis[i].Distance  = i * 10;
-	// 	AzElDis[i].SortTimes = i;
-	// }
-	// _iRadarSimPro<PdwType> iRadarSimPro;
-	// /* 单通道 3 载频捷变重频固定  */
-	// iRadarSimPro.PriTypeModify();
-	// iRadarSimPro.RfTypeModify(RF_FIX,1000);
-	// iRadarSimPro.PwTypeModify(PW_FIX,50);
-	// size_t Tmp[] = {11,12,13,14,15,16,17,18,19};
-	// iRadarSimPro.RadarModify(Tmp,9);
-	// iRadarSimPro.GetPlatForm(1).SetAzElDis(AzElDis);
-	// iRadarSimPro.run_onetimes();
-	// iRadarSimPro.CoutStatus();
-	// iRadarSimPro.ShowOutBuffer(0,100);
-    // _PdwToMat<_xyg_z, PdwType, cv::Vec4b> PdwToMat3(iRadarSimPro, 1024, 1024);
-    // PdwToMat3.ContourAnalyVideo(savepath + "AddSaveHistogramVideo_z1.avi", 0, 100);
     return 1;
 }

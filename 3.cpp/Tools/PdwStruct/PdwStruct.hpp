@@ -211,7 +211,11 @@ struct _Pdw
     DoaTy Doa;
     ToaTy Toa;
     int   ToaS;                 // -1: 无效脉冲, >= 0 Toa翻转次数
+    USHORT head;
+    USHORT tail;
     static _PdwArrayDesc<_ThisType> PdwArrayDesc;
+    static CUSHORT lineHead = 0;
+    static CUSHORT lineTail = 0;
     
     // inline void operator = (_fileMsg &fileMsg)
     // {
@@ -1149,6 +1153,20 @@ void PrintPdw(PdwTy *PdwArray, int st, int ed)
     for(int i = st; i < ed; i++)
     {
         PdwArray[i].print();
+    }
+}
+
+template<class PdwTy>
+void CheckPdw(PdwTy *PdwArray, int st, int ed)
+{
+    for(int i = st; i < ed; i++)
+    {
+        static typename PdwTy::ToaTy Pri = 0;
+        Pri = (Pri == 0) ? PdwArray[i+1].Toa - PdwArray[i].Toa : Pri;
+        if(PdwArray[i+1].Toa - PdwArray[i].Toa != Pri)
+        {
+            COUT(i, PdwArray[i].Toa, PdwArray[i+1].Toa);
+        }
     }
 }
 

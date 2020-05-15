@@ -23,9 +23,9 @@ using namespace std;
 
 enum
 {
-	Filter_DiffLens = 0,						//Ö±·½Í¼Öù°´³¤¶ÈÉ¸Ñ¡£¬Ğè½«SortArray°´LensÅÅĞò
-	Filter_DiffKey 	= 1,						//Ö±·½Í¼Öù°´¼üÖµÉ¸Ñ¡£¬Ğè½«SortArray°´KeyÅÅĞò
-	Filter_FixLens 	= 2							//Ö±·½Í¼Öù°´¹Ì¶¨ÖµÉ¸Ñ¡£¬½«É¸Ñ¡³ö¸ßÓÚãĞÖµµÄÎ´±ê¼ÇµÄÖ±·½Í¼Öù
+	Filter_DiffLens = 0,						//ç›´æ–¹å›¾æŸ±æŒ‰é•¿åº¦ç­›é€‰ï¼Œéœ€å°†SortArrayæŒ‰Lensæ’åº
+	Filter_DiffKey 	= 1,						//ç›´æ–¹å›¾æŸ±æŒ‰é”®å€¼ç­›é€‰ï¼Œéœ€å°†SortArrayæŒ‰Keyæ’åº
+	Filter_FixLens 	= 2							//ç›´æ–¹å›¾æŸ±æŒ‰å›ºå®šå€¼ç­›é€‰ï¼Œå°†ç­›é€‰å‡ºé«˜äºé˜ˆå€¼çš„æœªæ ‡è®°çš„ç›´æ–¹å›¾æŸ±
 };
 
 TYPETRAIT_PRINT(char)
@@ -42,14 +42,14 @@ inline typename iterator_traits<Iterator>::value_type* value_type(const Iterator
 	return static_cast<typename iterator_traits<Iterator>::value_type *>(0);
 }
 template<class Type>
-inline void Typetrait(Type* type,char* strval = "point ")			//×÷ÓÃÓÚÖ¸Õë£¬Èç: int* a = NULL;Typetrait(a);
+inline void Typetrait(Type* type,char* strval = "point ")			//ä½œç”¨äºæŒ‡é’ˆï¼Œå¦‚: int* a = NULL;Typetrait(a);
 {
 	std::cout<<strval;
 	iterator<random_access_iterator_tag,Type> Iter;
 	Typetrait_print(value_type(Iter));
 }
 template<class Iter>
-inline void Typetrait(Iter iter,char* strval = "iter ")				//×÷ÓÃÓÚµü´úÆ÷£¬Èç: BarIterator<Bar<AddressPart,1>> BarIter;Typetrait(BarIter);
+inline void Typetrait(Iter iter,char* strval = "iter ")				//ä½œç”¨äºè¿­ä»£å™¨ï¼Œå¦‚: BarIterator<Bar<AddressPart,1>> BarIter;Typetrait(BarIter);
 {
 	std::cout<<strval;
 	Typetrait_print(value_type(iter));
@@ -79,10 +79,10 @@ inline bool AddrMax(_AddrPart AddrPart_a,_AddrPart AddrPart_b)
 }
 /************************************ CompareFunc Zoom End **************************************/
 
-union AddressPart														//µØÖ·¶ÔÁªºÏ
+union AddressPart														//åœ°å€å¯¹è”åˆ
 {
-	size_t			Key;													//¶¨ÒåµÄÈÎºÎµØÖ·¶Ô½á¹¹±ØĞëÊ¹ÓÃKey´æ´¢ÅÅĞò¹æÔò
-	unsigned short	Addr[2];												//¶¨ÒåµÄÈÎºÎµØÖ·¶Ô½á¹¹±ØĞëÊ¹ÓÃAddr´æ´¢Ò»¶ÔµØÖ·¶Ô
+	size_t			Key;													//å®šä¹‰çš„ä»»ä½•åœ°å€å¯¹ç»“æ„å¿…é¡»ä½¿ç”¨Keyå­˜å‚¨æ’åºè§„åˆ™
+	unsigned short	Addr[2];												//å®šä¹‰çš„ä»»ä½•åœ°å€å¯¹ç»“æ„å¿…é¡»ä½¿ç”¨Addrå­˜å‚¨ä¸€å¯¹åœ°å€å¯¹
 };
 
 template<class _AddrPart,class _KeyTx, size_t _AddrPartSize>
@@ -91,16 +91,16 @@ struct Bar
 	typedef _AddrPart 		value_type;
 	typedef value_type* 	pointer;
 	typedef value_type* 	iterator;
-	typedef value_type& 	reference;										//´æÔÚBUG 2019.04.10
+	typedef value_type& 	reference;										//å­˜åœ¨BUG 2019.04.10
 	typedef size_t		 	size_type;
 	typedef	ptrdiff_t		difference_type;
 	typedef Bar<_AddrPart,_KeyTx,_AddrPartSize>	This_type;						
 
-	size_t Lens;															//µ±Ç°µØÖ·¶Ô³¤¶È
-	size_t Index;															//Êı×éË÷Òı
+	size_t Lens;															//å½“å‰åœ°å€å¯¹é•¿åº¦
+	size_t Index;															//æ•°ç»„ç´¢å¼•
 	size_t ClearStatus;
-	_KeyTx Key;																//ÖùÖµ ¶¨ÒåµÄÈÎºÎÖ±·½Í¼Öù½á¹¹±ØĞëÊ¹ÓÃKey´æ´¢ÅÅĞò¹æÔò
-	const size_t Capacity;													//µØÖ·¶ÔÊı×éÈİÁ¿
+	_KeyTx Key;																//æŸ±å€¼ å®šä¹‰çš„ä»»ä½•ç›´æ–¹å›¾æŸ±ç»“æ„å¿…é¡»ä½¿ç”¨Keyå­˜å‚¨æ’åºè§„åˆ™
+	const size_t Capacity;													//åœ°å€å¯¹æ•°ç»„å®¹é‡
 	vector<_AddrPart> VecArray;												//vector<_AddrPart>
 	
 	
@@ -137,7 +137,7 @@ struct Bar
 	size_type size(){return Lens;}
 	bool empty() const {return Lens == 0;}
 
-	size_t GetSortKey()												//KeyÎªshort, IndexÎªchar¡¢short¡¢int
+	size_t GetSortKey()												//Keyä¸ºshort, Indexä¸ºcharã€shortã€int
 	{
 		union
 		{
@@ -153,7 +153,7 @@ struct Bar
 #endif
 		return ReSortKey.n;
 	}
-	size_t GetSortLens()											//KeyÎªshort, IndexÎªchar¡¢short¡¢int
+	size_t GetSortLens()											//Keyä¸ºshort, Indexä¸ºcharã€shortã€int
 	{
 		union
 		{
@@ -231,13 +231,13 @@ struct Bar
 	}
 };
 
-template<class Bar,class _KeyTx,size_t _BarSize>							//Ö±·½Í¼½á¹¹ÀàÄ£°å
+template<class Bar,class _KeyTx,size_t _BarSize>							//ç›´æ–¹å›¾ç»“æ„ç±»æ¨¡æ¿
 struct Histogram
 {
 	typedef Bar 			value_type;
 	typedef value_type* 	pointer;
 	typedef value_type* 	iterator;
-	typedef value_type& 	reference;										//´æÔÚBUG 2019.04.10
+	typedef value_type& 	reference;										//å­˜åœ¨BUG 2019.04.10
 	typedef size_t		 	size_type;
 	typedef	ptrdiff_t		difference_type;
 	typedef Histogram<Bar,_KeyTx,_BarSize>	This_type;			
@@ -249,13 +249,13 @@ struct Histogram
 		_KeyTx Lens;
 	};			
 
-	size_t Lens;															//µ±Ç°µØÖ·¶Ô³¤¶È
+	size_t Lens;															//å½“å‰åœ°å€å¯¹é•¿åº¦
 	size_t ClearStatus;
-	const size_t Capacity;													//µØÖ·¶ÔÊı×éÈİÁ¿
+	const size_t Capacity;													//åœ°å€å¯¹æ•°ç»„å®¹é‡
 	vector<Bar> VecArray;													//vector<_AddrPart>
 
-	vector<size_t> SortArray;												//ÅÅĞòÊı×é
-	size_t SortLens;														//ÅÅĞò³¤¶È
+	vector<size_t> SortArray;												//æ’åºæ•°ç»„
+	size_t SortLens;														//æ’åºé•¿åº¦
 	vector<_BarKeyDict> BarKeyDict;
 
 	Histogram():Lens(0),Capacity(_BarSize),ClearStatus(1)							//Construct
@@ -358,13 +358,13 @@ struct Histogram
 			}
 		}
 	}
-	int  Filter(size_t FilterType,									//¹ıÂËÀàĞÍ
-			   size_t *output,										//Êä³öÊı×é,Êä³öÊı×éÇëÈ·±£¿ª±Ù×ã¹»´óµÄ¿Õ¼ä
-			   size_t Tolerance 		= 0,						//Èİ²î,ÔÚ¹ıÂËÀàĞÍÎªFilter_DiffKeyÊ±£¬µ±½«¸ÃÖµÖÃÎª0,ÔòÊ¹ÓÃKeyÖµÈİ²î
-			   size_t FilterMinNums 	= 0,						//×îĞ¡Êä³öÊı¾İ³¤¶È
-			   int	  MinBarKey 		= 0,						//×îĞ¡KeyÖµ
-			   int    MaxBarKey 		= 0,						//×î´óKeyÖµ
-			   float  BarCoefficient  	= 0.0						//°´KeyÖµ±È½ÏÊ±£¬KeyÖµµÄÈİ²îÏµÊı,¸ÃÖµ´óÓÚ1.0Ê±£¬KeyÖµµÄÈİ²îÖ±½ÓÊ¹ÓÃ¸ÃÖµ
+	int  Filter(size_t FilterType,									//è¿‡æ»¤ç±»å‹
+			   size_t *output,										//è¾“å‡ºæ•°ç»„,è¾“å‡ºæ•°ç»„è¯·ç¡®ä¿å¼€è¾Ÿè¶³å¤Ÿå¤§çš„ç©ºé—´
+			   size_t Tolerance 		= 0,						//å®¹å·®,åœ¨è¿‡æ»¤ç±»å‹ä¸ºFilter_DiffKeyæ—¶ï¼Œå½“å°†è¯¥å€¼ç½®ä¸º0,åˆ™ä½¿ç”¨Keyå€¼å®¹å·®
+			   size_t FilterMinNums 	= 0,						//æœ€å°è¾“å‡ºæ•°æ®é•¿åº¦
+			   int	  MinBarKey 		= 0,						//æœ€å°Keyå€¼
+			   int    MaxBarKey 		= 0,						//æœ€å¤§Keyå€¼
+			   float  BarCoefficient  	= 0.0						//æŒ‰Keyå€¼æ¯”è¾ƒæ—¶ï¼ŒKeyå€¼çš„å®¹å·®ç³»æ•°,è¯¥å€¼å¤§äº1.0æ—¶ï¼ŒKeyå€¼çš„å®¹å·®ç›´æ¥ä½¿ç”¨è¯¥å€¼
 			   )
 	{
 		int ValTmp = 0;
@@ -374,7 +374,7 @@ struct Histogram
 		if(FilterType == Filter_DiffKey)
 		{
 			ValTmp = BarKeyDict[SortArray[0]].Key;
-			if(BarCoefficient > 1.0)							//SortArrayÎªµİÔöÊı×é
+			if(BarCoefficient > 1.0)							//SortArrayä¸ºé€’å¢æ•°ç»„
 			{
 				BarCoefficient = 2*(BarCoefficient/(1-BarCoefficient));
 			}
@@ -575,10 +575,10 @@ struct Histogram
 		
 		size_t HashAddrTmp = 0;
 		bool HaveBarTag;
-		for(size_t i = order ;i < len;i++)								//Ç°order¸öÊıÎŞĞ§
+		for(size_t i = order ;i < len;i++)								//å‰orderä¸ªæ•°æ— æ•ˆ
 		{
 			DiffTmp = DiffArray[i];
-			if(DiffTmp < BarMinTmp)										//Ğ¡ÓÚBarMin,continue
+			if(DiffTmp < BarMinTmp)										//å°äºBarMin,continue
 			{
 				continue;
 			}
@@ -633,18 +633,18 @@ struct Histogram
 
 #define ADDR_VAL(x,y) AddrVal[(x)*InArrayLen+(y)]
 template<size_t _OrderSize,size_t _BinSize,size_t _AddrPartSize>				
-class _MutiHistogram											//orders:½×Êı,bins:Ò»½×Ö±·½Í¼ÖùÊı
+class _MutiHistogram											//orders:é˜¶æ•°,bins:ä¸€é˜¶ç›´æ–¹å›¾æŸ±æ•°
 {
 	typedef unsigned short KeyType;								//Using short for Function Sort
 	typedef AddressPart _AddressPart;
 	typedef Bar<_AddressPart,KeyType,_AddrPartSize> _Bar;
 	typedef Histogram<_Bar,KeyType,_BinSize> _Hist;
 public:
-	size_t CurrentOrders;										//µ±Ç°Ö±·½Í¼½×Êı
-	size_t BarMin;												//Ö±·½Í¼ÖùÃÅÏŞ
-	size_t BarTolerance;										//Ö±·½Í¼ÖùÈİ²î
-	vector<_Hist> Hist;											//Ö±·½Í¼Êı¾İÊôĞÔ 0:È«½×¡¢1:1½×¡¢2:2½×...
-	vector<size_t> AddrVal;										//½×Öµ-µØÖ·Êı×é
+	size_t CurrentOrders;										//å½“å‰ç›´æ–¹å›¾é˜¶æ•°
+	size_t BarMin;												//ç›´æ–¹å›¾æŸ±é—¨é™
+	size_t BarTolerance;										//ç›´æ–¹å›¾æŸ±å®¹å·®
+	vector<_Hist> Hist;											//ç›´æ–¹å›¾æ•°æ®å±æ€§ 0:å…¨é˜¶ã€1:1é˜¶ã€2:2é˜¶...
+	vector<size_t> AddrVal;										//é˜¶å€¼-åœ°å€æ•°ç»„
 
 	size_t InArrayLen;
 	size_t ClearStatus;
@@ -653,10 +653,10 @@ public:
 	{
 		typename _Hist::_BarKeyDict::value_type Key; 
 		typename _Hist::_BarKeyDict::value_type Lens;
-		int Addrs[_OrderSize];										//¼üÖµ¶ÔÓ¦¸÷½×Ö±·½Í¼Î»ÖÃ
+		int Addrs[_OrderSize];										//é”®å€¼å¯¹åº”å„é˜¶ç›´æ–¹å›¾ä½ç½®
 	};
-	vector<_AllOrtersBarKeyDict> AllOrtersBarKeyDict;				//¶¨ÒåÈ«½×»ìºÏÖ±·½Í¼
-	vector<vector<typename _Hist::_BarKeyDict> > BarKeyDict;		//¶¨ÒåÈ«½×Ö±·½Í¼
+	vector<_AllOrtersBarKeyDict> AllOrtersBarKeyDict;				//å®šä¹‰å…¨é˜¶æ··åˆç›´æ–¹å›¾
+	vector<vector<typename _Hist::_BarKeyDict> > BarKeyDict;		//å®šä¹‰å…¨é˜¶ç›´æ–¹å›¾
 
 	_MutiHistogram(int _BarMin, int _BarTorlerance)
 				  :CurrentOrders(0), BarMin(_BarMin), BarTolerance(_BarTorlerance),InArrayLen(0),ClearStatus(0)
@@ -689,12 +689,12 @@ public:
 		{
 			orders = 1;
 		}
-		Type * DiffArray = NULL;													//Ìİ¶ÈÊı×é
+		Type * DiffArray = NULL;													//æ¢¯åº¦æ•°ç»„
 		DiffArray = new Type[len];
 		int* KeyHashAddr = new int[DIFF_HISTOGRAM_MAX];								//HashTable
 		for(size_t i = 0;i < orders ;i++)
 		{
-			memset(KeyHashAddr,-1,(DIFF_HISTOGRAM_MAX)*sizeof(int));				//-1ÎªHash³õÊ¼±êÖ¾Î»
+			memset(KeyHashAddr,-1,(DIFF_HISTOGRAM_MAX)*sizeof(int));				//-1ä¸ºHashåˆå§‹æ ‡å¿—ä½
 			Hist[i].CreatHistogram(InArray,DiffArray,KeyHashAddr,len,BarMin,BarTolerance,i+1);
 			for(size_t j = 0;j<len-i-1;j++)
 			{
@@ -745,14 +745,14 @@ public:
 			}
 		}
 	}
-	int  Filter(size_t orders,										//½×Öµ
-				size_t FilterType,									//¹ıÂËÀàĞÍ
-			    size_t *output,										//Êä³öÊı×é,Êä³öÊı×éÇëÈ·±£¿ª±Ù×ã¹»´óµÄ¿Õ¼ä
-			    size_t Tolerance 		= 0,						//Èİ²î,ÔÚ¹ıÂËÀàĞÍÎªFilter_DiffKeyÊ±£¬µ±½«¸ÃÖµÖÃÎª0,ÔòÊ¹ÓÃKeyÖµÈİ²î
-			    size_t FilterMinNums 	= 0,						//×îĞ¡Êä³öÊı¾İ³¤¶È
-			    size_t MinBarKey 		= 0,						//×îĞ¡KeyÖµ
-			    size_t MaxBarKey 		= 0,						//×î´óKeyÖµ
-			    float  BarCoefficient  	= 0.0						//°´KeyÖµ±È½ÏÊ±£¬KeyÖµµÄÈİ²îÏµÊı,¸ÃÖµ´óÓÚ1.0Ê±£¬KeyÖµµÄÈİ²îÖ±½ÓÊ¹ÓÃ¸ÃÖµ
+	int  Filter(size_t orders,										//é˜¶å€¼
+				size_t FilterType,									//è¿‡æ»¤ç±»å‹
+			    size_t *output,										//è¾“å‡ºæ•°ç»„,è¾“å‡ºæ•°ç»„è¯·ç¡®ä¿å¼€è¾Ÿè¶³å¤Ÿå¤§çš„ç©ºé—´
+			    size_t Tolerance 		= 0,						//å®¹å·®,åœ¨è¿‡æ»¤ç±»å‹ä¸ºFilter_DiffKeyæ—¶ï¼Œå½“å°†è¯¥å€¼ç½®ä¸º0,åˆ™ä½¿ç”¨Keyå€¼å®¹å·®
+			    size_t FilterMinNums 	= 0,						//æœ€å°è¾“å‡ºæ•°æ®é•¿åº¦
+			    size_t MinBarKey 		= 0,						//æœ€å°Keyå€¼
+			    size_t MaxBarKey 		= 0,						//æœ€å¤§Keyå€¼
+			    float  BarCoefficient  	= 0.0						//æŒ‰Keyå€¼æ¯”è¾ƒæ—¶ï¼ŒKeyå€¼çš„å®¹å·®ç³»æ•°,è¯¥å€¼å¤§äº1.0æ—¶ï¼ŒKeyå€¼çš„å®¹å·®ç›´æ¥ä½¿ç”¨è¯¥å€¼
 			    )
 	{
 		if((orders > _OrderSize)||(orders == 0))
@@ -792,11 +792,11 @@ public:
 		}
 	}
 	template<class _Tx>
-	int  AddrValVerify(size_t orders,								//½×Öµ
-					   _Tx* BarLocArray,							//ÊäÈëÊı×é
-					   _Tx* AddrOutArray,							//Êä³öÊı×é
-					   size_t BarLocArrayLens,						//ÊäÈëÊı×é³¤¶È
-					   size_t findLens,								//Á¬ĞøµØÖ·¶Ô³¤¶È
+	int  AddrValVerify(size_t orders,								//é˜¶å€¼
+					   _Tx* BarLocArray,							//è¾“å…¥æ•°ç»„
+					   _Tx* AddrOutArray,							//è¾“å‡ºæ•°ç»„
+					   size_t BarLocArrayLens,						//è¾“å…¥æ•°ç»„é•¿åº¦
+					   size_t findLens,								//è¿ç»­åœ°å€å¯¹é•¿åº¦
 					   size_t type									//type: 0: not drop, 1:drop
 					   )
 	{
@@ -812,7 +812,7 @@ public:
 		size_t *LensArray = new size_t[BarLocArrayLens];
 		memset(KeyArray, 0, sizeof(size_t) * BarLocArrayLens);
 		memset(LensArray, 0, sizeof(size_t) * BarLocArrayLens);
-		size_t LenTmp = 0;													//È«²¿µØÖ·¶Ô³¤¶È
+		size_t LenTmp = 0;													//å…¨éƒ¨åœ°å€å¯¹é•¿åº¦
 		for(size_t i = 0; i < BarLocArrayLens; i++)
 		{
 			if(orders != _OrderSize)
@@ -828,8 +828,8 @@ public:
 				LenTmp += LensArray[i];
 			}
 		}
-		set<size_t> KeySet(KeyArray,KeyArray+BarLocArrayLens);			//KeySetÓÃÓÚType1²éÕÒKeyÖµ
-		size_t Address1 = 0,Address2 = 0,AddrPartLenTmp = 0;				//Á¬ĞøµØÖ·¶Ô³¤¶È;
+		set<size_t> KeySet(KeyArray,KeyArray+BarLocArrayLens);			//KeySetç”¨äºType1æŸ¥æ‰¾Keyå€¼
+		size_t Address1 = 0,Address2 = 0,AddrPartLenTmp = 0;				//è¿ç»­åœ°å€å¯¹é•¿åº¦;
 		if(orders != _OrderSize)
 		{
 			for(size_t i = 0; i < BarLocArrayLens; i++)
@@ -895,8 +895,8 @@ public:
 		}
 		else
 		{
-			size_t j = 0,nAddrPartFind = 1,AddrPartOrder;				//µØÖ·¶ÔÊı×éÈ¡Ö·,¶à½×µØÖ·¶ÔÁ¬Ğø±êÖ¾,µØÖ·¶Ô½×Ñ­»·
-			size_t LenSum,OrderInd;										//KeyÖµÈ«²¿½××Ü³¤¶È,±éÀú½×±äÁ¿
+			size_t j = 0,nAddrPartFind = 1,AddrPartOrder;				//åœ°å€å¯¹æ•°ç»„å–å€,å¤šé˜¶åœ°å€å¯¹è¿ç»­æ ‡å¿—,åœ°å€å¯¹é˜¶å¾ªç¯
+			size_t LenSum,OrderInd;										//Keyå€¼å…¨éƒ¨é˜¶æ€»é•¿åº¦,éå†é˜¶å˜é‡
 			int BarInd;
 			for(size_t i = 0; i < BarLocArrayLens; i++)
 			{
@@ -1086,14 +1086,14 @@ public:
 	void fill_with_continue_n(int order = 0,size_t n = 1)
 	{
 		clear();
-		if(order >= _OrderSize)							//fill_with_continue_nÈ«½×
+		if(order >= _OrderSize)							//fill_with_continue_nå…¨é˜¶
 		{
 			for(order = 0;order < _OrderSize;order++)
 			{
 				Hist[order].fill_with_continue_n(n);
 			}
 		}
-		else											//fill_with_continue_nµ¥½×
+		else											//fill_with_continue_nå•é˜¶
 		{
 			Hist[order].fill_with_continue_n(n);
 		}
@@ -1107,7 +1107,7 @@ public:
 			NLOGKSSECBEG("AddrVarPrint");
 			for(size_t i = 0;i<AddrVal.size();i++)
 			{
-				NLOGKSBYHEXWIDTH(4,"No",i,"µØÖ·¶ÔµÄÖµ",AddrVal[i]);
+				NLOGKSBYHEXWIDTH(4,"No",i,"åœ°å€å¯¹çš„å€¼",AddrVal[i]);
 			}
 			NLOGKSSECEND("AddrVarPrint");
 		}
@@ -1124,12 +1124,12 @@ public:
 		NLOGKSSECBEG("HistPrint");
 		for(int order = 0;order < _OrderSize;order++)
 		{
-			NLOGKSBYHEXWIDTH(4,"½×Êı",order);
+			NLOGKSBYHEXWIDTH(4,"é˜¶æ•°",order);
 			for(size_t bin = 0; bin < Hist[order].Lens; bin++)
 			{
-				NLOGKSBYHEXWIDTH(4,"½×Êı",order,
-								   "¼üÖµ",Hist[order].BarKeyDict[bin].Key,
-								   "³¤¶È",Hist[order].BarKeyDict[bin].Lens);
+				NLOGKSBYHEXWIDTH(4,"é˜¶æ•°",order,
+								   "é”®å€¼",Hist[order].BarKeyDict[bin].Key,
+								   "é•¿åº¦",Hist[order].BarKeyDict[bin].Lens);
 			}
 		}
 		NLOGKSSECEND("HistPrint");
@@ -1141,7 +1141,7 @@ public:
 			cout<<"HistPrint Para error!"<<endl;
 			return;
 		}
-		if(order >= _OrderSize)							//printÈ«½×
+		if(order >= _OrderSize)							//printå…¨é˜¶
 		{
 			for(order = 0;order < _OrderSize;order++)
 			{
@@ -1162,7 +1162,7 @@ public:
 				}
 			}
 		}
-		else											//printµ¥½×
+		else											//printå•é˜¶
 		{
 			NLOGK(order,Hist[order].Lens);
 			int BarInd = 0;
@@ -1197,7 +1197,7 @@ public:
 				Lens = BarKeyDict[i][j].Lens;
 				if(Key != 0)
 				{
-					NLOGKSBYHEXWIDTH(4,"½×Êı",i,"ÖùÊı",j,"¼üÖµ",Key,"³¤¶È",Lens);
+					NLOGKSBYHEXWIDTH(4,"é˜¶æ•°",i,"æŸ±æ•°",j,"é”®å€¼",Key,"é•¿åº¦",Lens);
 				}
 			}
 		}
@@ -1217,7 +1217,7 @@ public:
 				for(int j = 0; j < _OrderSize; j++)
 				{
 					Addr = AllOrtersBarKeyDict[i].Addrs[j];
-					NLOGKSBYHEXWIDTH(4,"No",i,"½×Êı",j,"¼üÖµ",Key,"³¤¶È",Lens,"ÖùµØÖ·",Addr);
+					NLOGKSBYHEXWIDTH(4,"No",i,"é˜¶æ•°",j,"é”®å€¼",Key,"é•¿åº¦",Lens,"æŸ±åœ°å€",Addr);
 				}
 			}
 		}
@@ -1234,23 +1234,23 @@ public:
 			order = order - 1;
 		}
 		NLOGKSSECBEG("SortPrint");
-		if(order == _OrderSize)							//printÈ«½×
+		if(order == _OrderSize)							//printå…¨é˜¶
 		{
 			for(order = 0;order < _OrderSize;order++)
 			{
-				NLOGKSBYHEXWIDTH(4,"½×Êı",order,"ĞòÊı×é³¤¶È",Hist[order].SortLens);
+				NLOGKSBYHEXWIDTH(4,"é˜¶æ•°",order,"åºæ•°ç»„é•¿åº¦",Hist[order].SortLens);
 				for(size_t i = 0; i < Hist[order].SortLens; i++)
 				{
-					NLOGKSBYHEXWIDTH(4,"No",i,"ĞòÊı×éË÷Òı",Hist[order].SortArray[i]);
+					NLOGKSBYHEXWIDTH(4,"No",i,"åºæ•°ç»„ç´¢å¼•",Hist[order].SortArray[i]);
 				}
 			}
 		}
-		else											//printµ¥½×
+		else											//printå•é˜¶
 		{
-			NLOGKSBYHEXWIDTH(4,"½×Êı",order,"ĞòÊı×é³¤¶È",Hist[order].SortLens);
+			NLOGKSBYHEXWIDTH(4,"é˜¶æ•°",order,"åºæ•°ç»„é•¿åº¦",Hist[order].SortLens);
 			for(size_t i = 0; i < Hist[order].SortLens; i++)
 			{
-				NLOGKSBYHEXWIDTH(4,"No",i,"ĞòÊı×éË÷Òı",Hist[order].SortArray[i]);
+				NLOGKSBYHEXWIDTH(4,"No",i,"åºæ•°ç»„ç´¢å¼•",Hist[order].SortArray[i]);
 			}
 		}
 		NLOGKSSECEND("SortPrint");

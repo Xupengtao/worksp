@@ -345,6 +345,7 @@ public:
 	UINT	GetAz(UINT Loc){return AzElDis.GetAz(Loc);}
 	UINT	GetEl(UINT Loc){return AzElDis.GetEl(Loc);}
 	UINT	GetDistance(UINT Loc){return AzElDis.GetDistance(Loc);}
+	UINT 	GetJitter(UINT Loc){return AzElDis.GetJitter(Loc);}
 	void	Clear()
 	{
 		PlatFormEn = false;
@@ -455,10 +456,12 @@ public:
 	}
 	void ToaSort(_PlatForm *PlatForm)
 	{
-		UINT DoaArr[PLAT_NUM] = {0};
+		UINT DoaArr[PLAT_NUM] 	 = {0};
+		UINT JitterArr[PLAT_NUM] = {0};
 		for(UINT i = 0; i < PLAT_NUM; i++)
 		{
-			DoaArr[i] = PlatForm[i].GetAz(SortTimes);
+			DoaArr[i] 	 = PlatForm[i].GetAz(SortTimes);
+			JitterArr[i] = PlatForm[i].GetJitter(SortTimes);
 		}
 		if ((SortReadyStatus == READY) && (InPDWStatus == IDLE))
 		{
@@ -467,11 +470,13 @@ public:
 			RadarBufferSortTime = SortTimes;
 			SortTimes++;
 			UINT i, j, SortNum_ = 0, ToaLocal_, ToaLocalStep_, ToaNum_, SortNumTemp_, GlobalToaHTemp_ = this->GlobalToaH, GlobalToaLTemp_ = this->GlobalToaL;
-			USHORT	PlatRadarTemp_ = 0;
-			USHORT	PlatSn = 0;
-			UINT	RadarsToaNum_  = 0;
-			const UINT BufSignSize_ = RadarBufSize >> SignSize;
-			const UINT StepMax_ = 1 << SignSize;
+			USHORT	PlatRadarTemp_ 	= 0;
+			USHORT	PlatSn 			= 0;
+			UINT	RadarsToaNum_  	= 0;
+			UINT 	RandomJitter	= (UINT)time(NULL);
+			UINT	JitterTmp	 	= 0;
+			CUINT 	BufSignSize_ 	= RadarBufSize >> SignSize;
+			CUINT 	StepMax_ 		= 1 << SignSize;
 			for (i = 0; i<BufSignSize_; i++)
 			{
 				if (ToaBufferSign[i].Num != 0)
@@ -492,7 +497,25 @@ public:
 								PRNBuffer[SortNumTemp_].PlatRadar = PRNBUFFER_SIGN;
 								InPDW[SortNum_].PlatRadar = PlatRadarTemp_;
 								InPDW[SortNum_].RadarPara = RadarPara[PlatRadarTemp_][RadarsToaNum_];
-								InPDW[SortNum_].RadarPara.Az = DoaArr[PlatSn];
+								if(JitterArr[PlatSn] == 0)
+								{
+									InPDW[SortNum_].RadarPara.Az = DoaArr[PlatSn];
+								}
+								else
+								{
+									RandomJitter = UINT(RandomJitter*69069+12345);
+									JitterTmp 	 = RandomJitter%JitterArr[PlatSn];
+									if(JitterTmp > JitterArr[PlatSn]/2)
+									{
+										JitterTmp = JitterTmp - JitterArr[PlatSn]/2;
+										InPDW[SortNum_].RadarPara.Az = (DoaArr[PlatSn] + JitterTmp > 1023) ? 1023 : DoaArr[PlatSn] + JitterTmp;
+									}
+									else
+									{
+										JitterTmp = JitterArr[PlatSn]/2 - JitterTmp;
+										InPDW[SortNum_].RadarPara.Az = (DoaArr[PlatSn] < JitterTmp) ? 0 : DoaArr[PlatSn] - JitterTmp;
+									}
+								}
 								InPDW[SortNum_].ToaH = GlobalToaHTemp_;
 								InPDW[SortNum_].ToaL = GlobalToaLTemp_ | SortNumTemp_;
 								ParaPRFrames[PlatRadarTemp_] = RadarsToaNum_;
@@ -514,7 +537,25 @@ public:
 								PRNBuffer[ToaLocal_].PlatRadar = PRNBUFFER_SIGN;
 								InPDW[SortNum_].PlatRadar = PlatRadarTemp_;
 								InPDW[SortNum_].RadarPara = RadarPara[PlatRadarTemp_][RadarsToaNum_];
-								InPDW[SortNum_].RadarPara.Az = DoaArr[PlatSn];
+								if(JitterArr[PlatSn] == 0)
+								{
+									InPDW[SortNum_].RadarPara.Az = DoaArr[PlatSn];
+								}
+								else
+								{
+									RandomJitter = UINT(RandomJitter*69069+12345);
+									JitterTmp 	 = RandomJitter%JitterArr[PlatSn];
+									if(JitterTmp > JitterArr[PlatSn]/2)
+									{
+										JitterTmp = JitterTmp - JitterArr[PlatSn]/2;
+										InPDW[SortNum_].RadarPara.Az = (DoaArr[PlatSn] + JitterTmp > 1023) ? 1023 : DoaArr[PlatSn] + JitterTmp;
+									}
+									else
+									{
+										JitterTmp = JitterArr[PlatSn]/2 - JitterTmp;
+										InPDW[SortNum_].RadarPara.Az = (DoaArr[PlatSn] < JitterTmp) ? 0 : DoaArr[PlatSn] - JitterTmp;
+									}
+								}
 								InPDW[SortNum_].ToaH = GlobalToaHTemp_;
 								InPDW[SortNum_].ToaL = GlobalToaLTemp_ | ToaLocal_;
 								ParaPRFrames[PlatRadarTemp_] = RadarsToaNum_;
@@ -545,6 +586,10 @@ public:
 		GlobalToaH = 0;
 		GlobalToaL = 0;
 	}
+    static void ClearSortTimes()
+    {
+        SortTimes = 0;
+    }
 	static UINT GetRCCLNum(UINT Num)
 	{
 		UINT i;
@@ -780,7 +825,7 @@ public:
 				for (UINT i = 0; i <= RadarBufSortNum_;)
 				{
 					_InPDW &InPDWTemp = RadarBuf.InPDW[i];
-					if ((InPDWTemp.ToaL>PwTemp_) && (InPDWTemp.RadarPara.Pa>Sensitivity) && (InPDWTemp.RadarPara.Pa<Sensitivity + DynamicEquil))
+					if ((InPDWTemp.ToaL > PwTemp_) && (InPDWTemp.RadarPara.Pa>Sensitivity) && (InPDWTemp.RadarPara.Pa<Sensitivity + DynamicEquil))
 					{
 						if (SortNum_ < OutPdwBufferSize)
 						{
@@ -1754,7 +1799,63 @@ public:
 			ParallelPDWSort();
 		}
 		ModifyOutPdwArray();
+        Receiver1.OutPdwStatus = IDLE;
+        Receiver1.ClearSortNum();
+        Receiver1.ClearSortTime();
+        Receiver2.OutPdwStatus = IDLE;
+        Receiver2.ClearSortNum();
+        Receiver2.ClearSortTime();
 	}
+    void WriteFile(const string& filepath, UINT runSec)
+    {
+        RadarBuffer1.ResetGlobalToa();
+        RadarBuffer1.ClearSortTimes();
+        UINT runTimes = runSec*1000/336;
+        ofstream svfile(filepath, ios::binary);
+        if(!svfile.is_open())
+        {
+            ERRORMSG("保存文件无法打开!");
+            return;
+        }
+		RadarBuffer1.SetNoToaParaBuf(PlatForm);
+		RadarBuffer2.SetNoToaParaBuf(PlatForm);
+        while(1)
+        {  
+            COUT(runTimes);
+            while ((Receiver1.OutPdwStatus != READY) || (Receiver2.OutPdwStatus != READY))
+            {
+                MutiPlatPriRun(RadarBuffer1);
+                MutiPlatPwRun(RadarBuffer1);
+                MutiPlatRFRun(RadarBuffer1);
+                RadarBuffer1.ToaSort(PlatForm);
+                MutiPlatPriRun(RadarBuffer2);
+                MutiPlatPwRun(RadarBuffer2);
+                MutiPlatRFRun(RadarBuffer2);
+                RadarBuffer2.ToaSort(PlatForm);
+                ParallelPDWSort();
+                runTimes--;
+                if(runTimes == 0)
+                {
+                    break;
+                }
+            }
+            ModifyOutPdwArray();
+            COUTS("BufferSortNum1 - ", *GetSortNumAddr1(), ", BufferSortNum2 - ", *GetSortNumAddr2());
+            svfile.write((char*) (GetPdwBufAddr1()), (*GetSortNumAddr1() + 1) * sizeof(_OutPdwType));
+            svfile.write((char*) (GetPdwBufAddr2()), (*GetSortNumAddr2() + 1) * sizeof(_OutPdwType));
+            Receiver1.OutPdwStatus = IDLE;
+            Receiver1.ClearSortNum();
+            Receiver1.ClearSortTime();
+            Receiver2.OutPdwStatus = IDLE;
+            Receiver2.ClearSortNum();
+            Receiver2.ClearSortTime();
+            if(runTimes == 0)
+            {
+                break;
+            }
+        }
+        svfile.close();
+    }
 	void ShowOutBuffer(UINT NumStart, UINT NumStop, USHORT PlatRadarSn = PLAT_NUM*RADAR_NUM, size_t sel = 0)
 	{
 		if(sel == 0)

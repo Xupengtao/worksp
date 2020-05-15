@@ -9,9 +9,6 @@
 #include "../PdwStruct/PdwStruct.hpp"
 #include "../Timeit.h"
 
-template<typename _RfTy, typename _PwTy, typename _PaTy, typename _ToaTy, typename _DoaTy>
-_PdwArrayDesc<_Pdw<_RfTy, _PwTy, _PaTy, _ToaTy, _DoaTy>> _Pdw<_RfTy, _PwTy, _PaTy, _ToaTy, _DoaTy>::PdwArrayDesc;
-
 typedef _Pdw<UINT, UINT, UINT, UINT, UINT> PdwType;
 
 int main(int argc, char **argv)

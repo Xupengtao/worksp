@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>988</width>
+    <height>327</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">*
+{
+font: 75 11pt rgb(0, 0, 0);
+background-color: rgb(220, 220, 220);
+}
+QPushButton, QLineEdit, QGroupBox
+{
+border: 2px solid rgb(0, 0, 0);
+border-radius: 10px;
+min-width: 80px;
+min-height: 35px;
+}
+QPushButton
+{
+background-color: rgb(0, 255, 0);
+}
+QLineEdit
+{
+background-color: rgb(0, 170, 255);
+}
+QPushButton:hover, QRadioButton:hover, QCheckBox:hover
+{
+color: red;
+}
+QPushButton:!hover, QRadioButton:!hover, QCheckBox:!hover
+{
+color: black;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="QtopHorizontalLayout">
+      <item>
+       <widget class="QLabel" name="QinputLabel">
+        <property name="text">
+         <string>Input Image:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="QinputLineEdit"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="QinputPushButton">
+        <property name="text">
+         <string>Browse</string>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/images/FindNewTarget.jpg</normaloff>:/images/FindNewTarget.jpg</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>File type</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <layout class="QHBoxLayout" name="QfilterTypeGroupBox">
+         <item>
+          <widget class="QRadioButton" name="QgaussianBlurRadioButton">
+           <property name="text">
+            <string>Gaussian Blur</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="QmedianBlurRadioButton">
+           <property name="text">
+            <string>Median Blur</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="QLabel" name="QoutputLabel">
+        <property name="text">
+         <string>Output Image:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="QoutputLineEdit"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="QoutputPushButton">
+        <property name="text">
+         <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="QdisplayImageCheckBox">
+      <property name="text">
+       <string>Display Image After Saving</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

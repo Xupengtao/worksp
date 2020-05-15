@@ -92,4 +92,4 @@ class Solution(object):
     
 Sol = Solution()
 s = "babadada"
-print(Sol.longestPalindrome(s))     
+print(Sol.longestPalindrome(s))
