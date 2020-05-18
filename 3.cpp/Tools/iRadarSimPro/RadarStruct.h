@@ -66,7 +66,8 @@ using namespace std;
 #define PRNBUFFER_SIGN 0x0A00
 enum _EsmType
 { 
-	BroadBank = 0
+	BroadBand   = 0,
+    NarrowBand  = 1
 };
 enum
 {
@@ -305,15 +306,6 @@ struct _AzElDis
 		return ValSt + (ValEd - ValSt) * ((VecLoc - VecLocSt) / (VecLocEd - VecLocSt));
 	}
 };
-struct _RadarPara
-{
-	USHORT			Flag;				//连续波标志
-	UINT			Pw;
-	UINT			Rf;
-	UINT			Az;
-	UINT			El;
-	int				Pa;
-};
 inline int RadarParaGen(size_t *ArrTemp,size_t PriL,size_t PriR,size_t nPriNum,size_t ParaGenType)
 {
 	ArrTemp[0] = PriL;
@@ -487,85 +479,6 @@ struct _PriPara		//雷达Pri参数
 		return true;
 	}
 };
-struct _PwPara		//雷达Pw参数
-{
-	_PwType		PwType;
-	_Pw			Pw;
-	UINT		NumTemp;				//数组序号缓存
-	UINT		GroupNumTemp;			//脉组序号缓存
-	_PwPara()
-	{
-		Init();
-	}
-	void Init()
-	{
-		PwType 	 	 = PW_FIX;
-		NumTemp 	 = 0;
-		GroupNumTemp = 0;
-	}
-	bool Modify(_PwType PwType_ 	= PW_FIX,
-				size_t dPw			= 50,
-				size_t nPwNum		= 10,		//脉宽数量
-				size_t nGroupNum	= 1,		//脉组脉冲数  1-1000
-				size_t *PwArr 		= NULL,		//自定义脉宽数组
-				size_t PwArrLen 	= 0			//自定义脉宽数组长度
-				)
-	{
-		Init();
-		PwType = PwType_;
-		size_t *ArrTemp = new size_t[nPwNum];
-		memset(ArrTemp,0,nPwNum*sizeof(size_t));
-		if (PwType == PW_FIX)
-		{
-			Pw.dPw = dPw;
-		}
-		else if (PwType == PW_DEFINE)
-		{
-			Pw.PwDefine.nPwNum = nPwNum;
-			Pw.PwDefine.nGroupNum = nGroupNum;
-			if(PwArrLen == 0)
-			{
-				size_t PwL = dPw*5/10;
-				size_t PwR = dPw*2;
-				RadarParaGen(ArrTemp,PwL,PwR,nPwNum,RandPara);
-				for (size_t i = 0; i < nPwNum; i++)
-				{
-					Pw.PwDefine.dpPw[i] = ArrTemp[i];
-				}
-			}
-			else
-			{
-				if((PwArrLen != nPwNum) && (PwArrLen == 2))
-				{
-					size_t PwL = PwArr[0];
-					size_t PwR = PwArr[1];
-					RadarParaGen(ArrTemp,PwL,PwR,nPwNum,RandPara);
-					for (size_t i = 0; i < nPwNum; i++)
-					{
-						Pw.PwDefine.dpPw[i] = ArrTemp[i];
-					}
-				}
-				else if(PwArrLen >= nPwNum)
-				{
-					for (size_t i = 0; i < nPwNum; i++)
-					{
-						Pw.PwDefine.dpPw[i] = PwArr[i];
-					}
-				}
-				else
-				{
-					Pw.PwDefine.nPwNum = PwArrLen;
-					for (size_t i = 0; i < PwArrLen; i++)
-					{
-						Pw.PwDefine.dpPw[i] = PwArr[i];
-					}
-				}
-			}
-		}
-		delete[] ArrTemp;
-		return true;
-	}
-};
 struct _RfPara		//雷达RF参数
 {
 	_RfType		RfType;
@@ -655,6 +568,85 @@ struct _RfPara		//雷达RF参数
 		return true;
 	}
 };
+struct _PwPara		//雷达Pw参数
+{
+	_PwType		PwType;
+	_Pw			Pw;
+	UINT		NumTemp;				//数组序号缓存
+	UINT		GroupNumTemp;			//脉组序号缓存
+	_PwPara()
+	{
+		Init();
+	}
+	void Init()
+	{
+		PwType 	 	 = PW_FIX;
+		NumTemp 	 = 0;
+		GroupNumTemp = 0;
+	}
+	bool Modify(_PwType PwType_ 	= PW_FIX,
+				size_t dPw			= 50,
+				size_t nPwNum		= 10,		//脉宽数量
+				size_t nGroupNum	= 1,		//脉组脉冲数  1-1000
+				size_t *PwArr 		= NULL,		//自定义脉宽数组
+				size_t PwArrLen 	= 0			//自定义脉宽数组长度
+				)
+	{
+		Init();
+		PwType = PwType_;
+		size_t *ArrTemp = new size_t[nPwNum];
+		memset(ArrTemp,0,nPwNum*sizeof(size_t));
+		if (PwType == PW_FIX)
+		{
+			Pw.dPw = dPw;
+		}
+		else if (PwType == PW_DEFINE)
+		{
+			Pw.PwDefine.nPwNum = nPwNum;
+			Pw.PwDefine.nGroupNum = nGroupNum;
+			if(PwArrLen == 0)
+			{
+				size_t PwL = dPw*5/10;
+				size_t PwR = dPw*2;
+				RadarParaGen(ArrTemp,PwL,PwR,nPwNum,RandPara);
+				for (size_t i = 0; i < nPwNum; i++)
+				{
+					Pw.PwDefine.dpPw[i] = ArrTemp[i];
+				}
+			}
+			else
+			{
+				if((PwArrLen != nPwNum) && (PwArrLen == 2))
+				{
+					size_t PwL = PwArr[0];
+					size_t PwR = PwArr[1];
+					RadarParaGen(ArrTemp,PwL,PwR,nPwNum,RandPara);
+					for (size_t i = 0; i < nPwNum; i++)
+					{
+						Pw.PwDefine.dpPw[i] = ArrTemp[i];
+					}
+				}
+				else if(PwArrLen >= nPwNum)
+				{
+					for (size_t i = 0; i < nPwNum; i++)
+					{
+						Pw.PwDefine.dpPw[i] = PwArr[i];
+					}
+				}
+				else
+				{
+					Pw.PwDefine.nPwNum = PwArrLen;
+					for (size_t i = 0; i < PwArrLen; i++)
+					{
+						Pw.PwDefine.dpPw[i] = PwArr[i];
+					}
+				}
+			}
+		}
+		delete[] ArrTemp;
+		return true;
+	}
+};
 struct _RadarMode
 {
 	_PriPara PriPara;
@@ -670,6 +662,15 @@ struct _PlatRadarNum
 {
 	USHORT 		PlatRadar;
 	UINT 		ToaNum;
+};
+struct _RadarPara
+{
+	USHORT			Flag;				//连续波标志
+	UINT			Pw;
+	UINT			Rf;
+	UINT			Az;
+	UINT			El;
+	int				Pa;
 };
 struct _InPDW
 {

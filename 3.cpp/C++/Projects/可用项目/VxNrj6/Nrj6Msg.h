@@ -139,7 +139,7 @@ struct _DoaUpdataMsg
 	CONUCHAR 	Cmd;
 	_DoaOrEdMsg DoaOrEdMsg[0x100];
 	int			Lens;
-	int			CharLens;					//°´CharËã
+	int			CharLens;					//æŒ‰Charç®—
 	_DoaUpdataMsg():Cmd(0xc7),Lens(0),CharLens(0){};
 	USHORT BigToLittle(USHORT sh)
 	{

@@ -16,17 +16,17 @@ class _iRadarAlgorithm
 public:
 	friend _Radar;
 	friend _RadarBuffer;
-	static void PriFix(_Radar & Radars,_RadarBuffer & RadarBuf);
-	static void PriDither(_Radar & Radars,_RadarBuffer & RadarBuf);
-	static void PriJagging(_Radar & Radars,_RadarBuffer & RadarBuf);
-	static void PriSlider(_Radar & Radars,_RadarBuffer & RadarBuf);
-	static void PriIdle(_Radar & Radars,_RadarBuffer & RadarBuf);
-	static void PwFix(_Radar & Radars,_RadarBuffer & RadarBuf);
-	static void PwDefine(_Radar & Radars,_RadarBuffer & RadarBuf);
-	static void FreContinuously(_Radar & Radars,_RadarBuffer & RadarBuf);
-	static void FreFix(_Radar & Radars,_RadarBuffer & RadarBuf);
-	static void FreAgility(_Radar & Radars,_RadarBuffer & RadarBuf);
-	static void FreDiversity(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void PriFix(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void PriDither(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void PriJagging(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void PriSlider(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void PriIdle(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void PwFix(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void PwDefine(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void FreContinuously(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void FreFix(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void FreAgility(_Radar & Radars,_RadarBuffer & RadarBuf);
+        static inline void FreDiversity(_Radar & Radars,_RadarBuffer & RadarBuf);
 };
 
 class _Radar
@@ -379,10 +379,10 @@ public:
 class _RadarBuffer
 {
 private:
-	static UINT 	GlobalToaH;
-	static UINT 	GlobalToaL;
-	static UINT 	RadarRCCLNum;
-	static UINT		SortTimes;
+        static UINT 	GlobalToaH;
+        static UINT 	GlobalToaL;
+        static UINT 	RadarRCCLNum;
+        static UINT		SortTimes;
 	UINT 			RadarBufSize;
 	UINT 			SignSize;
 	UINT 			InPDWSize;
@@ -402,7 +402,7 @@ public:
 	UINT			RFStatus;
 	UINT			SortReadyStatus;
 	UINT 			InPDWStatus;
-	_RadarBuffer(UINT InPDWSize_ = 1000000)
+	_RadarBuffer(UINT InPDWSize_ = 10000000)
 				:RadarBufSize(RADAR_BUFSIZE),SignSize(SIGN_SIZE),InPDWSize(InPDWSize_)
 	{
 		PriStatus 		= IDLE;
@@ -734,15 +734,17 @@ private:
 	float		Rcs;
 	short 		Sensitivity;
 	short 		DynamicEquil;
-	USHORT 		EsmType;
+	_EsmType    EsmType;
 	UINT 		OutPdwBufferSize;
 	UINT 		SortNum;
+    UINT        SortPulseSum;
 	UINT		SortTimes;
+    float       ArrivalLossRate;                        // 同时到达未丢失脉冲占比
 	_OutPdwType	*OutPdw;
 	USHORT		*OutPdwSign;
 public:
 	UINT		OutPdwStatus;
-	_Receiver(float Rcs_=0, short Sensitivity_=10, short DynamicEquil_=500, UINT OutPdwBufferSize_=1000000, USHORT EsmType_ = 1)
+	_Receiver(float Rcs_ = 0, short Sensitivity_ = 0, short DynamicEquil_ = 500, _EsmType EsmType_ = NarrowBand, UINT OutPdwBufferSize_ = 10000000)
 			  :OutPdwBufferSize(OutPdwBufferSize_)
 	{
 		Init(Rcs_, Sensitivity_, DynamicEquil_, EsmType_);
@@ -750,126 +752,174 @@ public:
 		OutPdwSign = new USHORT[OutPdwBufferSize];
 		memset(OutPdw, 0, sizeof(_OutPdwType) * OutPdwBufferSize);
 		memset(OutPdwSign, 0, sizeof(USHORT) * OutPdwBufferSize);
-		SortNum = 0;
-		SortTimes = 0;
-		OutPdwStatus = IDLE;
 	}
 	virtual ~_Receiver()
 	{
 		delete[] OutPdw;
 		delete[] OutPdwSign;
 	}
-	void 	Init(float Rcs_ = 0, short Sensitivity_ = 10, short DynamicEquil_ = 500, USHORT EsmType_ = 1)
+	void 	Init(float Rcs_, short Sensitivity_, short DynamicEquil_, _EsmType EsmType_)
 	{
-		Rcs 		 = Rcs_;
-		Sensitivity  = Sensitivity_;
-		DynamicEquil = DynamicEquil_;
-		EsmType 	 = EsmType_;
+		SortNum         = 0;
+		SortTimes       = 0;
+        SortPulseSum    = 0;
+        ArrivalLossRate = 0;
+		OutPdwStatus    = IDLE;
+		Rcs 		    = Rcs_;
+		Sensitivity     = Sensitivity_;
+		DynamicEquil    = DynamicEquil_;
+		EsmType 	    = EsmType_;
 	}
-	void 	SetRcs(float Rcs_){Rcs = Rcs_;}
-	float	GetRcs(){return Rcs;}
-	void 	SetSensitivity(short Sensitivity_){Sensitivity = Sensitivity_;}
-	short	GetSensitivity(){return Sensitivity;}
+	void 	SetRcs(float Rcs_)                  {Rcs = Rcs_;}
+	float	GetRcs()                            {return Rcs;}
+	void 	SetSensitivity(short Sensitivity_)  {Sensitivity = Sensitivity_;}
+	short	GetSensitivity()                    {return Sensitivity;}
 	void 	SetDynamicEquil(short DynamicEquil_){DynamicEquil = DynamicEquil_;}
-	short	GetDynamicEquil(){return DynamicEquil;}
-	void 	SetEsmType(USHORT EsmType_){EsmType = EsmType_;}
-	short	GetEsmType(){return EsmType;}
-	_OutPdwType* GetOutPdwAddr() 	{return OutPdw;}
-	USHORT* GetOutPdwSignAddr()  	{return OutPdwSign;}
-	UINT*	GetOutPdwStatusAddr()   {return &OutPdwStatus;}
-	UINT*	GetSortNumAddr() 		{return &SortNum;}
-	UINT	GetOutPdwBufSize() const {return OutPdwBufferSize;}
-	void	ClearSortNum(){SortNum = 0;}
-	UINT	GetSortNum() const {return SortNum;}
-	void	ClearSortTime(){SortTimes = 0;}
-	UINT	GetSortTime() const {return SortTimes;}
+	short	GetDynamicEquil()                   {return DynamicEquil;}
+	void 	SetEsmType(_EsmType EsmType_)       {EsmType = EsmType_;}
+	_EsmType GetEsmType()                       {return EsmType;}
+	_OutPdwType* GetOutPdwAddr()                {return OutPdw;}
+	USHORT* GetOutPdwSignAddr()                 {return OutPdwSign;}
+	UINT*	GetOutPdwStatusAddr()               {return &OutPdwStatus;}
+	UINT*	GetSortNumAddr() 		            {return &SortNum;}
+	UINT	GetOutPdwBufSize()            const {return OutPdwBufferSize;}
+	void	ClearSortNum()                      {SortNum = 0;}
+	UINT	GetSortNum()                  const {return SortNum;}
+	void	ClearSortPulseSum()                 {SortPulseSum = 0;}
+	UINT	GetSortPulseSum()             const {return SortPulseSum;}
+	float	GetArrivalLossRate()          const {return ArrivalLossRate;}
+	void	ClearSortTime()                     {SortTimes = 0;}
+	UINT	GetSortTime()                 const {return SortTimes;}
 	UINT 	PDWSort(_RadarBuffer & RadarBuf)
 	{
-		if ((RadarBuf.InPDWStatus == READY) && (OutPdwStatus == IDLE))
+		if((RadarBuf.InPDWStatus == READY) && (OutPdwStatus != READY))
 		{
-			OutPdwStatus = BUSY;
 			SortTimes++;
-
-			UINT SortNum_ = SortNum;
-			UINT RadarBufSortNum_ = RadarBuf.SortNum;
-			UINT PwTemp_ = 0;
-
-			RadarBuf.SortNum = 0;
-			if (SortNum_ + 2 * RadarBufSortNum_ < OutPdwBufferSize)
+            if(OutPdwStatus == IDLE)
+            {
+                ClearSortNum();
+                ClearSortTime();
+                ClearSortPulseSum();
+            }
+			OutPdwStatus    = BUSY;
+            UINT ReadyTag   = 0;
+			UINT SortNum_   = SortNum;
+			UINT PwTemp_    = 0;
+			UINT RadarBufSortNum_   = RadarBuf.SortNum;
+			RadarBuf.SortNum        = 0;
+			if(SortNum_ + 2 * RadarBufSortNum_ < OutPdwBufferSize)
 			{
-				for (UINT i = 0; i <= RadarBufSortNum_;)
-				{
-					_InPDW &InPDWTemp = RadarBuf.InPDW[i];
-					if ((InPDWTemp.ToaL>PwTemp_) && (InPDWTemp.RadarPara.Pa>Sensitivity) && (InPDWTemp.RadarPara.Pa<Sensitivity + DynamicEquil))
-					{
-//						OutPdw[SortNum_].Flag = InPDWTemp.RadarPara.Flag;
-//						OutPdw[SortNum_].ToaL = InPDWTemp.ToaL;
-//						OutPdw[SortNum_].ToaH = InPDWTemp.ToaH;
-//						OutPdw[SortNum_].Az = InPDWTemp.RadarPara.Az;
-//						OutPdw[SortNum_].El = InPDWTemp.RadarPara.El;
-						OutPdw[SortNum_].Toa 	= InPDWTemp.ToaL;
-						OutPdw[SortNum_].ToaS 	= InPDWTemp.ToaH;
-						OutPdw[SortNum_].Pa 	= InPDWTemp.RadarPara.Pa;
-						OutPdw[SortNum_].Pw 	= InPDWTemp.RadarPara.Pw;
-						OutPdw[SortNum_].Rf 	= InPDWTemp.RadarPara.Rf;
-						OutPdw[SortNum_].Doa 	= InPDWTemp.RadarPara.Az;
-						OutPdwSign[SortNum_]	= InPDWTemp.PlatRadar;
-						SortNum_++;
-						PwTemp_ = InPDWTemp.ToaL + InPDWTemp.RadarPara.Pw;
-					}
-					i++;
-				}
+                if(EsmType == BroadBand)
+                {
+                    for(UINT i = 0; i <= RadarBufSortNum_; i++)
+                    {
+                        SortPulseSum++;
+                        _InPDW &InPDWTemp = RadarBuf.InPDW[i];
+                        if((InPDWTemp.ToaL > PwTemp_) && (InPDWTemp.RadarPara.Pa > Sensitivity) && (InPDWTemp.RadarPara.Pa < Sensitivity + DynamicEquil))
+                        {
+                            OutPdw[SortNum_].Toa 	= InPDWTemp.ToaL;
+                            OutPdw[SortNum_].ToaS 	= InPDWTemp.ToaH;
+                            OutPdw[SortNum_].Pa 	= InPDWTemp.RadarPara.Pa;
+                            OutPdw[SortNum_].Pw 	= InPDWTemp.RadarPara.Pw;
+                            OutPdw[SortNum_].Rf 	= InPDWTemp.RadarPara.Rf;
+                            OutPdw[SortNum_].Doa 	= InPDWTemp.RadarPara.Az;
+                            OutPdwSign[SortNum_]	= InPDWTemp.PlatRadar;
+                            SortNum_++;
+                            PwTemp_ = InPDWTemp.ToaL + InPDWTemp.RadarPara.Pw;
+                        }
+                    }
+                }
+                else if(EsmType == NarrowBand)
+                {
+                    for(UINT i = 0; i <= RadarBufSortNum_; i++)
+                    {
+                        SortPulseSum++;
+                        _InPDW &InPDWTemp = RadarBuf.InPDW[i];
+                        if((InPDWTemp.RadarPara.Pa > Sensitivity) && (InPDWTemp.RadarPara.Pa < Sensitivity + DynamicEquil))
+                        {
+                            OutPdw[SortNum_].Toa 	= InPDWTemp.ToaL;
+                            OutPdw[SortNum_].ToaS 	= InPDWTemp.ToaH;
+                            OutPdw[SortNum_].Pa 	= InPDWTemp.RadarPara.Pa;
+                            OutPdw[SortNum_].Pw 	= InPDWTemp.RadarPara.Pw;
+                            OutPdw[SortNum_].Rf 	= InPDWTemp.RadarPara.Rf;
+                            OutPdw[SortNum_].Doa 	= InPDWTemp.RadarPara.Az;
+                            OutPdwSign[SortNum_]	= InPDWTemp.PlatRadar;
+                            SortNum_++;
+                        }
+                    }
+                }
+                else
+                {
+                    ERRORMSG("EsmType Error!");
+                }
 			}
 			else
 			{
-				for (UINT i = 0; i <= RadarBufSortNum_;)
-				{
-					_InPDW &InPDWTemp = RadarBuf.InPDW[i];
-					if ((InPDWTemp.ToaL > PwTemp_) && (InPDWTemp.RadarPara.Pa>Sensitivity) && (InPDWTemp.RadarPara.Pa<Sensitivity + DynamicEquil))
-					{
-						if (SortNum_ < OutPdwBufferSize)
-						{
-//							OutPdw[SortNum_].Flag = InPDWTemp.RadarPara.Flag;
-//							OutPdw[SortNum_].ToaL = InPDWTemp.ToaL;
-//							OutPdw[SortNum_].ToaH = InPDWTemp.ToaH;
-//							OutPdw[SortNum_].Az = InPDWTemp.RadarPara.Az;
-//							OutPdw[SortNum_].El = InPDWTemp.RadarPara.El;
-							OutPdw[SortNum_].Toa 	= InPDWTemp.ToaL;
-							OutPdw[SortNum_].ToaS 	= InPDWTemp.ToaH;
-							OutPdw[SortNum_].Pa 	= InPDWTemp.RadarPara.Pa;
-							OutPdw[SortNum_].Pw 	= InPDWTemp.RadarPara.Pw;
-							OutPdw[SortNum_].Rf 	= InPDWTemp.RadarPara.Rf;
-							OutPdw[SortNum_].Doa 	= InPDWTemp.RadarPara.Az;
-							OutPdwSign[SortNum_]	= InPDWTemp.PlatRadar;
-							SortNum_++;
-							PwTemp_ = InPDWTemp.ToaL + InPDWTemp.RadarPara.Pw;
-						}
-						else
-						{
-							SortNum = SortNum_ - 1;
-							RadarBuf.InPDWStatus = IDLE;
-							OutPdwStatus = READY;
-							return OutPdwStatus;
-						}
-					}
-					i++;
-				}
-				SortNum = SortNum_ - 1;
-				RadarBuf.InPDWStatus = IDLE;
-				OutPdwStatus = READY;
-				return OutPdwStatus;
+                if(EsmType == BroadBand)
+                {
+                    for(UINT i = 0; i <= RadarBufSortNum_; i++)
+                    {
+                        SortPulseSum++;
+                        _InPDW &InPDWTemp = RadarBuf.InPDW[i];
+                        if((InPDWTemp.ToaL > PwTemp_) && (InPDWTemp.RadarPara.Pa > Sensitivity) && (InPDWTemp.RadarPara.Pa < Sensitivity + DynamicEquil))
+                        {
+                            if(SortNum_ < OutPdwBufferSize)
+                            {
+                                OutPdw[SortNum_].Toa 	= InPDWTemp.ToaL;
+                                OutPdw[SortNum_].ToaS 	= InPDWTemp.ToaH;
+                                OutPdw[SortNum_].Pa 	= InPDWTemp.RadarPara.Pa;
+                                OutPdw[SortNum_].Pw 	= InPDWTemp.RadarPara.Pw;
+                                OutPdw[SortNum_].Rf 	= InPDWTemp.RadarPara.Rf;
+                                OutPdw[SortNum_].Doa 	= InPDWTemp.RadarPara.Az;
+                                OutPdwSign[SortNum_]	= InPDWTemp.PlatRadar;
+                                SortNum_++;
+                                PwTemp_ = InPDWTemp.ToaL + InPDWTemp.RadarPara.Pw;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if(EsmType == NarrowBand)
+                {
+                    for(UINT i = 0; i <= RadarBufSortNum_; i++)
+                    {
+                        SortPulseSum++;
+                        _InPDW &InPDWTemp = RadarBuf.InPDW[i];
+                        if((InPDWTemp.RadarPara.Pa > Sensitivity) && (InPDWTemp.RadarPara.Pa < Sensitivity + DynamicEquil))
+                        {
+                            if(SortNum_ < OutPdwBufferSize)
+                            {
+                                OutPdw[SortNum_].Toa 	= InPDWTemp.ToaL;
+                                OutPdw[SortNum_].ToaS 	= InPDWTemp.ToaH;
+                                OutPdw[SortNum_].Pa 	= InPDWTemp.RadarPara.Pa;
+                                OutPdw[SortNum_].Pw 	= InPDWTemp.RadarPara.Pw;
+                                OutPdw[SortNum_].Rf 	= InPDWTemp.RadarPara.Rf;
+                                OutPdw[SortNum_].Doa 	= InPDWTemp.RadarPara.Az;
+                                OutPdwSign[SortNum_]	= InPDWTemp.PlatRadar;
+                                SortNum_++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    ERRORMSG("EsmType Error!");
+                }
+                ReadyTag = 1;
 			}
-			SortNum = SortNum_;
-			if ((SortTimes >= RECIVERSORTTIMES_MAX) && (SortNum >= RECIVERSORTNUM_MAX))
+            SortNum = SortNum_;
+            RadarBuf.InPDWStatus = IDLE;
+			if((ReadyTag == 1) || ((SortTimes >= RECIVERSORTTIMES_MAX) && (SortNum >= RECIVERSORTNUM_MAX)))
 			{
-				SortNum = SortNum - 1;
-				RadarBuf.InPDWStatus = IDLE;
-				OutPdwStatus = READY;
-			}
-			else
-			{
-				RadarBuf.InPDWStatus = IDLE;
-				OutPdwStatus = IDLE;
+                ArrivalLossRate = float(SortNum)/float(SortPulseSum);
+				OutPdwStatus    = READY;
 			}
 		}
 		return OutPdwStatus;
@@ -882,18 +932,20 @@ public:
 		COUT(GetOutPdwAddr());
 		COUT(SortNum);
 		COUT(SortTimes);
+		COUT(SortPulseSum);
+		COUT(ArrivalLossRate);
 		COUT_STATUS(OutPdwStatus);
 	}
 	void 	show(UINT Num) const
 	{
 		COUTSWIDTH(6, "Pdw No.", Num,
 					  ": PlatRadar = ", OutPdwSign[Num],
-					  ", RF = ", 	OutPdw[Num].Rf,
-					  ", PW = ", 	OutPdw[Num].Pw,
-					  ", PA = ", 	OutPdw[Num].Pa,
-					  ", TOA = ", 	OutPdw[Num].Toa,
-					  ", ToaS = ", 	OutPdw[Num].ToaS,
-					  ", DOA = ", 	OutPdw[Num].Doa
+					  ", RF = ", 	    OutPdw[Num].Rf,
+					  ", PW = ", 	    OutPdw[Num].Pw,
+					  ", PA = ", 	    OutPdw[Num].Pa,
+					  ", TOA = ", 	    OutPdw[Num].Toa,
+					  ", ToaS = ", 	    OutPdw[Num].ToaS,
+					  ", DOA = ", 	    OutPdw[Num].Doa
 				   );
 	}
 	void 	show(UINT NumStart, UINT NumStop, USHORT PlatRadarSn = PLAT_NUM*RADAR_NUM)
@@ -918,11 +970,13 @@ public:
 	}
 	void	BufferClear()
 	{
-		SortNum = 0;
-		SortTimes = 0;
+		SortNum         = 0;
+		SortTimes       = 0;
+        SortPulseSum    = 0;
+        ArrivalLossRate = 0;
+		OutPdwStatus    = IDLE;
 		memset(OutPdw, 0, sizeof(_OutPdwType) * OutPdwBufferSize);
 		memset(OutPdwSign, 0, sizeof(USHORT) * OutPdwBufferSize);
-		OutPdwStatus = IDLE;
 	}
 	void	StatusClear()
 	{
@@ -934,12 +988,12 @@ public:
 
 void _iRadarAlgorithm::PriFix(_Radar & Radars,_RadarBuffer & RadarBuf)
 {
-	size_t RadarBufSize = RadarBuf.RadarBufSize;		//Buffer长度 0x1000000
-	size_t BufSignSize = RadarBuf.SignSize;				//Buffer标记右移长度 8
-	size_t ToaBufferSignLoc,Pri;						//Sign位置       Pri
-	size_t ToaMod;										//ToaMod
-	USHORT PlatRadar = Radars.PlatRadar;				//平台雷达号
-	size_t ToaNum = 0;									//Toa生成编号
+	size_t RadarBufSize = RadarBuf.RadarBufSize;		// Buffer长度 0x1000000
+	size_t BufSignSize = RadarBuf.SignSize;				// Buffer标记右移长度 8
+	size_t ToaBufferSignLoc,Pri;						// Sign位置       Pri
+	size_t ToaMod;										// ToaMod
+	USHORT PlatRadar = Radars.PlatRadar;				// 平台雷达号
+	size_t ToaNum = 0;									// Toa生成编号
 	Pri = Radars.PriPara.Pri.dPri;
 	ToaMod = Radars.PriPara.ToaMod;
 	for(;ToaMod<RadarBufSize;ToaMod+=Pri)
@@ -966,13 +1020,13 @@ void _iRadarAlgorithm::PriFix(_Radar & Radars,_RadarBuffer & RadarBuf)
 }
 void _iRadarAlgorithm::PriDither(_Radar & Radars,_RadarBuffer & RadarBuf)
 {
-	size_t RadarBufSize = RadarBuf.RadarBufSize;							//Buffer长度 0x1000000
-	size_t BufSignSize = RadarBuf.SignSize;									//Buffer标记右移长度 8
-	size_t ToaBufferSignLoc,GroupNum,GroupNumTemp,Pri,PriRand,DitherRange;	//Sign位置       Pri  GroupNum
-	size_t ToaMod,ToaModRand;												//ToaMod
-	size_t RandTime = (size_t)time(NULL);									//RandTime
-	USHORT PlatRadar = Radars.PlatRadar;									//平台雷达号
-	size_t ToaNum = 0;														//Toa生成编号
+	size_t RadarBufSize = RadarBuf.RadarBufSize;							// Buffer长度 0x1000000
+	size_t BufSignSize = RadarBuf.SignSize;									// Buffer标记右移长度 8
+	size_t ToaBufferSignLoc,GroupNum,GroupNumTemp,Pri,PriRand,DitherRange;	// Sign位置       Pri  GroupNum
+	size_t ToaMod,ToaModRand;												// ToaMod
+	size_t RandTime = (size_t)time(NULL);									// RandTime
+	USHORT PlatRadar = Radars.PlatRadar;									// 平台雷达号
+	size_t ToaNum = 0;														// Toa生成编号
 	GroupNum = Radars.PriPara.Pri.PriDither.nGroupNum;
 	GroupNumTemp = Radars.PriPara.GroupNumTemp;
 	Pri = Radars.PriPara.Pri.PriDither.dPri;
@@ -1052,13 +1106,13 @@ void _iRadarAlgorithm::PriDither(_Radar & Radars,_RadarBuffer & RadarBuf)
 }
 void _iRadarAlgorithm::PriJagging(_Radar & Radars,_RadarBuffer & RadarBuf)
 {
-	size_t RadarBufSize = RadarBuf.RadarBufSize;						//Buffer长度 0x1000000
-	size_t BufSignSize = RadarBuf.SignSize;								//Buffer标记右移长度 8
-	size_t ToaBufferSignLoc,GroupNum,GroupNumTemp,PriNum,NumTemp,Pri;	//Sign位置       Pri  GroupNum
-	size_t ToaMod;														//ToaMod
+	size_t RadarBufSize = RadarBuf.RadarBufSize;						// Buffer长度 0x1000000
+	size_t BufSignSize = RadarBuf.SignSize;								// Buffer标记右移长度 8
+	size_t ToaBufferSignLoc,GroupNum,GroupNumTemp,PriNum,NumTemp,Pri;	// Sign位置       Pri  GroupNum
+	size_t ToaMod;														// ToaMod
 	UINT *pRatio;
-	USHORT PlatRadar = Radars.PlatRadar;								//平台雷达号
-	size_t ToaNum = 0;													//Toa生成编号
+	USHORT PlatRadar = Radars.PlatRadar;								// 平台雷达号
+	size_t ToaNum = 0;													// Toa生成编号
 	GroupNum = Radars.PriPara.Pri.PriJagging.nGroupNum;
 	PriNum = Radars.PriPara.Pri.PriJagging.nPriNum;
 	ToaMod = Radars.PriPara.ToaMod;
@@ -1115,14 +1169,14 @@ void _iRadarAlgorithm::PriJagging(_Radar & Radars,_RadarBuffer & RadarBuf)
 }
 void _iRadarAlgorithm::PriSlider(_Radar & Radars,_RadarBuffer & RadarBuf)
 {
-	size_t RadarBufSize = RadarBuf.RadarBufSize;				//Buffer长度 0x1000000
-	size_t BufSignSize = RadarBuf.SignSize;						//Buffer标记右移长度 8
-	size_t ToaBufferSignLoc,GroupNum,GroupNumTemp,Pri;			//Sign位置       Pri GroupNum
+	size_t RadarBufSize = RadarBuf.RadarBufSize;				// Buffer长度 0x1000000
+	size_t BufSignSize = RadarBuf.SignSize;						// Buffer标记右移长度 8
+	size_t ToaBufferSignLoc,GroupNum,GroupNumTemp,Pri;			// Sign位置       Pri GroupNum
 	int PriNum,NumTemp,PriStep;
-	size_t ToaMod;												//ToaMod
+	size_t ToaMod;												// ToaMod
 	UINT *pPri;
-	USHORT PlatRadar = Radars.PlatRadar;						//平台雷达号
-	size_t ToaNum = 0;											//Toa生成编号
+	USHORT PlatRadar = Radars.PlatRadar;						// 平台雷达号
+	size_t ToaNum = 0;											// Toa生成编号
 	GroupNum = Radars.PriPara.Pri.PriSlider.nGroupNum;
 	PriNum = Radars.PriPara.Pri.PriSlider.nPriNum;
 	PriStep = Radars.PriPara.Pri.PriSlider.dPriStep;
@@ -1339,7 +1393,7 @@ public:
 	UINT*		 GetPdwStatusAddr2() {return Receiver2.GetOutPdwStatusAddr();}
 	UINT*		 GetSortNumAddr1() 	 {return Receiver1.GetSortNumAddr();}
 	UINT*		 GetSortNumAddr2() 	 {return Receiver2.GetSortNumAddr();}
-	bool ReceiverInit(float Rcs_ = 100, short Sensitivity_ = -10, short DynamicEquil_ = 500, USHORT EsmType_ = BroadBank)
+	bool ReceiverInit(float Rcs_ = 100, short Sensitivity_ = -10, short DynamicEquil_ = 500, _EsmType EsmType_ = NarrowBand)
 	{
 		RadarBuffer1.Clear();
 		RadarBuffer2.Clear();
@@ -1354,7 +1408,7 @@ public:
 		ReceiverInit();
 		PlatFormInit(PlatNum);
 	}
-	bool PlatFormInit(size_t PlatNum = PLAT_NUM)						//按个数初始化平台
+	bool PlatFormInit(size_t PlatNum = PLAT_NUM)						// 按个数初始化平台
 	{
 		PlatFormClear(PlatNum);
 		PlatNum = (PlatNum > PLAT_NUM) ? PLAT_NUM : PlatNum;
@@ -1387,34 +1441,34 @@ public:
 	}
 	bool PriTypeModify(_PriType PriType_ 	= PRI_FIX,
 					   size_t dPri 			= 10000,
-					   size_t dRange 		= 5000,		//重频范围  重频范围不大于中心重复周期的100%
-					   size_t nPriNum 		= 10,		//参差或滑动数
-					   size_t nGroupNum 	= 1,		//脉组脉冲数  1-1000  1－脉间 
-					   size_t *PriArr 		= NULL,		//自定义重频数组
-					   size_t PriArrLen 	= 0,		//自定义重频数组长度
-					   size_t dPriStep		= 1			//滑动步进 有正有负
+					   size_t dRange 		= 5000,		// 重频范围  重频范围不大于中心重复周期的100%
+					   size_t nPriNum 		= 10,		// 参差或滑动数
+					   size_t nGroupNum 	= 1,		// 脉组脉冲数  1-1000  1－脉间 
+					   size_t *PriArr 		= NULL,		// 自定义重频数组
+					   size_t PriArrLen 	= 0,		// 自定义重频数组长度
+					   size_t dPriStep		= 1			// 滑动步进 有正有负
 					   )
 	{
 		RadarMode.PriPara.Modify(PriType_, dPri, dRange, nPriNum, nGroupNum, PriArr, PriArrLen, dPriStep);
 		return true;
 	}
-	bool RfTypeModify(_RfType RfType_ 	= RF_FIX,
-					  size_t dFre		= 256000,
-					  size_t nFreNum	= 10,			//点数 2-DIVNUM
-					  size_t nGroupNum 	= 1,			//脉组脉冲数  1-1000  1－脉间 
-					  size_t *RfArr 	= NULL,			//自定义载频数组
-					  size_t RfArrLen 	= 0				//自定义载频数组长度
+	bool RfTypeModify(_RfType RfType_ 	    = RF_FIX,
+					  size_t dFre		    = 256000,
+					  size_t nFreNum	    = 10,	    // 点数 2-DIVNUM
+					  size_t nGroupNum 	    = 1,	    // 脉组脉冲数  1-1000  1－脉间 
+					  size_t *RfArr 	    = NULL,	    // 自定义载频数组
+					  size_t RfArrLen 	    = 0		    // 自定义载频数组长度
 					  )
 	{
 		RadarMode.RfPara.Modify(RfType_, dFre, nFreNum, nGroupNum, RfArr, RfArrLen);
 		return true;
 	}
-	bool PwTypeModify(_PwType PwType_ 	= PW_FIX,
-					  size_t dPw		= 50,
-					  size_t nPwNum		= 10,			//脉宽数量
-					  size_t nGroupNum	= 1,			//脉组脉冲数  1-1000
-					  size_t *PwArr 	= NULL,			//自定义脉宽数组
-					  size_t PwArrLen 	= 0				//自定义脉宽数组长度
+	bool PwTypeModify(_PwType PwType_ 	    = PW_FIX,
+					  size_t dPw		    = 50,
+					  size_t nPwNum		    = 10,	    // 脉宽数量
+					  size_t nGroupNum	    = 1,	    // 脉组脉冲数  1-1000
+					  size_t *PwArr 	    = NULL,	    // 自定义脉宽数组
+					  size_t PwArrLen 	    = 0		    // 自定义脉宽数组长度
 					  )
 	{
 		RadarMode.PwPara.Modify(PwType_, dPw, nPwNum, nGroupNum, PwArr, PwArrLen);
@@ -1460,7 +1514,7 @@ public:
 	}
 	void RadarSimGen(size_t PdwType,
 					 size_t RadarSn,
-					 size_t Rf,					//重频或载频为参差或者抖动时，Rf、Pri传入数组地址
+					 size_t Rf,					// 重频或载频为参差或者抖动时，Rf、Pri传入数组地址
 					 size_t Pri,
 					 size_t RfNum = 0,
 					 size_t PriNumOrRange = 0)
@@ -1471,29 +1525,29 @@ public:
 		size_t *RfArr = (size_t *)Rf;
 		switch(PdwType)
 		{
-		case 1:														//FixRfFixPri
+		case 1:														// FixRfFixPri
 			RadarMode.RfPara.Modify(RF_FIX, Rf);
 			RadarMode.PriPara.Modify(PRI_FIX, Pri);
 			RadarModify(RadarSn);
 			break;
-		case 2:														//FixRfJaggPri
+		case 2:														// FixRfJaggPri
 			RadarMode.RfPara.Modify(RF_FIX, Rf);
 			RadarMode.PriPara.Modify(PRI_JAGGING, 0, dRange, PriNumOrRange, nGroupNum, PriArr, PriNumOrRange);
 			RadarModify(RadarSn);
 			break;
-		case 3:														//FixRfDitherPri
+		case 3:														// FixRfDitherPri
 			RadarMode.RfPara.Modify(RF_FIX, Rf);
 			RadarMode.PriPara.Modify(PRI_DITHER, Pri, PriNumOrRange);
 			RadarModify(RadarSn);
 			break;
-		case 4:														//AgileRfFixPri
+		case 4:														// AgileRfFixPri
 			RadarMode.RfPara.Modify(RF_AGILITY, 0, RfNum, 1, RfArr, RfNum);
 			RadarMode.PriPara.Modify(PRI_FIX, Pri);
 			RadarModify(RadarSn);
 			break;
-		case 5:														//CotinuePulse
+		case 5:														// CotinuePulse
 			break;
-		case 6:														//AgileRfDitherPri
+		case 6:														// AgileRfDitherPri
 			RadarMode.RfPara.Modify(RF_AGILITY, 0, RfNum, 1, RfArr, RfNum);
 			RadarMode.PriPara.Modify(PRI_DITHER, Pri, PriNumOrRange);
 			RadarModify(RadarSn);
@@ -1637,7 +1691,7 @@ public:
 	void ParallelPDWSort()
 	{
 		static size_t OutPdwSortNum = 1;
-		if ((Receiver1.OutPdwStatus == IDLE) && OutPdwSortNum == 1)
+		if ((Receiver1.OutPdwStatus != READY) && OutPdwSortNum == 1)
 		{
 			if ((RadarBuffer1.InPDWStatus == READY) && (RadarBuffer2.InPDWStatus == READY))
 			{
@@ -1662,7 +1716,7 @@ public:
 				OutPdwSortNum = 2;
 			}
 		}
-		if ((Receiver2.OutPdwStatus == IDLE) && OutPdwSortNum == 2)
+		if ((Receiver2.OutPdwStatus != READY) && OutPdwSortNum == 2)
 		{
 			if ((RadarBuffer1.InPDWStatus == READY) && (RadarBuffer2.InPDWStatus == READY))
 			{
@@ -1688,11 +1742,13 @@ public:
 			}
 		}
 	}
-	inline void ModifyOutPdw(_OutPdwType &OutPdw)										//自定义输出数据
+	inline void ModifyOutPdw(_OutPdwType &OutPdw)										// 自定义输出数据
 	{
 		OutPdw.Pa = 50;
+        OutPdw.head = OutPdw.lineHead;
+        OutPdw.tail = OutPdw.lineTail;
 	}
-	void ModifyOutPdwArray(size_t Start = 0,size_t Lens = 0,size_t sel = 0)				//自定义指定长度输出数据
+	void ModifyOutPdwArray(size_t Start = 0,size_t Lens = 0,size_t sel = 0)				// 自定义指定长度输出数据
 	{
 		_OutPdwType *OutPdwBuf = NULL;
 		size_t OutPdwLens = 0;
@@ -1800,11 +1856,7 @@ public:
 		}
 		ModifyOutPdwArray();
         Receiver1.OutPdwStatus = IDLE;
-        Receiver1.ClearSortNum();
-        Receiver1.ClearSortTime();
         Receiver2.OutPdwStatus = IDLE;
-        Receiver2.ClearSortNum();
-        Receiver2.ClearSortTime();
 	}
     void WriteFile(const string& filepath, UINT runSec)
     {
@@ -1840,15 +1892,12 @@ public:
                 }
             }
             ModifyOutPdwArray();
-            COUTS("BufferSortNum1 - ", *GetSortNumAddr1(), ", BufferSortNum2 - ", *GetSortNumAddr2());
-            svfile.write((char*) (GetPdwBufAddr1()), (*GetSortNumAddr1() + 1) * sizeof(_OutPdwType));
-            svfile.write((char*) (GetPdwBufAddr2()), (*GetSortNumAddr2() + 1) * sizeof(_OutPdwType));
+            COUTS("BufferSortNum1 - ", *GetSortNumAddr1(), ", BufferArrivalLossRate1 - ", Receiver1.GetArrivalLossRate(),
+                ", BufferSortNum2 - ", *GetSortNumAddr2(), ", BufferArrivalLossRate2 - ", Receiver2.GetArrivalLossRate());
+            svfile.write((char*) (GetPdwBufAddr1()), (*GetSortNumAddr1()) * sizeof(_OutPdwType));
+            svfile.write((char*) (GetPdwBufAddr2()), (*GetSortNumAddr2()) * sizeof(_OutPdwType));
             Receiver1.OutPdwStatus = IDLE;
-            Receiver1.ClearSortNum();
-            Receiver1.ClearSortTime();
             Receiver2.OutPdwStatus = IDLE;
-            Receiver2.ClearSortNum();
-            Receiver2.ClearSortTime();
             if(runTimes == 0)
             {
                 break;

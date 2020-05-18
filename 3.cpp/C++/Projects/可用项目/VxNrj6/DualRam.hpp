@@ -17,10 +17,10 @@ using namespace std;
 #define DEBUG_DUALRAM 0
 
 template<typename _PDWChannelType,
-		 size_t DualRamChannelNum,				//PDWÊı¾İÍ¨µÀµÄÍ¨µÀÊı
-		 size_t ChannelRadarMaxNo,				//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡À×´ïµÄ×î´óÊı
-		 size_t DiscernThreshold,				//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡ãĞÖµµÄ³õÊ¼Öµ
-		 size_t ScanThreshold>					//²Î¼ÓÉ¨Ãè·ÖÎöµÄ×îĞ¡Âö³åÊı
+		 size_t DualRamChannelNum,				//PDWæ•°æ®é€šé“çš„é€šé“æ•°
+		 size_t ChannelRadarMaxNo,				//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é›·è¾¾çš„æœ€å¤§æ•°
+		 size_t DiscernThreshold,				//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é˜ˆå€¼çš„åˆå§‹å€¼
+		 size_t ScanThreshold>					//å‚åŠ æ‰«æåˆ†æçš„æœ€å°è„‰å†²æ•°
 class _DualRam
 {
 public:
@@ -437,11 +437,11 @@ public:
 	void	ShowStatus() const
 	{
 		NLOGKSSECBEG("DualRam Status");
-		NLOGKSWIDTH(4,"PDWÍ¨µÀÊı(DualRamCha...)	",DualRamChannelNum);			//PDWÊı¾İÍ¨µÀµÄÍ¨µÀÊı
-		NLOGKSWIDTH(4,"Ã¿Í¨µÀÀ×´ïÊı(ChannelRa...)	",ChannelRadarMaxNo);			//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡À×´ïµÄ×î´óÊı
-		NLOGKSWIDTH(4,"ãĞÖµ³õÊ¼Öµ(DiscernThr...)	",DiscernThreshold);			//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡ãĞÖµµÄ³õÊ¼Öµ
-		NLOGKSWIDTH(4,"É¨Ãè·ÖÎöÂö³åÊı(ScanThre...)	",ScanThreshold);				//²Î¼ÓÉ¨Ãè·ÖÎöµÄ×îĞ¡Âö³åÊı
-		NLOGKSWIDTH(4,"Çå³ı±êÖ¾(DualRamClear...)	",DualRamClearTag);				//Çå³ı±êÖ¾
+		NLOGKSWIDTH(4,"PDWé€šé“æ•°(DualRamCha...)	",DualRamChannelNum);			//PDWæ•°æ®é€šé“çš„é€šé“æ•°
+		NLOGKSWIDTH(4,"æ¯é€šé“é›·è¾¾æ•°(ChannelRa...)	",ChannelRadarMaxNo);			//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é›·è¾¾çš„æœ€å¤§æ•°
+		NLOGKSWIDTH(4,"é˜ˆå€¼åˆå§‹å€¼(DiscernThr...)	",DiscernThreshold);			//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é˜ˆå€¼çš„åˆå§‹å€¼
+		NLOGKSWIDTH(4,"æ‰«æåˆ†æè„‰å†²æ•°(ScanThre...)	",ScanThreshold);				//å‚åŠ æ‰«æåˆ†æçš„æœ€å°è„‰å†²æ•°
+		NLOGKSWIDTH(4,"æ¸…é™¤æ ‡å¿—(DualRamClear...)	",DualRamClearTag);				//æ¸…é™¤æ ‡å¿—
 		NLOGKSSECEND("DualRam Status");
 	}
 };

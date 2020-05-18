@@ -37,7 +37,7 @@ class _binaryFile
 private:
     ifstream         binfile;
     char             *fileHeader;
-    CUINT            fileHeaderSize;
+    UINT             fileHeaderSize;
     _readToMsgTy     *ReadData;
     UINT             ReadDataSize;
     _FileMsgTy       line;                      // 文件行缓存
@@ -50,17 +50,19 @@ private:
     _pFunc_ShowData  pShowData;
 
 public:
-    _binaryFile()
-                :fileHeaderSize(100), ReadDataSize(100), fileStatus(closed), pShowLine(NULL), pShowData(NULL)
+    _binaryFile(UINT ReadDataSize_ = 1000000)
+                :ReadDataSize(ReadDataSize_), fileStatus(closed), pShowLine(NULL), pShowData(NULL)
     {
-        fileHeader  = new char[fileHeaderSize];
-        ReadData    = new _readToMsgTy[ReadDataSize];
+        fileHeaderSize  = _FileMsgTy::headerSize;
+        fileHeader      = new char[fileHeaderSize];
+        ReadData        = new _readToMsgTy[ReadDataSize];
     }
-    _binaryFile(const string& filepath, UINT fileHeaderSize_, UINT ReadDataSize_)
-                :fileHeaderSize(fileHeaderSize_), ReadDataSize(ReadDataSize_), fileStatus(closed), pShowLine(NULL), pShowData(NULL)
+    _binaryFile(const string& filepath, UINT ReadDataSize_ = 1000000)
+                :ReadDataSize(ReadDataSize_), fileStatus(closed), pShowLine(NULL), pShowData(NULL)
     {
-        fileHeader  = new char[fileHeaderSize];
-        ReadData    = new _readToMsgTy[ReadDataSize];
+        fileHeaderSize  = _FileMsgTy::headerSize;
+        fileHeader      = new char[fileHeaderSize];
+        ReadData        = new _readToMsgTy[ReadDataSize];
         open(filepath);
     }
     virtual ~_binaryFile()
@@ -68,6 +70,28 @@ public:
         close();
         delete[] fileHeader;
         delete[] ReadData;
+    }
+    int  GetFileLines() const {return fileLines;}
+    void ReadDataResize(UINT ReadDataSize_)
+    {
+        ReadDataSize = ReadDataSize_;
+        delete[] ReadData;
+        ReadData = new _readToMsgTy[ReadDataSize];
+    }
+    int GetDataValidLines() const
+    {
+        return ReadLines;
+    }
+    _readToMsgTy *GetDataAddr() const
+    {
+        return ReadData;
+    }
+    void clear()
+    {
+        curLine     = 0; 
+        ReadLines   = 0;
+        fileLines   = 0; 
+        fileSize    = 0;
     }
     void open(const string& filepath)
     {
@@ -150,7 +174,7 @@ public:
         {
             for(i = 0; i < ReadSize; i++)
             {
-                binfile.read((char *)&line, FileMsgTySize);             // 将文件头读出
+                binfile.read((char *)&line, FileMsgTySize);
                 if((line.head == _FileMsgTy::lineHead) && (line.tail == _FileMsgTy::lineTail))
                 {
                     ReadData[i] = line;
@@ -167,7 +191,7 @@ public:
         {
             for(i = 0; i < ReadSize; i++)
             {
-                binfile.read((char *)&line, FileMsgTySize);             // 将文件头读出
+                binfile.read((char *)&line, FileMsgTySize);
                 ReadData[i] = line;
             }
         }
@@ -187,7 +211,7 @@ public:
             {
                 break;
             }
-            binfile.read((char *)&line, FileMsgTySize);             // 将文件头读出
+            binfile.read((char *)&line, FileMsgTySize);
             if((line.head == _FileMsgTy::lineHead) && (line.tail == _FileMsgTy::lineTail))
             {
                 ReadData[i] = line;
@@ -233,27 +257,6 @@ public:
             fileStatus = closed;
             clear();
         }
-    }
-    void clear()
-    {
-        curLine     = 0; 
-        ReadLines   = 0;
-        fileLines   = 0; 
-        fileSize    = 0;
-    }
-    void ReadDataResize(UINT ReadDataSize_)
-    {
-        ReadDataSize = ReadDataSize_;
-        delete[] ReadData;
-        ReadData = new _readToMsgTy[ReadDataSize];
-    }
-    int GetDataValidLines() const
-    {
-        return ReadLines;
-    }
-    _readToMsgTy *GetDataAddr() const
-    {
-        return ReadData;
     }
     void registShowLineFunc(_pFunc_ShowLine pShowLine_)
     {

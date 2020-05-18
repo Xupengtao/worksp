@@ -24,7 +24,7 @@ typedef const USHORT 	CONUSHORT;
 typedef const UINT 		CONUINT;
 typedef volatile USHORT VtUSHORT;
 
-template<typename _RfTy,typename _PwTy,typename _PaTy,typename _ToaTy,typename _TonTy>			//PDW¸÷¸ö²ÎÊıµÄÊı¾İÀàĞÍ
+template<typename _RfTy,typename _PwTy,typename _PaTy,typename _ToaTy,typename _TonTy>			//PDWå„ä¸ªå‚æ•°çš„æ•°æ®ç±»å‹
 struct _RecPDW
 {
 	typedef _RfTy 	RfTy;
@@ -56,7 +56,7 @@ struct _MainChannel
 };
 
 template<typename RecPDWType,
-         size_t ParaNum>																		//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ×î´óÂö³åÊı
+         size_t ParaNum>																		//æ¯ä¸ªPDWæ•°æ®é€šé“çš„æœ€å¤§è„‰å†²æ•°
 struct _Pdw
 {
 	typedef typename RecPDWType::RfTy 	RfTy;
@@ -65,7 +65,7 @@ struct _Pdw
 	typedef typename RecPDWType::ToaTy 	ToaTy;
 	typedef typename RecPDWType::TonTy 	TonTy;
 	
-	size_t	Deducted[ParaNum];			//¿Û³ı±êÖ¾ 1
+	size_t	Deducted[ParaNum];			//æ‰£é™¤æ ‡å¿— 1
 	size_t	Analyed[ParaNum];		
 	RfTy	Rf[ParaNum];
 	PwTy	Pw[ParaNum];
@@ -134,7 +134,7 @@ template<typename Ty>
 struct	_StaticSemVal
 {
 	Ty Val;
-	static SEM_ID Sem;						//´´½¨ĞÅºÅÁ¿£¬ÓÃÓÚÍ¬²½
+	static SEM_ID Sem;						//åˆ›å»ºä¿¡å·é‡ï¼Œç”¨äºåŒæ­¥
 	
 	_StaticSemVal(Ty Val_ = 0):Val(Val_)
 	{
@@ -200,7 +200,7 @@ struct	_StaticSemVal
 #endif
 
 template<typename _PDWType,
-		 size_t ChannelRadarMaxNo>															//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡À×´ïµÄ×î´óÊı
+		 size_t ChannelRadarMaxNo>															//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é›·è¾¾çš„æœ€å¤§æ•°
 struct _PDWChannel
 {
 	typedef _PDWType PDWType;
@@ -210,29 +210,29 @@ struct _PDWChannel
 	typedef typename _PDWType::ToaTy 	ToaTy;
 	typedef typename _PDWType::TonTy 	TonTy;
 
-	size_t					ContinuousTag;						//¹¤×÷»ò×Ô¼ì±êÖ¾
-	size_t					SelfCheckResultTag;					//×Ô¼ì½á¹û±êÖ¾
-	size_t					DiscernStLoc;						//·ÖÑ¡Âö³å¿ªÊ¼Î»ÖÃ
-	size_t					PulseNum;							//Âö³åÊı
-	size_t					DiscernThreshold;					//·ÖÑ¡ãĞÖµ
-	_StaticSemVal<bool> 	DiscernReadable;					//Âú×ãÒÑ·ÖÑ¡Ìõ¼ş
-	_StaticSemVal<size_t> 	DiscernPulseNums;					//Âú×ãÒÑ·ÖÑ¡Ìõ¼şÂö³åÊı
-	size_t					ScanThreshold;						//É¨Ãè·ÖÎöãĞÖµ
-	_StaticSemVal<bool> 	ScanReadable;						//Âú×ãÉ¨Ãè·ÖÎöÌõ¼ş
-	_StaticSemVal<size_t> 	ScanPulseNums;						//Âú×ãÉ¨Ãè·ÖÎöÌõ¼şÂö³åÊı
-	size_t					CrossChannelTag;					//¿çÍ¨µÀ±êÖ¾(0xAA)
-	int 					ScanAnaly;							//É¨Ãè·ÖÎö±êÖ¾
-	int 					RadarNumber;						//Ò»¸öÍ¨µÀ·Ö³öµÄÀ×´ïÊı¼ÆÊı
-	int 					ResultArrLoc[ChannelRadarMaxNo];	//½á¹û±íÎ»ÖÃÊı×é
-	_PDWType 				PulseWord;							//Âö³å»º³åÇø
+	size_t					ContinuousTag;						//å·¥ä½œæˆ–è‡ªæ£€æ ‡å¿—
+	size_t					SelfCheckResultTag;					//è‡ªæ£€ç»“æœæ ‡å¿—
+	size_t					DiscernStLoc;						//åˆ†é€‰è„‰å†²å¼€å§‹ä½ç½®
+	size_t					PulseNum;							//è„‰å†²æ•°
+	size_t					DiscernThreshold;					//åˆ†é€‰é˜ˆå€¼
+	_StaticSemVal<bool> 	DiscernReadable;					//æ»¡è¶³å·²åˆ†é€‰æ¡ä»¶
+	_StaticSemVal<size_t> 	DiscernPulseNums;					//æ»¡è¶³å·²åˆ†é€‰æ¡ä»¶è„‰å†²æ•°
+	size_t					ScanThreshold;						//æ‰«æåˆ†æé˜ˆå€¼
+	_StaticSemVal<bool> 	ScanReadable;						//æ»¡è¶³æ‰«æåˆ†ææ¡ä»¶
+	_StaticSemVal<size_t> 	ScanPulseNums;						//æ»¡è¶³æ‰«æåˆ†ææ¡ä»¶è„‰å†²æ•°
+	size_t					CrossChannelTag;					//è·¨é€šé“æ ‡å¿—(0xAA)
+	int 					ScanAnaly;							//æ‰«æåˆ†ææ ‡å¿—
+	int 					RadarNumber;						//ä¸€ä¸ªé€šé“åˆ†å‡ºçš„é›·è¾¾æ•°è®¡æ•°
+	int 					ResultArrLoc[ChannelRadarMaxNo];	//ç»“æœè¡¨ä½ç½®æ•°ç»„
+	_PDWType 				PulseWord;							//è„‰å†²ç¼“å†²åŒº
 };
 
 template<typename RfTy,typename PwTy,typename PaTy,typename ToaTy,typename TonTy,size_t AnalysisNum>
 struct _AnalyChannel
 {
    int ChanNo;
-   int Located[AnalysisNum];            						//ÊÕ¼¯µ½µÄÓĞĞ§Âö³åÔÚÁÙÊ±Í¨µÀµÄÎ»ÖÃ
-   int Deducted[AnalysisNum];									//ÊÕ¼¯µ½µÄÓĞĞ§Âö³åÒÑ·ÖÑ¡¿Û³ıÂö³å
+   int Located[AnalysisNum];            						//æ”¶é›†åˆ°çš„æœ‰æ•ˆè„‰å†²åœ¨ä¸´æ—¶é€šé“çš„ä½ç½®
+   int Deducted[AnalysisNum];									//æ”¶é›†åˆ°çš„æœ‰æ•ˆè„‰å†²å·²åˆ†é€‰æ‰£é™¤è„‰å†²
    RfTy  Rf[AnalysisNum];
    PwTy  Pw[AnalysisNum];
    PaTy  Pa[AnalysisNum];
@@ -242,7 +242,7 @@ struct _AnalyChannel
 
 struct _ResultTmp 
 {
-   int Cmd;									//ÏûÊ§ 0x1d¡¢0xc9
+   int Cmd;									//æ¶ˆå¤± 0x1dã€0xc9
    int Type;
    int Rfl;
    int Rfh;						

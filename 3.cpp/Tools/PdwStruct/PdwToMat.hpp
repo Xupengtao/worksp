@@ -2,7 +2,7 @@
  * @Author: xpt 
  * @Date: 2020-01-11 15:59:32 
  * @Last Modified by: xpt
- * @Last Modified time: 2020-04-21 20:36:22
+ * @Last Modified time: 2020-05-16 02:31:13
  * 
  * @idea note
  * 2020.01.17 02:57 动态生成视频 左图片 右数据和映射位置及B、G、R值，用虚线将BGR Circle连接至映射位置 (*)
@@ -634,8 +634,7 @@ public:
         }
         PdwRfPwMapVec[i].PdwVecMap<_PdwType>(srcPdwVec);
     }
-    template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
-    inline void EndFrameProcess(Mat& srcMat, _cvTextImage<FontFace>& AnalysisTextMat)       // 帧结束处理
+    inline void EndFrameProcess(Mat& srcMat, _cvTextImage<cv::FONT_HERSHEY_COMPLEX_SMALL>& AnalysisTextMat)     // 帧结束处理
     {
         NewDoaTargetNosQueue.Push(NewDoaTargetNoVec);
         FrameCircularNo++;
@@ -688,7 +687,7 @@ public:
                     AnalysisTextMat.Title(Str);
                 }
             }
-            NewTargetNumTmp = PdwRfPwMapVec[i].EndFrameProcess<FontFace>(AnalysisTextMat);
+            NewTargetNumTmp = PdwRfPwMapVec[i].EndFrameProcess<cv::FONT_HERSHEY_COMPLEX_SMALL>(AnalysisTextMat);
             if(NewTargetNumTmp > 0)
             {
                 drawNewDiscoverTarget(srcMat, NewDiscoverTargetMat, 10, PdwRfPwMapVec[i].GetDoaSt(), PdwRfPwMapVec[i].GetDoaSt(), NewTargetNumTmp);
@@ -715,7 +714,7 @@ class _PdwToMat
     typedef _binaryFile<_FileMsgTy, _PdwType>           binaryFileType;
     typedef _PdwMap2D<_PdwType, BGRA>                   PdwMap2DType;
     typedef _PdwArrayDesc<_PdwType>                     PdwArrayDescType;
-private:
+public:
     CUINT                           ReadDataType;               // 0:文件, 1:iRadarSimPro
     CUINT                           DoaSpansUnit;				// 轮廓Doa分区角度单位
     UINT                            PdwSize;
@@ -753,16 +752,32 @@ private:
     vector<UINT>                    ContourTraceNos;            // 轮廓跟踪分析vector
     vector<UINT>                    RowAxisPixelNums;           // 按行统计二值图像素和vector
     vector<pair<int, int> >         HistogramBinLocs;           // 感兴趣直方图柱位置标定vector
-public:
-    _PdwToMat(const string& filepath, UINT fileHeaderSize_, UINT ReadDataSize_, UINT Row_, UINT Col_)   // 构造函数(文件读取)
-             :binaryFile(filepath, fileHeaderSize_, ReadDataSize_), ReadDataSize(ReadDataSize_),
+
+    _PdwToMat(const string& filepath, UINT Row_, UINT Col_, UINT ReadDataSize_ = 1)                     // 构造函数(文件读取)
+             :binaryFile(filepath, ReadDataSize_), ReadDataSize(ReadDataSize_),
               Timeit(20),
-              BackGround(Black),
+              BackGround(White),
               DoaSpansUnit(32),
               ReadDataType(0)
     {
-        binaryFile.registShowDataFunc(PrintPdw<_PdwType>);
+        if(ReadDataSize_ == 1)
+        {
+            ReadDataResize(binaryFile.GetFileLines());
+        }
         PdwAddr = binaryFile.GetDataAddr();
+        binaryFile.registShowDataFunc(PrintPdw<_PdwType>);
+        ImageResize(Row_, Col_);
+        PdwAnalyVec.reserve(0x1000000);
+    }
+    _PdwToMat(UINT Row_, UINT Col_, UINT ReadDataSize_ = 1)                                             // 构造函数(文件读取)
+             :binaryFile(ReadDataSize_), ReadDataSize(ReadDataSize_),
+              Timeit(20),
+              BackGround(White),
+              DoaSpansUnit(32),
+              ReadDataType(0)
+    {
+        PdwAddr = binaryFile.GetDataAddr();
+        binaryFile.registShowDataFunc(PrintPdw<_PdwType>);
         ImageResize(Row_, Col_);
         PdwAnalyVec.reserve(0x1000000);
     }
@@ -770,7 +785,7 @@ public:
              :binaryFile(),
               PdwMemorySwap(iRadarSimPro, &PdwAddr, PdwSize),
               Timeit(20),
-              BackGround(Black),
+              BackGround(White),
               DoaSpansUnit(32),
               ReadDataType(1)
     {
@@ -856,6 +871,22 @@ public:
         _PdwType::PdwArrayDesc.PwMax = (PwMax == 0) ? _PdwType::PdwArrayDesc.PwMax : PwMax;
         return *this;
     }
+    _ThisType& OpenFile(const string& filepath)                                                         // 打开文件
+    {
+        this->binaryFile.open(filepath);
+        if(ReadDataSize == 1)
+        {
+            ReadDataResize(binaryFile.GetFileLines());
+        }
+        this->CvTools.ImageMatClear(this->ImageMat, this->BackGround);
+        this->PdwMatrix.clear();
+        return *this;
+    }
+    _ThisType& CloseFile()                                                                              // 关闭文件
+    {
+        this->binaryFile.close();
+        return *this;
+    }
     _ThisType& ReadData(int seekst = -1)                                                                // 文件读取Pdw至PdwAddr
     {
         Timeit.Start(0, "读取文件ReadData，共计(us): ");
@@ -865,7 +896,7 @@ public:
         Timeit.End(0);
         return *this;
     }
-    _ThisType& AddTimeReadData(CINT AddTime_ms = 100, CINT ToaUnit_ns = 80)                             // 文件追加读取以ToaUnit_ns为TOA单位，AddTime_ms内的数据
+    _ThisType& AddTimeReadData(UINT AddTime_ms = 100, UINT ToaUnit_ns = 80)                             // 文件追加读取以ToaUnit_ns为TOA单位，AddTime_ms内的数据
     {
         Timeit.Start(1, "读取文件AddTimeReadData，共计(us): ");
         _PdwType::PdwArrayDescClear();                          //读取之前清零
@@ -1104,7 +1135,7 @@ public:
     }
     _ThisType& ContourAnalyVideo(string save_path, int seekst = 0,                                      // 以添加的方式生成轮廓分析视频流，以AVI格式保存至save_path
                                  CINT AddTime_ms = 100, CINT ToaUnit_ns = 80,
-                                 UINT ReadDataSize_ = 1000000, int readSize = 6000000)
+                                 UINT ReadDataSize_ = 1000000, int readSize = 0)
     {
         int rows = ImageMat.rows;
         int cols = ImageMat.cols;
@@ -1186,6 +1217,7 @@ public:
         {
             PdwMemorySwap.CheckBufferReady();
         }
+        readSize = (readSize == 0) ? binaryFile.GetFileLines() : readSize;
         boost::progress_display pd(readSize);
         while(1)
         {
@@ -1229,7 +1261,7 @@ public:
             cv::threshold(DensityBinInvMat, DensityBinInvMat, 0, 255, THRESH_BINARY);	// DensityBinInvMat以Threshold为最小阈值进行阈值操作生成二值图DensityBinInvMat
             CvTools.cvDilate(DensityBinMat, DensityDilateMat);					        // DensityBinMat进行图像膨胀操作
             // Analysis
-            PdwImageAnalysis<cv::FONT_HERSHEY_COMPLEX_SMALL>(BGRMat, DensityDilateMat, PdwRfPwMapClt, cvTextMat, PixelToaUnit); // 图像分析
+            PdwImageAnalysis(BGRMat, DensityDilateMat, PdwRfPwMapClt, cvTextMat, PixelToaUnit); // 图像分析
             // Generage VideoFrame
             CvTools.MatInv(DensityMat, DensityMat);
             CvTools.MatInv(DensityDilateMat, DensityDilateMat);
@@ -1249,7 +1281,7 @@ public:
             }
             cv::drawContours(BGRMat, Contours, -1, Scalar(0, 255, 0), 2, CV_AA);		// 在图像BGRMat上绘制轮廓组Contours
             CvTools.Remap(BGRMat, RemapBGRMat, xMapImage, yMapImage, BackGround);	    // 图像重映射
-            PdwRfPwMapClt.EndFrameProcess<cv::FONT_HERSHEY_COMPLEX_SMALL>(RemapBGRMat, cvTextMat);
+            PdwRfPwMapClt.EndFrameProcess(RemapBGRMat, cvTextMat);
             CurrentFrameNo++;
             writer.write(VideoFrameMat);												// 将图像VideoFrameMat写入视频帧
             // showImage(BGRMat);
@@ -1270,11 +1302,10 @@ public:
     }
 
     /****************************************** PdwAnalysis Area Beg ************************************/
-    template<CINT FontFace = cv::FONT_HERSHEY_COMPLEX_SMALL>
     _ThisType& PdwImageAnalysis(Mat& srcMat,                                                            // 脉冲映射图像分析
                                 Mat& srcBinMat,
                                 _PdwRfPwMapClt& PdwRfPwMapClt_,
-                                _cvTextImage<FontFace> &AnalysisTextMat,
+                                _cvTextImage<cv::FONT_HERSHEY_COMPLEX_SMALL> &AnalysisTextMat,
                                 const float PixelToaUnit)
     {
         int rows = srcBinMat.rows;

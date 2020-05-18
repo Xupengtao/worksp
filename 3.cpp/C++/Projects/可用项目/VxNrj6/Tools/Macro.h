@@ -186,7 +186,7 @@ void NLog_PrintStdIO(int flag);
 #ifndef _ITERTYPE_TRAITS
 #define _ITERTYPE_TRAITS
 #define STR_VAL(x) x,#x"   "
-#define TYPETRAIT(x) Typetrait(STR_VAL(x));							//�磺TYPETRAIT(a);
+#define TYPETRAIT(x) Typetrait(STR_VAL(x));							//如：TYPETRAIT(a);
 #define ITERATOR_TRAITS_STRING "Type traits:     "
 #define TYPETRAIT_PRINT(x)							\
 inline void Typetrait_print(x*)						\

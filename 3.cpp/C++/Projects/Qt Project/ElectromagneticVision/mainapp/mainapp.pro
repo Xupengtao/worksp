@@ -19,7 +19,7 @@ DEFINES +=  QT_DEPRECATED_WARNINGS
 # disables all the APIs deprecated before Qt 6.0.0
 
 INCLUDEPATH +=  ../cvplugininterface \
-                ../../Tools
+                ../../../Tools
 
 SOURCES += \
            main.cpp
@@ -27,7 +27,8 @@ SOURCES += \
 HEADERS += \
            mainwindow.h \
            qenhancedgraphicsview.h \
-           qcustomgraphicseffect.h
+           qcustomgraphicseffect.h \
+           ../../../Tools/PdwStruct/ElectromagneticVision.hpp
 
 FORMS   += \
            mainwindow.ui

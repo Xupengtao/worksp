@@ -60,60 +60,60 @@ int MSCMain()
 int MemCheckAndHistogramTest()
 #endif
 {
-//	//Magic Macro²âÊÔ
+//	//Magic Macroæµ‹è¯•
 //	int a = COUNT_MACRO_VAR_ARGS(1,2,3,4,5,6);
 //	cout<<a<<endl;
-	//³õÊ¼»¯²âÊÔ£¬²»¿É×¢ÊÍ
+	//åˆå§‹åŒ–æµ‹è¯•ï¼Œä¸å¯æ³¨é‡Š
 	_MutiHistogram<3,100,200> MutiHist(9,2);
 	Array Arr = {0};
-//	//²âÊÔÊı¾İÌî³ä 
+//	//æµ‹è¯•æ•°æ®å¡«å…… 
 //	MutiHist.fill_with_continue_n(3,100);
-//	//Éú³É¹Ì¶¨¼ä¸ôĞòÁĞ
+//	//ç”Ÿæˆå›ºå®šé—´éš”åºåˆ—
 //	CreatArray(Arr,ARRAY_SIZE,fix);
-//	//Éú³ÉËæ»ú¼ä¸ôĞòÁĞ
+//	//ç”Ÿæˆéšæœºé—´éš”åºåˆ—
 //	CreatArray(Arr,ARRAY_SIZE,random);
-	//Éú³É²Î²î¼ä¸ôĞòÁĞ
+	//ç”Ÿæˆå‚å·®é—´éš”åºåˆ—
 	CreatArray(Arr,ARRAY_SIZE,diff);
-	//´òÓ¡Éú³ÉĞòÁĞ
+	//æ‰“å°ç”Ÿæˆåºåˆ—
 	PrintArray(Arr,ARRAY_SIZE);
-	//Éú³Én½×Ö±·½Í¼
+	//ç”Ÿæˆné˜¶ç›´æ–¹å›¾
 	MutiHist.CreatHistogram(Arr,ARRAY_SIZE,3);
-//	//´òÓ¡È«½×ÖùĞò-¼üÖµÊı×é
+//	//æ‰“å°å…¨é˜¶æŸ±åº-é”®å€¼æ•°ç»„
 //	MutiHist.AddrVarPrint();
-//	//´òÓ¡Í¼ÖùµØÖ·¶Ô
+//	//æ‰“å°å›¾æŸ±åœ°å€å¯¹
 //	MutiHist.BarPrint(MutiHist[0][10]);
-//	//´òÓ¡Èı½×Ö±·½Í¼BarDict
+//	//æ‰“å°ä¸‰é˜¶ç›´æ–¹å›¾BarDict
 //	MutiHist.HistPrint();
-//	//´òÓ¡Èı½×Ö±·½Í¼Í¼ÖùË÷ÒıÖµ
+//	//æ‰“å°ä¸‰é˜¶ç›´æ–¹å›¾å›¾æŸ±ç´¢å¼•å€¼
 //	MutiHist.HistPrint(3,1);
-//	//´òÓ¡Èı½×Ö±·½Í¼µØÖ·¶Ô
+//	//æ‰“å°ä¸‰é˜¶ç›´æ–¹å›¾åœ°å€å¯¹
 //	MutiHist.HistPrint(3,2);
-//	//´òÓ¡È«½×µØÖ·¶Ô
+//	//æ‰“å°å…¨é˜¶åœ°å€å¯¹
 //	MutiHist.BarKeyDictPrint();
-//	//´òÓ¡È«½×¹é²¢µØÖ·¶Ô
+//	//æ‰“å°å…¨é˜¶å½’å¹¶åœ°å€å¯¹
 //	MutiHist.AllOrtersBarKeyDictPrint();
-	//È«½×°´¼üÖµÅÅĞò
-	//0:È«½× 1-OrderSize:µ¥½× OrderSize+È«½× 
-	//¡°Key¡±:°´¼üÖµ ¡±Lens¡±:°´³¤¶È
+	//å…¨é˜¶æŒ‰é”®å€¼æ’åº
+	//0:å…¨é˜¶ 1-OrderSize:å•é˜¶ OrderSize+å…¨é˜¶ 
+	//â€œKeyâ€:æŒ‰é”®å€¼ â€Lensâ€:æŒ‰é•¿åº¦
 	MutiHist.HistogramSort(0,"Key");
-	//´òÓ¡Ö±·½Í¼ÅÅĞòÊı×é
-	//0:È«½× 1-OrderSize:µ¥½× OrderSize+È«½× 
+	//æ‰“å°ç›´æ–¹å›¾æ’åºæ•°ç»„
+	//0:å…¨é˜¶ 1-OrderSize:å•é˜¶ OrderSize+å…¨é˜¶ 
 	MutiHist.SortPrint(0,"Key");
-	//Ñ¡È¡ÅÅĞòÊı×éToleranceÄÚ³¤¶ÈÎªsizeµÄĞòÁĞ¶Ó
+	//é€‰å–æ’åºæ•°ç»„Toleranceå†…é•¿åº¦ä¸ºsizeçš„åºåˆ—é˜Ÿ
 	int Tolerance = 60,size = 6,Min = 5;
 	size_t OutArray[10] = {0};
 	MutiHist.Filter(1,1,OutArray,size,Tolerance,Min);
 	PrintArray(OutArray,size);
-	//Á¬ĞøµØÖ·¶ÔËÑË÷
+	//è¿ç»­åœ°å€å¯¹æœç´¢
 	//type: 0: not drop, 1:drop
-	//findlens±íÊ¾µØÖ·¶Ô¸öÊı
-	//ÉÏÊösize±íÊ¾Ö±·½Í¼ÖùÊı
-	//AddrArray³¤¶ÈÓĞ¿ÉÄÜÒç³ö£¬ĞèÉèÖÃ½Ï´óÖµ
+	//findlensè¡¨ç¤ºåœ°å€å¯¹ä¸ªæ•°
+	//ä¸Šè¿°sizeè¡¨ç¤ºç›´æ–¹å›¾æŸ±æ•°
+	//AddrArrayé•¿åº¦æœ‰å¯èƒ½æº¢å‡ºï¼Œéœ€è®¾ç½®è¾ƒå¤§å€¼
 	size_t AddrArray[10] = {0};
 	int findLens = 5, orders = 1, type = 0;
 	MutiHist.AddrValVerify(orders,OutArray,AddrArray,size,findLens,type);
 	PrintArray(AddrArray,findLens);
-	//¶ÑÕ»µØÖ·¼ì²é
+	//å †æ ˆåœ°å€æ£€æŸ¥
 	MEMCHECK_INIT;
 	MEMCHECK_ADDVAR(Arr);
 	MEMCHECK_ADDVAR(Tolerance);

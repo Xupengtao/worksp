@@ -17,8 +17,9 @@
 
 struct _fileMsg                                     //XYG-C
 {
-    static CUSHORT lineHead = 0x55AA;
-    static CUSHORT lineTail = 0xAA55;
+    static CUSHORT headerSize   = 20;
+    static CUSHORT lineHead     = 0x55AA;
+    static CUSHORT lineTail     = 0xAA55;
     USHORT head;
     USHORT flag;
     USHORT yearmonth;
@@ -48,8 +49,9 @@ struct _fileMsg                                     //XYG-C
 
 struct _xyg_z                                       //XYG-Z
 {
-    static CUSHORT lineHead = 0xAA55;
-    static CUSHORT lineTail = 0x55AA;
+    static CUSHORT headerSize   = 0;
+    static CUSHORT lineHead     = 0xAA55;
+    static CUSHORT lineTail     = 0x55AA;
     USHORT head;
     USHORT unused1;
     USHORT unused2;
@@ -87,6 +89,47 @@ struct _xyg_z                                       //XYG-Z
     {
         COUTWIDTH(5, head, tail);
         COUTWIDTH(5, pwl, pwh, rf, pa, doa, toal, toah);
+    }
+};
+
+struct __attribute__((__packed__)) _iRadar_Xyg
+{
+    static CUSHORT lineHead = 0xAA55;
+    static CUSHORT lineTail = 0x55AA;
+    USHORT head;
+    USHORT unused1;
+    USHORT unused2;
+    int    ToaS;
+    UINT   Toa;
+    USHORT Rf;
+    USHORT unused7;
+    USHORT Doa;
+    USHORT unused9;
+    USHORT Pa;
+    UINT   Pw;
+    USHORT unused14;
+    USHORT unused15;
+    USHORT unused16;
+    USHORT unused17;
+    USHORT unused18;
+    USHORT unused19;
+    USHORT unused20;
+    USHORT unused21;
+    USHORT unused22;
+    USHORT unused23;
+    USHORT unused24;
+    USHORT unused25;
+    USHORT unused26;
+    USHORT unused27;
+    USHORT unused28;
+    USHORT unused29;
+    USHORT unused30;
+    USHORT tail;
+
+    inline void print()
+    {
+        COUTWIDTH(5, head, tail);
+        COUTWIDTH(5, Pw, Rf, Pa, Doa, Toa);
     }
 };
 

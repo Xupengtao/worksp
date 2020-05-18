@@ -20,20 +20,20 @@ using namespace std;
 #define DEBUG_PREPROCESS						0
 
 #if DEBUG_PREPROCESS
-#define DEBUG_PREPROCESS_COUT_FUNCSTACK 		1					//º¯Êıµ÷ÓÃ¶ÑÕ»
-#define DEBUG_PREPROCESS_COUT_STATUS	 		1					//¸÷×´Ì¬±êÖ¾
-#define DEBUG_PREPROCESS_COUT_TIMER		 		0					//¶¨Ê±Æ÷±êÖ¾
-#define DEBUG_PREPROCESS_COUT_RTNCATCH			0					//¼àÊÓµ¥´ÎÑ­»··µ»ØÖµ
+#define DEBUG_PREPROCESS_COUT_FUNCSTACK 		1					//å‡½æ•°è°ƒç”¨å †æ ˆ
+#define DEBUG_PREPROCESS_COUT_STATUS	 		1					//å„çŠ¶æ€æ ‡å¿—
+#define DEBUG_PREPROCESS_COUT_TIMER		 		0					//å®šæ—¶å™¨æ ‡å¿—
+#define DEBUG_PREPROCESS_COUT_RTNCATCH			0					//ç›‘è§†å•æ¬¡å¾ªç¯è¿”å›å€¼
 #endif
 /*-------------------------------------- DEBUG Sec --------------------------------------*/
 
 template<typename _RecvIterType,typename _DualRamType,
-		 size_t MainChannelNum,														//Ô¤·ÖÑ¡Ö÷Í¨µÀµÄÍ¨µÀÊı
-		 size_t ParaNum,															//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ×î´óÂö³åÊı
-		 size_t	ThresholdChgeTimeOut,												//Í¨µÀ¿É·ÖÑ¡ãĞÖµĞŞ¸ÄTimeOut
-		 size_t	AnalayLeastThreshold,												//×îĞ¡¿É·ÖÑ¡Âö³åÊı
-		 size_t DualRamNormalStart,													//Ram»º³åÇø±ê×¼ÓĞĞ§Í¨µÀÆğÊ¼Öµ
-		 size_t ContinuousPulseChannel,												//Ram»º³åÇøÁ¬Ğø²¨Í¨µÀºÅ
+		 size_t MainChannelNum,														//é¢„åˆ†é€‰ä¸»é€šé“çš„é€šé“æ•°
+		 size_t ParaNum,															//æ¯ä¸ªPDWæ•°æ®é€šé“çš„æœ€å¤§è„‰å†²æ•°
+		 size_t	ThresholdChgeTimeOut,												//é€šé“å¯åˆ†é€‰é˜ˆå€¼ä¿®æ”¹TimeOut
+		 size_t	AnalayLeastThreshold,												//æœ€å°å¯åˆ†é€‰è„‰å†²æ•°
+		 size_t DualRamNormalStart,													//Ramç¼“å†²åŒºæ ‡å‡†æœ‰æ•ˆé€šé“èµ·å§‹å€¼
+		 size_t ContinuousPulseChannel,												//Ramç¼“å†²åŒºè¿ç»­æ³¢é€šé“å·
 		 typename TagTy>
 class _PreProcess
 {
@@ -98,18 +98,18 @@ private:
 	_MainChType 	*MainChannel;
 	_RecvIterType	&RecPDWIter;
 	_DualRamType	&DualRam;
-	_TimerCount		&TimerCount;									//ºÁÃë  -> Ãë¶¨Ê±Æ÷
-	size_t			&TimeBegin;										//Ò»´Î·ÖÑ¡ÆğÊ¼Ê±¼äÖµ£¬ÓÉÔ¤´¦ÀíĞ´Öµ£¬Ô¤´¦ÀíºÍÖ÷´¦Àí¶ÁÖµ
-	UINT			BandNo;											//²¨¶ÎºÅ
-	RfTy	 		RfLeftInterval;									//Rf×îĞ¡Öµ
-	RfTy 			RfRightInterval;								//Rf×î´óÖµ, BandL: , BandH:0x01C4
+	_TimerCount		&TimerCount;									//æ¯«ç§’  -> ç§’å®šæ—¶å™¨
+	size_t			&TimeBegin;										//ä¸€æ¬¡åˆ†é€‰èµ·å§‹æ—¶é—´å€¼ï¼Œç”±é¢„å¤„ç†å†™å€¼ï¼Œé¢„å¤„ç†å’Œä¸»å¤„ç†è¯»å€¼
+	UINT			BandNo;											//æ³¢æ®µå·
+	RfTy	 		RfLeftInterval;									//Rfæœ€å°å€¼
+	RfTy 			RfRightInterval;								//Rfæœ€å¤§å€¼, BandL: , BandH:0x01C4
 	RfTy			RfTorlerance;
 	size_t 			NewChannelNo;
-	_LogType		*RfChannelLog;									//RfË÷ÒıÍ¨µÀºÅ
+	_LogType		*RfChannelLog;									//Rfç´¢å¼•é€šé“å·
 	TagTy  			ChannelTag;
 	size_t 			MainChannelAddr;
 	size_t 			SubChannelNo;
-	bool			NotValidPulseTag;								//ÎŞĞ§Âö³å±êÖ¾
+	bool			NotValidPulseTag;								//æ— æ•ˆè„‰å†²æ ‡å¿—
 public:
 	_PreProcess()
 				:BandNo(0),
@@ -200,7 +200,7 @@ public:
 					{
 						DualRam.ContinueWrite(i);
 					}
-					DualRam.ResetThreshold(i);				//ÎŞÂÛ¸ÃÍ¨µÀÊÇ·ñ¿É·ÖÑ¡£¬´ËÊ±µÄãĞÖµ¶¼ÖØÉè
+					DualRam.ResetThreshold(i);				//æ— è®ºè¯¥é€šé“æ˜¯å¦å¯åˆ†é€‰ï¼Œæ­¤æ—¶çš„é˜ˆå€¼éƒ½é‡è®¾
 				}
 			}
 			TimeBegin = TimerCount.Ms;
@@ -400,7 +400,7 @@ public:
 		GetChannelTag();
 		return false;
 	}
-	int 	WritePDWToCircleQueue(int cH)										//µ±DualRamÎªDefaultÊ±Ê¹ÓÃ´Ëº¯Êı
+	int 	WritePDWToCircleQueue(int cH)										//å½“DualRamä¸ºDefaultæ—¶ä½¿ç”¨æ­¤å‡½æ•°
 	{
 		_PdwChannelType &PdwChannelTmp = DualRam[cH>>8];
 		size_t PulseLoc = PdwChannelTmp.PulseNum;
@@ -536,8 +536,8 @@ public:
 		{
 			OldPw = MainChannel[ChannelAddr].SubChannel[SubChannelNo].Pw;
 			NewPw = RecPdw.Pw&0x0FFF;
-			if(((NewPw > 0x28) && (abs(NewPw-OldPw) < (OldPw>>3)))		//PW>=1us,¦¤PW >= oldPW*12.5%
-			 ||((NewPw <= 0x28) && (abs(NewPw-OldPw) < PwTlrc)))  		//PW<1us JPWLN,¦¤PW >= 125ns
+			if(((NewPw > 0x28) && (abs(NewPw-OldPw) < (OldPw>>3)))		//PW>=1us,Î”PW >= oldPW*12.5%
+			 ||((NewPw <= 0x28) && (abs(NewPw-OldPw) < PwTlrc)))  		//PW<1us JPWLN,Î”PW >= 125ns
 			{
 #if DEBUG_PREPROCESS_COUT_STATUS
 				COUTMSGSTR("true!");
@@ -932,29 +932,29 @@ public:
 		}
 		for(int SubChNo = 0; SubChNo < 4; SubChNo ++)
 		{
-			NLOGKSBYHEXWIDTH(4,"Ö÷Í¨µÀºÅ",SearchChan,"×ÓÍ¨µÀºÅ",SubChNo,
-							 "¼ìË÷µ½µÄÍ¨µÀºÅ",RfChannelLog[SearchChan].SubChannel[SubChNo]>>8,
-							 "½İ±ä±êÖ¾",RfChannelLog[SearchChan].SubChannel[SubChNo] & 0xFF);
+			NLOGKSBYHEXWIDTH(4,"ä¸»é€šé“å·",SearchChan,"å­é€šé“å·",SubChNo,
+							 "æ£€ç´¢åˆ°çš„é€šé“å·",RfChannelLog[SearchChan].SubChannel[SubChNo]>>8,
+							 "æ·å˜æ ‡å¿—",RfChannelLog[SearchChan].SubChannel[SubChNo] & 0xFF);
 		}
 	}
 	void	ShowStatus() const
 	{
 		NLOGKSSECBEG("PreProcess Status");
-		NLOGKSWIDTH(4,"Ô¤·ÖÑ¡Í¨µÀÊı(MainChann...)	",MainChannelNum);				//Ô¤·ÖÑ¡Ö÷Í¨µÀµÄÍ¨µÀÊı
-		NLOGKSWIDTH(4,"Í¨µÀÂö³åÊı(ParaNum)		"	 ,ParaNum);						//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ×î´óÂö³åÊı
-		NLOGKSWIDTH(4,"ãĞÖµÖØÖÃ³¬Ê±(Threshold...)	",ThresholdChgeTimeOut);		//Í¨µÀ¿É·ÖÑ¡ãĞÖµĞŞ¸ÄTimeOut
-		NLOGKSWIDTH(4,"×îĞ¡·ÖÑ¡Âö³åÊı(AnalayLe...)	",AnalayLeastThreshold);		//×îĞ¡¿É·ÖÑ¡Âö³åÊı
-		NLOGKSWIDTH(4,"±ê×¼Í¨µÀÆğÊ¼(DualRamNo...)	",DualRamNormalStart);			//Ram»º³åÇø±ê×¼ÓĞĞ§Í¨µÀÆğÊ¼Öµ
-		NLOGKSWIDTH(4,"Á¬Ğø²¨Í¨µÀºÅ(Continuou...)	",ContinuousPulseChannel);		//Ram»º³åÇøÁ¬Ğø²¨Í¨µÀºÅ
-		NLOGKSWIDTH(4,"ĞÂÍ¨µÀºÅ(NewChannelN...)	"	 ,NewChannelNo);
-		NLOGKSWIDTH(4,"²¨¶ÎºÅ(BandNo)			"	 ,BandNo);						//²¨¶ÎºÅ
-		NLOGKSWIDTH(4,"Í¨µÀ±êÖ¾(ChannelTag)		"	 ,ChannelTag);
-		NLOGKSWIDTH(4,"Rf×óãĞÖµ(RfLeftInter...)	",RfLeftInterval);				//Rf×îĞ¡Öµ
-		NLOGKSWIDTH(4,"RfÓÒãĞÖµ(RfRightInte...)	",RfRightInterval);				//Rf×î´óÖµ, BandL: , BandH:0x01C4
-		NLOGKSWIDTH(4,"RfÈİ²î·¶Î§(RfTorleran...)	",RfTorlerance);				//RfÈİ²î·¶Î§
-		NLOGKSWIDTH(4,"Ö÷Í¨µÀºÅ(MainChannelA...)	",MainChannelAddr);
-		NLOGKSWIDTH(4,"×ÓÍ¨µÀºÅ(SubChannelNo)	"	 ,SubChannelNo);
-		NLOGKSWIDTH(4,"Âö³åÎŞĞ§±êÖ¾(NotValidPu...)	",NotValidPulseTag);
+		NLOGKSWIDTH(4,"é¢„åˆ†é€‰é€šé“æ•°(MainChann...)	",MainChannelNum);				//é¢„åˆ†é€‰ä¸»é€šé“çš„é€šé“æ•°
+		NLOGKSWIDTH(4,"é€šé“è„‰å†²æ•°(ParaNum)		"	 ,ParaNum);						//æ¯ä¸ªPDWæ•°æ®é€šé“çš„æœ€å¤§è„‰å†²æ•°
+		NLOGKSWIDTH(4,"é˜ˆå€¼é‡ç½®è¶…æ—¶(Threshold...)	",ThresholdChgeTimeOut);		//é€šé“å¯åˆ†é€‰é˜ˆå€¼ä¿®æ”¹TimeOut
+		NLOGKSWIDTH(4,"æœ€å°åˆ†é€‰è„‰å†²æ•°(AnalayLe...)	",AnalayLeastThreshold);		//æœ€å°å¯åˆ†é€‰è„‰å†²æ•°
+		NLOGKSWIDTH(4,"æ ‡å‡†é€šé“èµ·å§‹(DualRamNo...)	",DualRamNormalStart);			//Ramç¼“å†²åŒºæ ‡å‡†æœ‰æ•ˆé€šé“èµ·å§‹å€¼
+		NLOGKSWIDTH(4,"è¿ç»­æ³¢é€šé“å·(Continuou...)	",ContinuousPulseChannel);		//Ramç¼“å†²åŒºè¿ç»­æ³¢é€šé“å·
+		NLOGKSWIDTH(4,"æ–°é€šé“å·(NewChannelN...)	"	 ,NewChannelNo);
+		NLOGKSWIDTH(4,"æ³¢æ®µå·(BandNo)			"	 ,BandNo);						//æ³¢æ®µå·
+		NLOGKSWIDTH(4,"é€šé“æ ‡å¿—(ChannelTag)		"	 ,ChannelTag);
+		NLOGKSWIDTH(4,"Rfå·¦é˜ˆå€¼(RfLeftInter...)	",RfLeftInterval);				//Rfæœ€å°å€¼
+		NLOGKSWIDTH(4,"Rfå³é˜ˆå€¼(RfRightInte...)	",RfRightInterval);				//Rfæœ€å¤§å€¼, BandL: , BandH:0x01C4
+		NLOGKSWIDTH(4,"Rfå®¹å·®èŒƒå›´(RfTorleran...)	",RfTorlerance);				//Rfå®¹å·®èŒƒå›´
+		NLOGKSWIDTH(4,"ä¸»é€šé“å·(MainChannelA...)	",MainChannelAddr);
+		NLOGKSWIDTH(4,"å­é€šé“å·(SubChannelNo)	"	 ,SubChannelNo);
+		NLOGKSWIDTH(4,"è„‰å†²æ— æ•ˆæ ‡å¿—(NotValidPu...)	",NotValidPulseTag);
 		NLOGKSSECEND("PreProcess Status");
 	}
 	void	ShowChannel(size_t ChanNo) const
@@ -965,7 +965,7 @@ public:
 		RfTy  RfTmp = 0,RfMinVal = 0,RfMaxVal = 0;
 		if(PulseNum != 0)
 		{
-			NLOGKSBYHEXWIDTH(4,"|¡¤¡¤¡¤HEX Channel Begin> ChannelNo",ChanNo,",  CrossChannelTag",PdwChannelTmp.CrossChannelTag,", PulseNum",PulseNum);
+			NLOGKSBYHEXWIDTH(4,"|Â·Â·Â·HEX Channel Begin> ChannelNo",ChanNo,",  CrossChannelTag",PdwChannelTmp.CrossChannelTag,", PulseNum",PulseNum);
 		}
 		for(int j = 0; j < PulseNum; j++)
 		{
@@ -995,7 +995,7 @@ public:
 				RfMinVal = RfMinVal * 3 + 6144;
 				RfMaxVal = RfMaxVal * 3 + 6144;
 			}
-			NLOGKSWIDTH		(5,"|¡¤¡¤¡¤DEC Channel End>   RfMinVal ",RfMinVal,", RfMaxVal",RfMaxVal);
+			NLOGKSWIDTH		(5,"|Â·Â·Â·DEC Channel End>   RfMinVal ",RfMinVal,", RfMaxVal",RfMaxVal);
 		}
 	}
 	void	ShowChannel(size_t ChanNoSt, size_t ChanNoEnd) const

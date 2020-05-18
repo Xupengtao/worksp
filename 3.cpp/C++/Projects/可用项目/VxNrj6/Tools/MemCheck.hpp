@@ -1,6 +1,6 @@
 /*
  * MemCheck.hpp
- * ÄÚ´æ¶ÑÕ»µØÖ·¼ì²âÀà£¬½¨ÒéÊ¹ÓÃºêMEMCHECK_INIT¡¢MEMCHECK_ADDVARºÍMEMCHECK_OVERFLOWCHECKÍê³É¶ÔÓ¦²Ù×÷
+ * å†…å­˜å †æ ˆåœ°å€æ£€æµ‹ç±»ï¼Œå»ºè®®ä½¿ç”¨å®MEMCHECK_INITã€MEMCHECK_ADDVARå’ŒMEMCHECK_OVERFLOWCHECKå®Œæˆå¯¹åº”æ“ä½œ
  *  Created on: Jun 27, 2019
  *      Author: xupengtao
  */
@@ -14,11 +14,11 @@
 using namespace std;
 #include"Macro.h"
 
-#define MEMCHECK_INIT 				_MemCheck MemCheck								//³õÊ¼»¯
-#define MEMCHECK_ADDVAR1(var) 		MemCheck.ValAssembleAddrs(#var,var)				//Ìí¼Ó¼ì²â±äÁ¿
-#define MEMCHECK_ADDVAR2(var,lens) 	MemCheck.ValAssembleAddrs(#var,var,lens)		//Ìí¼Ó¼ì²â±äÁ¿
-#define MEMCHECK_ADDVAR(...) 		INVOKE_VAR_MACRO(MEMCHECK_ADDVAR,__VA_ARGS__)	//Magicºê
-#define MEMCHECK_OVERFLOWCHECK  	MemCheck.ValAddrOverflowCheck()					//´òÓ¡¼ì²â½á¹û
+#define MEMCHECK_INIT 				_MemCheck MemCheck								//åˆå§‹åŒ–
+#define MEMCHECK_ADDVAR1(var) 		MemCheck.ValAssembleAddrs(#var,var)				//æ·»åŠ æ£€æµ‹å˜é‡
+#define MEMCHECK_ADDVAR2(var,lens) 	MemCheck.ValAssembleAddrs(#var,var,lens)		//æ·»åŠ æ£€æµ‹å˜é‡
+#define MEMCHECK_ADDVAR(...) 		INVOKE_VAR_MACRO(MEMCHECK_ADDVAR,__VA_ARGS__)	//Magicå®
+#define MEMCHECK_OVERFLOWCHECK  	MemCheck.ValAddrOverflowCheck()					//æ‰“å°æ£€æµ‹ç»“æœ
 
 #define MEMCHECK_ARRAY_SIZE 	100
 #define MEMCHECK_STRING_LENGTH 	60

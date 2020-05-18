@@ -80,28 +80,28 @@ int task_PdwDiscern(_PdwDiscernType *PdwDiscern,size_t *CtrlSign,size_t *TaskDel
 }
 #endif
 
-template<typename RfTy,typename PwTy,typename PaTy,typename ToaTy,typename TonTy,	//PDW¸÷¸ö²ÎÊıµÄÊı¾İÀàĞÍ
-		 size_t 	MainChannelNum,													//Ô¤·ÖÑ¡Ö÷Í¨µÀµÄÍ¨µÀÊı
-		 size_t 	ParaNum,														//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ×î´óÂö³åÊı
-		 size_t		ThresholdChgeTimeOut,											//Í¨µÀ¿É·ÖÑ¡ãĞÖµĞŞ¸ÄTimeOut
-		 size_t		AnalayLeastThreshold,											//×îĞ¡¿É·ÖÑ¡Âö³åÊı
-		 size_t 	DualRamNormalStart,												//Ram»º³åÇø±ê×¼ÓĞĞ§Í¨µÀÆğÊ¼Öµ
-		 size_t 	DualRamChannelNum,												//PDWÊı¾İÍ¨µÀµÄÍ¨µÀÊı
-		 size_t 	ChannelRadarMaxNo,												//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡À×´ïµÄ×î´óÊı
-         int		AnalysisNum,													//ÁÙÊ±Í¨µÀµÄ×î´óÂö³åÊı
-         int 		SingleChanAnalyTimeOut,											//È«²¿ÓĞĞ§µ¥Í¨µÀ·ÖÑ¡³¬Ê±
-         int 		NormalAnalyNum,													//·ÖÑ¡³õÊ¼ãĞÖµ£¬µ±ÒÔ´ÎãĞÖµ½øĞĞ·ÖÑ¡Ê±£¬±êÖ¾Ô¤´¦Àí²¢Î´¶Ô¸ÃÍ¨µÀµ÷ÕûãĞÖµ
-         int 		MutiSignalAnalyMinNum,											//²Î¼Ó¶àĞÅºÅ·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-         int 		HistAnalyMinNum,												//²Î¼ÓÖ±·½Í¼·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-         int 		SingAgileRfRgMin,												//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×îĞ¡RF±ä»¯·¶Î§
-         int 		SingChanAgileTlrc,												//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-         int 		MutiChanAgileTlrc,												//²Î¼Ó¶àÍ¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-         int 		AgileAnaMinNum,													//²Î¼Ó½İ±ä·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-		 size_t 	ContinuousPulseChannel,											//Ram»º³åÇøÁ¬Ğø²¨Í¨µÀºÅ
-		 size_t 	DiscernThreshold,												//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡ãĞÖµµÄ³õÊ¼Öµ
-		 int 		ScanThreshold,													//²Î¼ÓÉ¨Ãè·ÖÎöµÄ×îĞ¡Âö³åÊı
-		 int 		ParaUpdataTimeOut,												//²ÎÊı¸üĞÂ¼ä¸ôÊ±¼ä³¤¶È
-		 int 		DoaUpdataTimeOut>												//·½Î»¸üĞÂ¼ä¸ôÊ±¼ä³¤¶È	 
+template<typename RfTy,typename PwTy,typename PaTy,typename ToaTy,typename TonTy,	//PDWå„ä¸ªå‚æ•°çš„æ•°æ®ç±»å‹
+		 size_t 	MainChannelNum,													//é¢„åˆ†é€‰ä¸»é€šé“çš„é€šé“æ•°
+		 size_t 	ParaNum,														//æ¯ä¸ªPDWæ•°æ®é€šé“çš„æœ€å¤§è„‰å†²æ•°
+		 size_t		ThresholdChgeTimeOut,											//é€šé“å¯åˆ†é€‰é˜ˆå€¼ä¿®æ”¹TimeOut
+		 size_t		AnalayLeastThreshold,											//æœ€å°å¯åˆ†é€‰è„‰å†²æ•°
+		 size_t 	DualRamNormalStart,												//Ramç¼“å†²åŒºæ ‡å‡†æœ‰æ•ˆé€šé“èµ·å§‹å€¼
+		 size_t 	DualRamChannelNum,												//PDWæ•°æ®é€šé“çš„é€šé“æ•°
+		 size_t 	ChannelRadarMaxNo,												//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é›·è¾¾çš„æœ€å¤§æ•°
+         int		AnalysisNum,													//ä¸´æ—¶é€šé“çš„æœ€å¤§è„‰å†²æ•°
+         int 		SingleChanAnalyTimeOut,											//å…¨éƒ¨æœ‰æ•ˆå•é€šé“åˆ†é€‰è¶…æ—¶
+         int 		NormalAnalyNum,													//åˆ†é€‰åˆå§‹é˜ˆå€¼ï¼Œå½“ä»¥æ¬¡é˜ˆå€¼è¿›è¡Œåˆ†é€‰æ—¶ï¼Œæ ‡å¿—é¢„å¤„ç†å¹¶æœªå¯¹è¯¥é€šé“è°ƒæ•´é˜ˆå€¼
+         int 		MutiSignalAnalyMinNum,											//å‚åŠ å¤šä¿¡å·åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+         int 		HistAnalyMinNum,												//å‚åŠ ç›´æ–¹å›¾åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+         int 		SingAgileRfRgMin,												//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å°RFå˜åŒ–èŒƒå›´
+         int 		SingChanAgileTlrc,												//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+         int 		MutiChanAgileTlrc,												//å‚åŠ å¤šé€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+         int 		AgileAnaMinNum,													//å‚åŠ æ·å˜åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+		 size_t 	ContinuousPulseChannel,											//Ramç¼“å†²åŒºè¿ç»­æ³¢é€šé“å·
+		 size_t 	DiscernThreshold,												//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é˜ˆå€¼çš„åˆå§‹å€¼
+		 int 		ScanThreshold,													//å‚åŠ æ‰«æåˆ†æçš„æœ€å°è„‰å†²æ•°
+		 int 		ParaUpdataTimeOut,												//å‚æ•°æ›´æ–°é—´éš”æ—¶é—´é•¿åº¦
+		 int 		DoaUpdataTimeOut>												//æ–¹ä½æ›´æ–°é—´éš”æ—¶é—´é•¿åº¦	 
 class _NrjxMain
 {
 private:
@@ -161,19 +161,19 @@ private:
 public:
 	int								BandNo;
 	_iRadarSimProType 				iRadarSimPro;
-	_RecvIterType 					RecIter;										//signalÊäÈë½Ó¿Úµü´úÆ÷Àà,ÄÚÖÃ¶¨Ê±Æ÷1
-	_Timer							Timer;											//¶¨Ê±Æ÷0
+	_RecvIterType 					RecIter;										//signalè¾“å…¥æ¥å£è¿­ä»£å™¨ç±»,å†…ç½®å®šæ—¶å™¨1
+	_Timer							Timer;											//å®šæ—¶å™¨0
 	_TimerCount						TimerCount;
-	int 							TimerMsInterival;								//¶¨Ê±Æ÷´¥·¢ÖĞ¶Ï¼ä¸ô
+	int 							TimerMsInterival;								//å®šæ—¶å™¨è§¦å‘ä¸­æ–­é—´éš”
 	_DualRamType 					DualRam;
 	_PreProcessType 				*PreProcess;
 	_PdwDiscernType 				*PdwDiscern;
 	_SysCmd							SystemCmd;
 	size_t							SysRecvCmd;
-	size_t							CtrlSign;										//¿ØÖÆ±êÖ¾
+	size_t							CtrlSign;										//æ§åˆ¶æ ‡å¿—
 	size_t							DebugType;
-	size_t							TimeBegin;										//Ò»´Î·ÖÑ¡ÆğÊ¼Ê±¼ä£¬ÓÉÔ¤´¦ÀíĞ´Öµ£¬Ô¤´¦ÀíºÍÖ÷´¦Àí¶ÁÖµ
-	size_t 							RunType;										//ÔËĞĞÊ±¶ÁÃüÁîµÄ·½Ê½£º0£º´®¿Ú£¬1:µ¥×Ö·û£¬2£º×Ö·û´®
+	size_t							TimeBegin;										//ä¸€æ¬¡åˆ†é€‰èµ·å§‹æ—¶é—´ï¼Œç”±é¢„å¤„ç†å†™å€¼ï¼Œé¢„å¤„ç†å’Œä¸»å¤„ç†è¯»å€¼
+	size_t 							RunType;										//è¿è¡Œæ—¶è¯»å‘½ä»¤çš„æ–¹å¼ï¼š0ï¼šä¸²å£ï¼Œ1:å•å­—ç¬¦ï¼Œ2ï¼šå­—ç¬¦ä¸²
 #if _MSC_VER
 	_lpPreProcess<_PreProcessType>	lpPreProcess;
 	_lpPdwDiscern<_PdwDiscernType>	lpPdwDiscern;
@@ -385,7 +385,7 @@ public:
 					RecvIterTimerTest();
 					break;
 				case iRadarGenCmd:
-					iRadarSimPro.Init();											/* µ¥Í¨µÀ 3 ÔØÆµ¹Ì¶¨ÖØÆµ¹Ì¶¨  */
+					iRadarSimPro.Init();											/* å•é€šé“ 3 è½½é¢‘å›ºå®šé‡é¢‘å›ºå®š  */
 					iRadarSimPro.RadarSimGen(FixRfFixPri, 0, 1000, 1000);
 					iRadarSimPro.RadarSimGen(FixRfFixPri, 1, 1000, 3223);
 					iRadarSimPro.RadarSimGen(FixRfFixPri, 2, 1000, 5215);
@@ -554,19 +554,19 @@ public:
 		switch(RunType)
 		{
 		case SerialPort:
-			COUTSTREND("ÃüÁîÊäÈëÄ£Ê½ÇĞ»»ÖÁ ---> ´®¿ÚÊäÈë");
+			COUTSTREND("å‘½ä»¤è¾“å…¥æ¨¡å¼åˆ‡æ¢è‡³ ---> ä¸²å£è¾“å…¥");
 			COUTSTREND("Command type changed to ---> SerialPort");
 			break;
 		case CinGet:
-			COUTSTREND("ÃüÁîÊäÈëÄ£Ê½ÇĞ»»ÖÁ ---> °´¼üÊäÈë");
+			COUTSTREND("å‘½ä»¤è¾“å…¥æ¨¡å¼åˆ‡æ¢è‡³ ---> æŒ‰é”®è¾“å…¥");
 			COUTSTREND("Command type changed to ---> CinGet");
 			break;
 		case StrCmdGet:
-			COUTSTREND("ÃüÁîÊäÈëÄ£Ê½ÇĞ»»ÖÁ ---> ×Ö·û´®ÊäÈë");
+			COUTSTREND("å‘½ä»¤è¾“å…¥æ¨¡å¼åˆ‡æ¢è‡³ ---> å­—ç¬¦ä¸²è¾“å…¥");
 			COUTSTREND("Command type changed to ---> StrCmdGet");
 			break;
 		default:
-			COUTSTREND("ÊäÈë¸ñÊ½´íÎó£¬²Î¿¼:   0->´®¿ÚÊäÈë   1->°´¼üÊäÈë   2->×Ö·û´®ÊäÈë");
+			COUTSTREND("è¾“å…¥æ ¼å¼é”™è¯¯ï¼Œå‚è€ƒ:   0->ä¸²å£è¾“å…¥   1->æŒ‰é”®è¾“å…¥   2->å­—ç¬¦ä¸²è¾“å…¥");
 			COUTSTREND("Command type error, referance:  0->SerialPort  1->CinGet   2->StrCmdGet");
 			break;
 		}
@@ -676,18 +676,18 @@ public:
 		size_t Pri = 0;
 		stringstream StringToInt;
 		string s;
-		COUTSTREND("ÇëÊäÈëÀ×´ïÀàĞÍ:");
+		COUTSTREND("è¯·è¾“å…¥é›·è¾¾ç±»å‹:");
 		cin>>s;
 		StringToInt<<s;
 		StringToInt>>MsgPdwType;
 		COUT(MsgPdwType);
-		COUTSTREND("ÇëÊäÈëÀ×´ïĞòºÅ:");
+		COUTSTREND("è¯·è¾“å…¥é›·è¾¾åºå·:");
 		cin>>RadarSn;
 		COUT(RadarSn);
-		COUTSTREND("ÇëÊäÈëÔØÆµRf:");
+		COUTSTREND("è¯·è¾“å…¥è½½é¢‘Rf:");
 		cin>>Rf;
 		COUT(Rf);
-		COUTSTREND("ÇëÊäÈëÖØÆµPri:");
+		COUTSTREND("è¯·è¾“å…¥é‡é¢‘Pri:");
 		cin>>Pri;
 		COUT(Pri);
 		iRadarGen(1,RadarSn,Rf,Pri);
@@ -751,29 +751,29 @@ public:
 	virtual void ShowStatus() const
 	{
 		NLOGKSSECBEG("NrjxMain ShowStatus");
-		NLOGKSWIDTH(4,"²¨¶ÎºÅ(BandNo)			",BandNo);
-		NLOGKSWIDTH(4,"¿ØÖÆ±êÖ¾(CtrlSign)		",CtrlSign);
-		NLOGKSWIDTH(4,"·ÖÑ¡ÆğÊ¼Ê±¼ä(TimeBegin)	",TimeBegin);
-		NLOGKSWIDTH(4,"Ô¤·ÖÑ¡Í¨µÀÊı(MainChann...)	",MainChannelNum);				//Ô¤·ÖÑ¡Ö÷Í¨µÀµÄÍ¨µÀÊı
-		NLOGKSWIDTH(4,"Í¨µÀÂö³åÊı(ParaNum)		"	 ,ParaNum);						//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ×î´óÂö³åÊı
-		NLOGKSWIDTH(4,"ãĞÖµ³õÊ¼Öµ(DiscernThr...)	",DiscernThreshold);			//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡ãĞÖµµÄ³õÊ¼Öµ
-		NLOGKSWIDTH(4,"ãĞÖµÖØÖÃ³¬Ê±(Threshold...)	",ThresholdChgeTimeOut);		//Í¨µÀ¿É·ÖÑ¡ãĞÖµĞŞ¸ÄTimeOut
-		NLOGKSWIDTH(4,"×îĞ¡·ÖÑ¡Âö³åÊı(AnalayLe...)	",AnalayLeastThreshold);		//×îĞ¡¿É·ÖÑ¡Âö³åÊı
-		NLOGKSWIDTH(4,"Á¬Ğø²¨Í¨µÀºÅ(Continuou...)	",ContinuousPulseChannel);		//Ram»º³åÇøÁ¬Ğø²¨Í¨µÀºÅ
-		NLOGKSWIDTH(4,"±ê×¼Í¨µÀÆğÊ¼(DualRamNo...)	",DualRamNormalStart);			//Ram»º³åÇø±ê×¼ÓĞĞ§Í¨µÀÆğÊ¼Öµ
-		NLOGKSWIDTH(4,"PDWÍ¨µÀÊı(DualRamCha...)	",DualRamChannelNum);			//PDWÊı¾İÍ¨µÀµÄÍ¨µÀÊı
-		NLOGKSWIDTH(4,"Ã¿Í¨µÀÀ×´ïÊı(ChannelRa...)	",ChannelRadarMaxNo);			//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡À×´ïµÄ×î´óÊı
-        NLOGKSWIDTH(4,"ÁÙÊ±Í¨µÀÂö³åÊı(Analysis...)	",AnalysisNum);					//ÁÙÊ±Í¨µÀµÄ×î´óÂö³åÊı
-        NLOGKSWIDTH(4,"µ¥Í¨µÀ·ÖÑ¡³¬Ê±(SingleCh...)	",SingleChanAnalyTimeOut);		//È«²¿ÓĞĞ§µ¥Í¨µÀ·ÖÑ¡³¬Ê±
-        NLOGKSWIDTH(4,"·ÖÑ¡³õÊ¼ãĞÖµ(NormalAna...)	",NormalAnalyNum);				//·ÖÑ¡³õÊ¼ãĞÖµ£¬µ±ÒÔ´ÎãĞÖµ½øĞĞ·ÖÑ¡Ê±£¬±êÖ¾Ô¤´¦Àí²¢Î´¶Ô¸ÃÍ¨µÀµ÷ÕûãĞÖµ
-        NLOGKSWIDTH(4,"¶àĞÅºÅ·ÖÑ¡Âö³åÊı(MutiSig...)	",MutiSignalAnalyMinNum);		//²Î¼Ó¶àĞÅºÅ·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-        NLOGKSWIDTH(4,"Ö±·½Í¼·ÖÑ¡Âö³åÊı(HistAna...)	",HistAnalyMinNum);				//²Î¼ÓÖ±·½Í¼·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-        NLOGKSWIDTH(4,"µ¥Ch½İ±äRF×îĞ¡·¶Î§(Sing...)"	 ,SingAgileRfRgMin);			//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×îĞ¡RF±ä»¯·¶Î§
-        NLOGKSWIDTH(4,"µ¥Ch½İ±äRF×î´ó·¶Î§(Sing...)"	 ,SingChanAgileTlrc);			//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-        NLOGKSWIDTH(4,"¶àCh½İ±äRF×î´ó·¶Î§(Muti...)"	 ,MutiChanAgileTlrc);			//²Î¼Ó¶àÍ¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-        NLOGKSWIDTH(4,"½İ±ä×îĞ¡Âö³åÊı(AgileAna...)	",AgileAnaMinNum);				//²Î¼Ó½İ±ä·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-		NLOGKSWIDTH(4,"É¨Ãè·ÖÎöÂö³åÊı(ScanThre...)	",ScanThreshold);				//²Î¼ÓÉ¨Ãè·ÖÎöµÄ×îĞ¡Âö³åÊı
-		NLOGKSWIDTH(4,"²ÎÊı¸üĞÂTimeOut(ParaU...)	",ParaUpdataTimeOut);			//²ÎÊı¸üĞÂTimeOut
+		NLOGKSWIDTH(4,"æ³¢æ®µå·(BandNo)			",BandNo);
+		NLOGKSWIDTH(4,"æ§åˆ¶æ ‡å¿—(CtrlSign)		",CtrlSign);
+		NLOGKSWIDTH(4,"åˆ†é€‰èµ·å§‹æ—¶é—´(TimeBegin)	",TimeBegin);
+		NLOGKSWIDTH(4,"é¢„åˆ†é€‰é€šé“æ•°(MainChann...)	",MainChannelNum);				//é¢„åˆ†é€‰ä¸»é€šé“çš„é€šé“æ•°
+		NLOGKSWIDTH(4,"é€šé“è„‰å†²æ•°(ParaNum)		"	 ,ParaNum);						//æ¯ä¸ªPDWæ•°æ®é€šé“çš„æœ€å¤§è„‰å†²æ•°
+		NLOGKSWIDTH(4,"é˜ˆå€¼åˆå§‹å€¼(DiscernThr...)	",DiscernThreshold);			//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é˜ˆå€¼çš„åˆå§‹å€¼
+		NLOGKSWIDTH(4,"é˜ˆå€¼é‡ç½®è¶…æ—¶(Threshold...)	",ThresholdChgeTimeOut);		//é€šé“å¯åˆ†é€‰é˜ˆå€¼ä¿®æ”¹TimeOut
+		NLOGKSWIDTH(4,"æœ€å°åˆ†é€‰è„‰å†²æ•°(AnalayLe...)	",AnalayLeastThreshold);		//æœ€å°å¯åˆ†é€‰è„‰å†²æ•°
+		NLOGKSWIDTH(4,"è¿ç»­æ³¢é€šé“å·(Continuou...)	",ContinuousPulseChannel);		//Ramç¼“å†²åŒºè¿ç»­æ³¢é€šé“å·
+		NLOGKSWIDTH(4,"æ ‡å‡†é€šé“èµ·å§‹(DualRamNo...)	",DualRamNormalStart);			//Ramç¼“å†²åŒºæ ‡å‡†æœ‰æ•ˆé€šé“èµ·å§‹å€¼
+		NLOGKSWIDTH(4,"PDWé€šé“æ•°(DualRamCha...)	",DualRamChannelNum);			//PDWæ•°æ®é€šé“çš„é€šé“æ•°
+		NLOGKSWIDTH(4,"æ¯é€šé“é›·è¾¾æ•°(ChannelRa...)	",ChannelRadarMaxNo);			//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é›·è¾¾çš„æœ€å¤§æ•°
+        NLOGKSWIDTH(4,"ä¸´æ—¶é€šé“è„‰å†²æ•°(Analysis...)	",AnalysisNum);					//ä¸´æ—¶é€šé“çš„æœ€å¤§è„‰å†²æ•°
+        NLOGKSWIDTH(4,"å•é€šé“åˆ†é€‰è¶…æ—¶(SingleCh...)	",SingleChanAnalyTimeOut);		//å…¨éƒ¨æœ‰æ•ˆå•é€šé“åˆ†é€‰è¶…æ—¶
+        NLOGKSWIDTH(4,"åˆ†é€‰åˆå§‹é˜ˆå€¼(NormalAna...)	",NormalAnalyNum);				//åˆ†é€‰åˆå§‹é˜ˆå€¼ï¼Œå½“ä»¥æ¬¡é˜ˆå€¼è¿›è¡Œåˆ†é€‰æ—¶ï¼Œæ ‡å¿—é¢„å¤„ç†å¹¶æœªå¯¹è¯¥é€šé“è°ƒæ•´é˜ˆå€¼
+        NLOGKSWIDTH(4,"å¤šä¿¡å·åˆ†é€‰è„‰å†²æ•°(MutiSig...)	",MutiSignalAnalyMinNum);		//å‚åŠ å¤šä¿¡å·åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+        NLOGKSWIDTH(4,"ç›´æ–¹å›¾åˆ†é€‰è„‰å†²æ•°(HistAna...)	",HistAnalyMinNum);				//å‚åŠ ç›´æ–¹å›¾åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+        NLOGKSWIDTH(4,"å•Chæ·å˜RFæœ€å°èŒƒå›´(Sing...)"	 ,SingAgileRfRgMin);			//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å°RFå˜åŒ–èŒƒå›´
+        NLOGKSWIDTH(4,"å•Chæ·å˜RFæœ€å¤§èŒƒå›´(Sing...)"	 ,SingChanAgileTlrc);			//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+        NLOGKSWIDTH(4,"å¤šChæ·å˜RFæœ€å¤§èŒƒå›´(Muti...)"	 ,MutiChanAgileTlrc);			//å‚åŠ å¤šé€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+        NLOGKSWIDTH(4,"æ·å˜æœ€å°è„‰å†²æ•°(AgileAna...)	",AgileAnaMinNum);				//å‚åŠ æ·å˜åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+		NLOGKSWIDTH(4,"æ‰«æåˆ†æè„‰å†²æ•°(ScanThre...)	",ScanThreshold);				//å‚åŠ æ‰«æåˆ†æçš„æœ€å°è„‰å†²æ•°
+		NLOGKSWIDTH(4,"å‚æ•°æ›´æ–°TimeOut(ParaU...)	",ParaUpdataTimeOut);			//å‚æ•°æ›´æ–°TimeOut
 		NLOGKSSECEND("NrjxMain ShowStatus");
 		RecIter.ShowStatus();
 		DualRam.ShowStatus();
@@ -838,29 +838,29 @@ public:
 		UINT Pri = 1000, Rf = 1000, PriDitherRange = 500;
 		UINT PriJaggArr[8] = {1000,1200,1400,1600,1800,2000,2200,2400};
 		UINT RfAgileArr[8] = {0x1210,0x1218,0x1220,0x1228,0x1230,0x1238,0x1240,0x1249};
-		iRadarSimPro.Init();																	/* µ¥Í¨µÀ 3 ÔØÆµ¹Ì¶¨ÖØÆµ¹Ì¶¨  */
+		iRadarSimPro.Init();																	/* å•é€šé“ 3 è½½é¢‘å›ºå®šé‡é¢‘å›ºå®š  */
 		iRadarSimPro.RadarSimGen(FixRfFixPri, 0, Rf, 1000);
 		iRadarSimPro.RadarSimGen(FixRfFixPri, 1, Rf, 3223);
 		iRadarSimPro.RadarSimGen(FixRfFixPri, 2, Rf, 5215);
 		iRadarSimPro.run_onetimes();
 		iRadarSimPro.ShowOutBuffer(0,100);
-		iRadarSimPro.Init();																	/* µ¥Í¨µÀ 1 ÔØÆµ¹Ì¶¨ÖØÆµ²Î²î  */
+		iRadarSimPro.Init();																	/* å•é€šé“ 1 è½½é¢‘å›ºå®šé‡é¢‘å‚å·®  */
 		iRadarSimPro.RadarSimGen(FixRfJaggPri, 0, Rf, (UINT)PriJaggArr, 0, 8);
 		iRadarSimPro.run_onetimes();
 		iRadarSimPro.ShowOutBuffer(0,100);
-		iRadarSimPro.Init();																	/* µ¥Í¨µÀ 1 ÔØÆµ¹Ì¶¨ÖØÆµ¶¶¶¯  */
+		iRadarSimPro.Init();																	/* å•é€šé“ 1 è½½é¢‘å›ºå®šé‡é¢‘æŠ–åŠ¨  */
 		iRadarSimPro.RadarSimGen(FixRfDitherPri, 0, Rf, Pri, 0, PriDitherRange);
 		iRadarSimPro.run_onetimes();
 		iRadarSimPro.ShowOutBuffer(0,100);
-		iRadarSimPro.Init();																	/* µ¥Í¨µÀ 1 ÔØÆµ½İ±äÖØÆµ¹Ì¶¨  */
+		iRadarSimPro.Init();																	/* å•é€šé“ 1 è½½é¢‘æ·å˜é‡é¢‘å›ºå®š  */
 		iRadarSimPro.RadarSimGen(AgileRfFixPri, 0, (UINT)RfAgileArr, Pri, 8);
 		iRadarSimPro.run_onetimes();
 		iRadarSimPro.ShowOutBuffer(0,100);
-		iRadarSimPro.Init();																	/* µ¥Í¨µÀ 1 ÔØÆµ½İ±äÖØÆµ¶¶¶¯  */
+		iRadarSimPro.Init();																	/* å•é€šé“ 1 è½½é¢‘æ·å˜é‡é¢‘æŠ–åŠ¨  */
 		iRadarSimPro.RadarSimGen(AgileRfDitherPri, 0, (UINT)RfAgileArr, Pri, 8, PriDitherRange);
 		iRadarSimPro.run_onetimes();
 		iRadarSimPro.ShowOutBuffer(0,100);
-		iRadarSimPro.Init();																	/* µ¥Í¨µÀ 9 ÔØÆµ¹Ì¶¨ÖØÆµ¹Ì¶¨  */
+		iRadarSimPro.Init();																	/* å•é€šé“ 9 è½½é¢‘å›ºå®šé‡é¢‘å›ºå®š  */
 		iRadarSimPro.RadarPriTypeModify();
 		iRadarSimPro.RadarRfTypeModify();
 		size_t Tmp[] = {1,2,3,4,5,6,7,8,9};
@@ -877,12 +877,12 @@ public:
 		ToaTy PreToa = 0, Pri = 0;
 		if(RecIter.GetType() == 2)
 		{
-			iRadarSimPro.Init();										/* µ¥Í¨µÀ 3 ÔØÆµ¹Ì¶¨ÖØÆµ¹Ì¶¨  */
+			iRadarSimPro.Init();										/* å•é€šé“ 3 è½½é¢‘å›ºå®šé‡é¢‘å›ºå®š  */
 			iRadarSimPro.RadarSimGen(FixRfFixPri, 0, 1000, 1000);
 			iRadarSimPro.run_onetimes();
 			iRadarSimPro.ShowOutBuffer(0,100);
 		}
-		RecIter.IsReady();												//È·¶¨FIFOÓĞÊı
+		RecIter.IsReady();												//ç¡®å®šFIFOæœ‰æ•°
 		int Count = 0;
 		int MsStTmp = TimerCount.Ms;
 		while(Count < TestCnt)
@@ -954,7 +954,7 @@ public:
 			{
 				n++;
 				COUTDEC;
-				NLOGKSBYHEX("½ÓÊÕÃüÁî£º",SysRecvCmd);
+				NLOGKSBYHEX("æ¥æ”¶å‘½ä»¤ï¼š",SysRecvCmd);
 			}
 		}
 	}

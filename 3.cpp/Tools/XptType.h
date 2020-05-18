@@ -41,13 +41,13 @@ T EndianSwap(const T &v)
     return r;
 }
 template<>
-USHORT EndianSwap(const USHORT &v)                  //USHORT大小端转换 模版全特化
+inline USHORT EndianSwap(const USHORT &v)           //USHORT大小端转换 模版全特化
 {
     assert(sizeof(USHORT) == 2);
     return ((v & 0xff) << 8) | (v >> 8);
 }
 template<>
-UINT EndianSwap(const UINT &v)                      //UINT大小端转换 模版全特化
+inline UINT EndianSwap(const UINT &v)               //UINT大小端转换 模版全特化
 {
     assert(sizeof(UINT) == 4);
     return (v >> 24                 |
@@ -56,7 +56,7 @@ UINT EndianSwap(const UINT &v)                      //UINT大小端转换 模版
             (v << 24));
 }
 template<>
-ULONGLONG EndianSwap(const ULONGLONG &v)            //ULONGLONG大小端转换 模版全特化
+inline ULONGLONG EndianSwap(const ULONGLONG &v)     //ULONGLONG大小端转换 模版全特化
 {
     assert(sizeof(ULONGLONG) == 8);
     return (v >> 56                 |
@@ -89,12 +89,12 @@ inline T stringto(string& str)
     return rtnT;
 }
 
-string chartostring(const char *ch)
+inline string chartostring(const char *ch)
 {
     string rtnstr(ch);
     return rtnstr;
 }
-CCHAR* stringtochar(string& str)
+inline CCHAR* stringtochar(string& str)
 {
     CCHAR* rtnch = str.c_str();
     return rtnch;

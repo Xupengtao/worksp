@@ -36,12 +36,12 @@ public:
 
 private:
 	VtRecPDWType		*RecvPtr;
-	RecPDWType			RecvPtrTmp;							//³¬Ê±·µ»Ø
-	size_t				RecIterType;						//0: ´®¿Ú, 1: µ¥Buffer, 2: Ë«Buffer
+	RecPDWType			RecvPtrTmp;							//è¶…æ—¶è¿”å›
+	size_t				RecIterType;						//0: ä¸²å£, 1: å•Buffer, 2: åŒBuffer
 	_Timer				Timer;
 	_TimerCount			TimerCount;
-	CONUINT				TimeOut;							//³¬Ê±ÉèÖÃ,µ¥Î»ms
-	size_t				GetPdwTimeBegin;					//Ò»´Î¶ÁÂö³åÆğÊ¼Ê±¼äÖµ£¬ÓÉÔ¤´¦ÀíĞ´Öµ£¬Ô¤´¦Àí¶ÁÖµ
+	CONUINT				TimeOut;							//è¶…æ—¶è®¾ç½®,å•ä½ms
+	size_t				GetPdwTimeBegin;					//ä¸€æ¬¡è¯»è„‰å†²èµ·å§‹æ—¶é—´å€¼ï¼Œç”±é¢„å¤„ç†å†™å€¼ï¼Œé¢„å¤„ç†è¯»å€¼
 	RecPDWType 			*PDWBuffer1;
 	RecPDWType 			*PDWBuffer2;
 	size_t				*Buffer1ReadyTag;
@@ -95,7 +95,7 @@ public:
 	inline VtRecPDWType& operator++()
 	{
 		bool PDWValidTag = true;
-		if(RecIterType == 0)										//´®¿Ú½ÓÊÕ·½Ê½
+		if(RecIterType == 0)										//ä¸²å£æ¥æ”¶æ–¹å¼
 		{
 			PDWValidTag = FIFORead();
 			if(PDWValidTag == true)
@@ -103,7 +103,7 @@ public:
 				RecvPtr = (VtRecPDWType *)FIFOReg;
 			}
 		}
-		else if(RecIterType == 1)									//µ¥Ò»BUffer
+		else if(RecIterType == 1)									//å•ä¸€BUffer
 		{
 			Buffer1Loc++;
 			if(EndTagJudge(Buffer1Loc) == false)
@@ -116,7 +116,7 @@ public:
 				PDWValidTag = WaitBufferReady(1);
 			}
 		}
-		else if(RecIterType == 2)									//Ë«BufferÇĞ»»
+		else if(RecIterType == 2)									//åŒBufferåˆ‡æ¢
 		{
 			if(RecentBuffer == 1)
 			{
@@ -216,7 +216,7 @@ public:
 		Buffer1Loc 		= 0;
 		Buffer2Loc 		= 0;
 		RecentBuffer 	= 1;
-		if(RecIterType == 0)										//´®¿Ú½ÓÊÕ·½Ê½
+		if(RecIterType == 0)										//ä¸²å£æ¥æ”¶æ–¹å¼
 		{
 #if _MSC_VER
 #elif PPC
@@ -240,7 +240,7 @@ public:
 	inline bool IsReady()
 	{
 		bool PDWValidTag = true;
-		if(RecIterType == 0)										//´®¿Ú½ÓÊÕ·½Ê½
+		if(RecIterType == 0)										//ä¸²å£æ¥æ”¶æ–¹å¼
 		{
 #if _MSC_VER
 #elif PPC
@@ -277,7 +277,7 @@ public:
 		GetPdwTimeBegin = TimerCount.Ms;
 		if(((*FIFOStatus)&0x4000) == 1)
 		{
-			NLOGKS("½ÓÊÕÊı¾İ»º³åÇøÒÑÂú£¬×Ô¶¯Çå¿Õ!");
+			NLOGKS("æ¥æ”¶æ•°æ®ç¼“å†²åŒºå·²æ»¡ï¼Œè‡ªåŠ¨æ¸…ç©º!");
 #if _MSC_VER
 #elif PPC
 			*FIFOSet 	= 0x8000;
@@ -393,12 +393,12 @@ public:
 	void	ShowStatus() const
 	{
 		NLOGKSSECBEG("RecIter Status");
-		NLOGKSWIDTH(4,"IterÀàĞÍ(RecIte...)		",RecIterType);
-		NLOGKSWIDTH(4,"¶ÁÈ¡³¬Ê±(TimeOut)		"	 ,TimeOut);
-		NLOGKSWIDTH(4,"¶ÁÈ¡Ê±¼ä(GetPdwTi...)		",GetPdwTimeBegin);
-		NLOGKSWIDTH(4,"»º³åÇø1¶ÁÈ¡Î»ÖÃ(Buf...)	"	 ,Buffer1Loc);
-		NLOGKSWIDTH(4,"»º³åÇø2¶ÁÈ¡Î»ÖÃ(Buf...)	"	 ,Buffer2Loc);
-		NLOGKSWIDTH(4,"¶ÁÈ¡»º³åÇø(Recent...)		",RecentBuffer);
+		NLOGKSWIDTH(4,"Iterç±»å‹(RecIte...)		",RecIterType);
+		NLOGKSWIDTH(4,"è¯»å–è¶…æ—¶(TimeOut)		"	 ,TimeOut);
+		NLOGKSWIDTH(4,"è¯»å–æ—¶é—´(GetPdwTi...)		",GetPdwTimeBegin);
+		NLOGKSWIDTH(4,"ç¼“å†²åŒº1è¯»å–ä½ç½®(Buf...)	"	 ,Buffer1Loc);
+		NLOGKSWIDTH(4,"ç¼“å†²åŒº2è¯»å–ä½ç½®(Buf...)	"	 ,Buffer2Loc);
+		NLOGKSWIDTH(4,"è¯»å–ç¼“å†²åŒº(Recent...)		",RecentBuffer);
 		NLOGKSSECEND("RecIter Status");
 	}
 };

@@ -13,27 +13,27 @@ SEM_ID _StaticSemVal<Ty>::Sem 	= semBCreate(SEM_Q_FIFO,SEM_FULL);
 #endif
 
 typedef USHORT RfTy,PwTy,PaTy,ToaTy,TonTy;
-const size_t 	MainChannelNum 			= 0x200;				//Ô¤·ÖÑ¡Ö÷Í¨µÀµÄÍ¨µÀÊı
-const size_t 	ParaNum 				= 0x100;				//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ×î´óÂö³åÊı
-const size_t	ThresholdChgeTimeOut	= 400;					//Í¨µÀ¿É·ÖÑ¡ãĞÖµĞŞ¸ÄTimeOut
-const size_t	AnalayLeastThreshold	= 6;					//×îĞ¡¿É·ÖÑ¡Âö³åÊı
-const size_t 	DualRamNormalStart 		= 1;					//Ram»º³åÇø±ê×¼ÓĞĞ§Í¨µÀÆğÊ¼Öµ
-const size_t 	DualRamChannelNum 		= 0x200;				//PDWÊı¾İÍ¨µÀµÄÍ¨µÀÊı
-const size_t 	ChannelRadarMaxNo 		= 9;					//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡À×´ïµÄ×î´óÊı
-const int		AnalysisNum	 			= 0x100;				//ÁÙÊ±Í¨µÀµÄ×î´óÂö³åÊı
-const int 		SingleChanAnalyTimeOut	= 500;					//È«²¿ÓĞĞ§µ¥Í¨µÀ·ÖÑ¡³¬Ê±
-const int 		NormalAnalyNum 			= 32;					//·ÖÑ¡³õÊ¼ãĞÖµ£¬µ±ÒÔ´ÎãĞÖµ½øĞĞ·ÖÑ¡Ê±£¬±êÖ¾Ô¤´¦Àí²¢Î´¶Ô¸ÃÍ¨µÀµ÷ÕûãĞÖµ
-const int 		MutiSignalAnalyMinNum 	= 6;					//²Î¼Ó¶àĞÅºÅ·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-const int 		HistAnalyMinNum 		= 16;					//²Î¼ÓÖ±·½Í¼·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-const int 		SingAgileRfRgMin		= 20;					//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×îĞ¡RF±ä»¯·¶Î§
-const int 		SingChanAgileTlrc		= 100;					//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-const int 		MutiChanAgileTlrc		= 200;					//²Î¼Ó¶àÍ¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-const int 		AgileAnaMinNum 			= 15;					//²Î¼Ó½İ±ä·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-const size_t 	ContinuousPulseChannel 	= 0;					//Ram»º³åÇøÁ¬Ğø²¨Í¨µÀºÅ
-const size_t 	DiscernThreshold 		= 32;					//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡ãĞÖµµÄ³õÊ¼Öµ
-const int 		ScanThreshold			= 156;					//²Î¼ÓÉ¨Ãè·ÖÎöµÄ×îĞ¡Âö³åÊı
-const int		ParaUpdataTimeOut		= 3000;					//²ÎÊı¸üĞÂ¼ä¸ôÊ±¼ä³¤¶È
-const int		DoaUpdataTimeOut		= 1000;					//·½Î»¸üĞÂ¼ä¸ôÊ±¼ä³¤¶È
+const size_t 	MainChannelNum 			= 0x200;				//é¢„åˆ†é€‰ä¸»é€šé“çš„é€šé“æ•°
+const size_t 	ParaNum 				= 0x100;				//æ¯ä¸ªPDWæ•°æ®é€šé“çš„æœ€å¤§è„‰å†²æ•°
+const size_t	ThresholdChgeTimeOut	= 400;					//é€šé“å¯åˆ†é€‰é˜ˆå€¼ä¿®æ”¹TimeOut
+const size_t	AnalayLeastThreshold	= 6;					//æœ€å°å¯åˆ†é€‰è„‰å†²æ•°
+const size_t 	DualRamNormalStart 		= 1;					//Ramç¼“å†²åŒºæ ‡å‡†æœ‰æ•ˆé€šé“èµ·å§‹å€¼
+const size_t 	DualRamChannelNum 		= 0x200;				//PDWæ•°æ®é€šé“çš„é€šé“æ•°
+const size_t 	ChannelRadarMaxNo 		= 9;					//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é›·è¾¾çš„æœ€å¤§æ•°
+const int		AnalysisNum	 			= 0x100;				//ä¸´æ—¶é€šé“çš„æœ€å¤§è„‰å†²æ•°
+const int 		SingleChanAnalyTimeOut	= 500;					//å…¨éƒ¨æœ‰æ•ˆå•é€šé“åˆ†é€‰è¶…æ—¶
+const int 		NormalAnalyNum 			= 32;					//åˆ†é€‰åˆå§‹é˜ˆå€¼ï¼Œå½“ä»¥æ¬¡é˜ˆå€¼è¿›è¡Œåˆ†é€‰æ—¶ï¼Œæ ‡å¿—é¢„å¤„ç†å¹¶æœªå¯¹è¯¥é€šé“è°ƒæ•´é˜ˆå€¼
+const int 		MutiSignalAnalyMinNum 	= 6;					//å‚åŠ å¤šä¿¡å·åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+const int 		HistAnalyMinNum 		= 16;					//å‚åŠ ç›´æ–¹å›¾åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+const int 		SingAgileRfRgMin		= 20;					//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å°RFå˜åŒ–èŒƒå›´
+const int 		SingChanAgileTlrc		= 100;					//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+const int 		MutiChanAgileTlrc		= 200;					//å‚åŠ å¤šé€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+const int 		AgileAnaMinNum 			= 15;					//å‚åŠ æ·å˜åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+const size_t 	ContinuousPulseChannel 	= 0;					//Ramç¼“å†²åŒºè¿ç»­æ³¢é€šé“å·
+const size_t 	DiscernThreshold 		= 32;					//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é˜ˆå€¼çš„åˆå§‹å€¼
+const int 		ScanThreshold			= 156;					//å‚åŠ æ‰«æåˆ†æçš„æœ€å°è„‰å†²æ•°
+const int		ParaUpdataTimeOut		= 3000;					//å‚æ•°æ›´æ–°é—´éš”æ—¶é—´é•¿åº¦
+const int		DoaUpdataTimeOut		= 1000;					//æ–¹ä½æ›´æ–°é—´éš”æ—¶é—´é•¿åº¦
 
 typedef   _NrjxMain<RfTy, PwTy, PaTy, ToaTy, TonTy,
 					MainChannelNum,

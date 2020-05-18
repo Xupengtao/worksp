@@ -29,11 +29,40 @@
          <string>Plugin UI</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
-         <item row="2" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout"/>
-         </item>
          <item row="3" column="0">
           <layout class="QVBoxLayout" name="pluginLayout"/>
+         </item>
+         <item row="2" column="0">
+          <layout class="QVBoxLayout" name="PdwVisionLayout">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLineEdit" name="openLineEdit"/>
+             </item>
+             <item>
+              <widget class="QPushButton" name="openPushButton">
+               <property name="text">
+                <string>Open</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QPushButton" name="runPushButton">
+             <property name="text">
+              <string>Run</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="runProgressBar">
+             <property name="value">
+              <number>24</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -72,7 +101,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

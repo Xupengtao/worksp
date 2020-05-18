@@ -19,7 +19,7 @@ std::string savepath("/home/admin/WorkSp/Analysis/");
 
 int main(int argc, char **argv)
 {
-    // _PdwToMat<_fileMsg, PdwType, cv::Vec4b> PdwToMat1(filepath + "文件32.data", 20, 1000000, 1024, 4096);
+    // _PdwToMat<_fileMsg, PdwType, cv::Vec4b> PdwToMat1(filepath + "文件32.data", 1024, 4096);
     // PdwToMat1.ImageResize(1024, 1024)
     //          .RemapImageResize(1024, 1024)
     //          .ReadDataResize(26000000)
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     //          .SaveDensityImage(savepath + "Density.bmp")
     //          .SaveImage(savepath + "文件32.bmp")
     //          .AddSaveVideo(savepath + "文件32.avi", 0, 100, 80, 1000000,25000000);
-    // _PdwToMat<_xyg_z, PdwType, cv::Vec4b> PdwToMat2(filepath + "z", 0, 6553600, 1024, 1024);
+    // _PdwToMat<_xyg_z, PdwType, cv::Vec4b> PdwToMat2(filepath + "z", 1024, 1024);
     // PdwToMat2.ReadData(100)
     //          .showData(0,100)
     //          .SetBackGround(White)
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 	// iRadarSimPro.ShowOutBuffer(0,100);
     // _PdwToMat<_xyg_z, PdwType, cv::Vec4b> PdwToMat3(iRadarSimPro, 1024, 1024);
     // PdwToMat3.SetBackGround(White).ContourAnalyVideo(savepath + "AddSaveHistogramVideo_z1.avi", 0, 100);
-    _PdwToMat<PdwType, PdwType, cv::Vec4b> PdwToMat4(filepath + "iRadarSimProGenData.data", 0, 6553600, 1024, 1024);
+    _PdwToMat<_xyg_z, PdwType, cv::Vec4b> PdwToMat4(filepath + "iRadarSimProGenData.data", 1024, 1024);
     PdwToMat4.ReadData(100)
              .showData(0,100)
              .SetBackGround(White)

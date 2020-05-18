@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QLabel>
 #include <QMutex>
+#include <QTimer>
 #include <QThread>
 #include <QPixmap>
 #include <QLibrary>
@@ -29,8 +30,9 @@
 #include <QDragEnterEvent>
 #include <QGraphicsProxyWidget>
 
-#include "cvplugininterface.h"
 #include "ui_mainwindow.h"
+#include "cvplugininterface.h"
+#include "PdwStruct/ElectromagneticVision.hpp"
 
 #define PLUGINS_SUBFOLDER                   "/cvplugins/"
 #define LANGUAGES_SUBFOLDER                 "/languages/"
@@ -46,7 +48,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow*         ui;
     QString                 currentThemeFile;
     QString                 currentLanguageFile;
     QString                 currentPluginFile;
@@ -54,10 +56,37 @@ private:
     QPointer<QWidget>       currentPluginGui;
     QGraphicsScene          scene;
     QTranslator             translator;
+    QTimer                  frameTimer;
+    cv::String              pdwfilePath;
     QGraphicsPixmapItem     originalPixmap, processedPixmap;
     cv::Mat                 originalMat,    processedMat;
     QImage                  originalImage,  processedImage;
-
+    _ElectromagneticVision<_xyg_z, PdwType, cv::Vec4b>  ElectromagneticVision;
+public:
+    explicit MainWindow(QWidget *parent = 0) : QMainWindow(parent), ui(new Ui::MainWindow), frameTimer(this), ElectromagneticVision(1024, 1024)
+    {
+        ui->setupUi(this);
+        this->setAcceptDrops(true);
+        loadSettings();                                                             // 设置加载
+        populatePluginsMenu();                                                      // 插件菜单加载
+        populateLanguagesMenu();                                                    // 语言菜单加载
+        populateThemesMenu();                                                       // 主题菜单加载
+        ui->graphicsView->setAcceptDrops(false);
+        ui->graphicsView->setScene(&scene);                                         // graphicsView场景设置
+        ui->graphicsView->setInteractive(true);
+        ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+        ui->graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
+        scene.addItem(&originalPixmap);                                             // graphicsView场景添加对象元素
+        scene.addItem(&processedPixmap);                                            // graphicsView场景添加对象元素
+        connect(&frameTimer, SIGNAL(timeout()), this, SLOT(OnTimerOut()));
+        ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    }
+    ~MainWindow()
+    {
+        delete currentPlugin;
+        delete ui;
+    }
+private:
     void    loadSettings()                                      // 加载设置
     {
         QSettings settings("Packt", "Electromagnetic_Vision", this);
@@ -153,29 +182,6 @@ private:
             }
         }
         ui->actionTheme->setMenu(themesMenu);
-    }
-public:
-    explicit MainWindow(QWidget *parent = 0) : QMainWindow(parent), ui(new Ui::MainWindow)
-    {
-        ui->setupUi(this);
-        this->setAcceptDrops(true);
-        loadSettings();                                                             // 设置加载
-        populatePluginsMenu();                                                      // 插件菜单加载
-        populateLanguagesMenu();                                                    // 语言菜单加载
-        populateThemesMenu();                                                       // 主题菜单加载
-        ui->graphicsView->setAcceptDrops(false);
-        ui->graphicsView->setScene(&scene);                                         // graphicsView场景设置
-        ui->graphicsView->setInteractive(true);
-        ui->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
-        ui->graphicsView->setRubberBandSelectionMode(Qt::ContainsItemShape);
-        scene.addItem(&originalPixmap);                                             // graphicsView场景添加对象元素
-        scene.addItem(&processedPixmap);                                            // graphicsView场景添加对象元素
-        ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    }
-    ~MainWindow()
-    {
-        delete currentPlugin;
-        delete ui;
     }
 protected:
     void    closeEvent(QCloseEvent *event)                      // 关闭触发事件
@@ -375,6 +381,31 @@ private slots:
     void    on_action_Camera_triggered()
     {
 
+    }
+    void    on_openPushButton_clicked()
+    {
+        QString fileName = QFileDialog::getOpenFileName(this, tr("Open Input File"), QDir::currentPath(), tr("File") + " (*)");
+        pdwfilePath = fileName.toStdString();
+        ui->openLineEdit->setText(fileName);
+    }
+    void    OnTimerOut()
+    {
+        cv::Mat procMat = ElectromagneticVision.ProcessFrame();
+        if(procMat.rows == 0)
+        {
+            ElectromagneticVision.CloseFile();
+            frameTimer.stop();
+        }
+        else
+        {
+            originalImage = QImage(procMat.data, procMat.cols, procMat.rows, procMat.step, QImage::Format_RGB888);
+            originalPixmap.setPixmap(QPixmap::fromImage(originalImage.rgbSwapped()));
+        }
+    }
+    void    on_runPushButton_clicked()
+    {
+        ElectromagneticVision.OpenFile(pdwfilePath, 100);
+        frameTimer.start(100);
     }
 };
 

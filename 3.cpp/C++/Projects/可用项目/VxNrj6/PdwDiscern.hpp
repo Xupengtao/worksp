@@ -17,7 +17,7 @@
 
 #define DEBUG_NLOGKS NLOGKS
 
-#define PDWDISCERN_COUT_STUTAS 			0					//·ÖÑ¡¸÷×´Ì¬±êÖ¾ºÍ·ÖÑ¡Êı
+#define PDWDISCERN_COUT_STUTAS 			0					//åˆ†é€‰å„çŠ¶æ€æ ‡å¿—å’Œåˆ†é€‰æ•°
 
 #define ABS(x) (((x) > 0) ? (x) : (-(x)))
 
@@ -62,21 +62,21 @@ inline bool RfCmp2(FreTy Fst, FreTy Sec, FreTy CmpVal)
 }
 
 template<typename _DualRamType,
-         int DualRamChannelNum,										//PDWÊı¾İÍ¨µÀµÄÍ¨µÀÊı
-         int ChannelRadarMaxNo,										//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡À×´ïµÄ×î´óÊı
-         int DualRamNormalStart,									//Ram»º³åÇø±ê×¼ÓĞĞ§Í¨µÀÆğÊ¼Öµ
-         int AnalysisNum,											//ÁÙÊ±Í¨µÀµÄ×î´óÂö³åÊı
-         int SingleChanAnalyTimeOut,								//È«²¿ÓĞĞ§µ¥Í¨µÀ·ÖÑ¡³¬Ê±
-         int NormalAnalyNum,										//·ÖÑ¡³õÊ¼ãĞÖµ£¬µ±ÒÔ´ÎãĞÖµ½øĞĞ·ÖÑ¡Ê±£¬±êÖ¾Ô¤´¦Àí²¢Î´¶Ô¸ÃÍ¨µÀµ÷ÕûãĞÖµ
-         int MutiSignalAnalyMinNum,									//²Î¼Ó¶àĞÅºÅ·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-         int HistAnalyMinNum,										//²Î¼ÓÖ±·½Í¼·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-         int SingAgileRfRgMin,										//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×îĞ¡RF±ä»¯·¶Î§
-         int SingChanAgileTlrc,										//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-         int MutiChanAgileTlrc,										//²Î¼Ó¶àÍ¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-         int AgileAnaMinNum,										//²Î¼Ó½İ±ä·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-         int ScanThreshold,											//²Î¼ÓÉ¨Ãè·ÖÎöµÄ×îĞ¡Âö³åÊı
-		 int ParaUpdataTimeOut,										//²ÎÊı¸üĞÂ¼ä¸ôÊ±¼ä³¤¶È
-		 int DoaUpdataTimeOut>										//·½Î»¸üĞÂ¼ä¸ôÊ±¼ä³¤¶È
+         int DualRamChannelNum,										//PDWæ•°æ®é€šé“çš„é€šé“æ•°
+         int ChannelRadarMaxNo,										//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é›·è¾¾çš„æœ€å¤§æ•°
+         int DualRamNormalStart,									//Ramç¼“å†²åŒºæ ‡å‡†æœ‰æ•ˆé€šé“èµ·å§‹å€¼
+         int AnalysisNum,											//ä¸´æ—¶é€šé“çš„æœ€å¤§è„‰å†²æ•°
+         int SingleChanAnalyTimeOut,								//å…¨éƒ¨æœ‰æ•ˆå•é€šé“åˆ†é€‰è¶…æ—¶
+         int NormalAnalyNum,										//åˆ†é€‰åˆå§‹é˜ˆå€¼ï¼Œå½“ä»¥æ¬¡é˜ˆå€¼è¿›è¡Œåˆ†é€‰æ—¶ï¼Œæ ‡å¿—é¢„å¤„ç†å¹¶æœªå¯¹è¯¥é€šé“è°ƒæ•´é˜ˆå€¼
+         int MutiSignalAnalyMinNum,									//å‚åŠ å¤šä¿¡å·åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+         int HistAnalyMinNum,										//å‚åŠ ç›´æ–¹å›¾åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+         int SingAgileRfRgMin,										//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å°RFå˜åŒ–èŒƒå›´
+         int SingChanAgileTlrc,										//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+         int MutiChanAgileTlrc,										//å‚åŠ å¤šé€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+         int AgileAnaMinNum,										//å‚åŠ æ·å˜åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+         int ScanThreshold,											//å‚åŠ æ‰«æåˆ†æçš„æœ€å°è„‰å†²æ•°
+		 int ParaUpdataTimeOut,										//å‚æ•°æ›´æ–°é—´éš”æ—¶é—´é•¿åº¦
+		 int DoaUpdataTimeOut>										//æ–¹ä½æ›´æ–°é—´éš”æ—¶é—´é•¿åº¦
 class _PdwDiscern
 {
 public:
@@ -126,50 +126,50 @@ public:
 		whereit 	= 1
 	};
 public:
-	_DualRamType		&DualRam;									//Ram»º³åÇø¶ÔÏó
-	_TimerCount			&TimerCount;								//ºÁÃë  -> Ãë¶¨Ê±Æ÷
-	size_t				&TimeBegin;									//Ò»´Î·ÖÑ¡ÆğÊ¼Ê±¼ä£¬ÓÉÔ¤´¦ÀíĞ´Öµ£¬Ô¤´¦ÀíºÍÖ÷´¦Àí¶ÁÖµ
-	_SysCmd 			&SysCmd;									//½ÓÊÕÃüÁî
-	_MutiHistogramType 	MutiHistogram;								//¶à½×Ö±·½Í¼¶ÔÏó
-	_AnalyChannelType 	AnalyChannel;								//ÁÙÊ±·ÖÎöÍ¨µÀ
-	_CompFlag			CompFlag;									//ÓÃÓÚ±ê¼Ç·ÖÎöÍ¨µÀ½á¹û±íÓë½á¹û±íÊı×é±È½ÏµÄ½á¹û
-	_ResultTmp			ResultTmp;									//·ÖÎöÍ¨µÀ½á¹û±í
-	_Msg				Msg;										//Êä³ö±¨ÎÄ
-	_DoaUpdataMsg		DoaUpdataMsg;								//Êä³ö·½Î»¸üĞÂ±¨ÎÄ
-	RfTy				AnalyChanRfTlrc;							//Rf·ÖÑ¡Èİ²î·¶Î§
-	PaTy				PaTrackTlrc;								//Pa¸ú×ÙÈİ²î·¶Î§
-	UINT 				BandNo;										//²¨¶ÎºÅ
-	UINT 				AntenaNums;									//ÌìÏßÊı
-	UINT 				FreqLens;									//FREQÊı×é³¤¶È
-	UINT 				MainDeltaPaGate;							//Ö÷ÌìÏßÕı¸ºÂö³åÊı×îĞ¡Öµ
-	UINT 				DeltaPaRgPulseMinNums;						//PaÈİ²î·¶Î§ÄÚ×îĞ¡Âö³åÊı
-	UINT 				SameAntenaNoMinNums;						//ÏàÍ¬ÌìÏßºÅÂö³å×îĞ¡Öµ
-	UINT 				SubDeltaPaGate;								//´ÎÌìÏßÕı¸ºÂö³åÊı×îĞ¡Öµ
-	UINT 				DeltaPaTolerance;							//PaÈİ²î£¬³õÊ¼ÖµÉèÎª0x1c0
-	int 				ChanNo;										//Í¨µÀºÅ
-	int					ChanDiscernStLoc;							//Í¨µÀ·ÖÑ¡Âö³å¿ªÊ¼Î»ÖÃ
-	int					ChanPulseNums;								//ÁÙÊ±Í¨µÀ¿É¶ÁÂö³åÊı
-	int					AnalyPulseNums;								//ÁÙÊ±Í¨µÀÓĞĞ§Âö³åÊı£¬¶ÔAnalyChannelÖĞÓĞĞ§Âö³å¼ÆÊı
-	int 				DualRamValidChanNum;						//Ram»º³åÇøÓĞĞ§Í¨µÀÊı
-	int 				ResultNums;									//µ±Ç°ÒÑ·ÖÑ¡³ö½á¹ûµÄ½á¹û±í³¤¶È
-	int 				AgileAnalyTag;								//½İ±äRfh
-	int 				ParaUpdateTag;								//²ÎÊı¸üĞÂ
-	int 				DoaUpdataTag;								//·½Î»¸üĞÂ
-	int 				ParaUpdateStTime;							//²ÎÊı¸üĞÂ¶¨Ê±¼ÆÊı
-	int 				DoaUpdataStTime;							//·½Î»¸üĞÂ¶¨Ê±¼ÆÊı
-	int					ContDoaUpdataStTime;						//Á¬Ğø²¨·½Î»¸üĞÂ¶¨Ê±¼ÆÊı
-	int 				DisapJudgeTag;								//ÅĞ¶ÏÏûÊ§
-	UINT				PortTimeBegin;								//³¬Ê±ÅĞ¶Ï
-	_AgileChan			*AgileChan;									//½İ±äÀÛ»ıÂö³åÍ¨µÀ
-	size_t 				*BarLocArray;								//ÓÃÓÚ´æ´¢Ö±·½Í¼ÖùµØÖ·µÄÊı×é
-	size_t 				*AddrPartArray;								//ÓÃÓÚ´æ´¢Ö±·½Í¼ÖùÄÚµØÖ·¶ÔµØÖ·µÄÊı×é
-	int					*AnalysisedChannel;							//ÒÑ·ÖÎöÍ¨µÀ×´Ì¬Êı×é      ÀàĞÍÈç_AnalysisedType
-	float 				*PwAnalArray;								//Pw»º³å·ÖÎöÊı×é
-	int 				*PaAnalArray;								//Pa»º³å·ÖÎöÊı×é
-	_AddressPairType	*AddressPair;								//ÓÃÓÚĞòÁĞËÑË÷·ÖÑ¡·½·¨µÄµØÖ·¶Ôpair
-	int 				*PaToDoaArray;								//±È·ù²âÏò·¨¼ÆËãDoaµÄPaÊı×é
-	int 				*LastTimeOfResult;							//Ram»º³åÇøResultÃë¼ÆÊıÊı×é
-	_Result				*Result;									//½á¹û±íÊı×é
+	_DualRamType		&DualRam;									//Ramç¼“å†²åŒºå¯¹è±¡
+	_TimerCount			&TimerCount;								//æ¯«ç§’  -> ç§’å®šæ—¶å™¨
+	size_t				&TimeBegin;									//ä¸€æ¬¡åˆ†é€‰èµ·å§‹æ—¶é—´ï¼Œç”±é¢„å¤„ç†å†™å€¼ï¼Œé¢„å¤„ç†å’Œä¸»å¤„ç†è¯»å€¼
+	_SysCmd 			&SysCmd;									//æ¥æ”¶å‘½ä»¤
+	_MutiHistogramType 	MutiHistogram;								//å¤šé˜¶ç›´æ–¹å›¾å¯¹è±¡
+	_AnalyChannelType 	AnalyChannel;								//ä¸´æ—¶åˆ†æé€šé“
+	_CompFlag			CompFlag;									//ç”¨äºæ ‡è®°åˆ†æé€šé“ç»“æœè¡¨ä¸ç»“æœè¡¨æ•°ç»„æ¯”è¾ƒçš„ç»“æœ
+	_ResultTmp			ResultTmp;									//åˆ†æé€šé“ç»“æœè¡¨
+	_Msg				Msg;										//è¾“å‡ºæŠ¥æ–‡
+	_DoaUpdataMsg		DoaUpdataMsg;								//è¾“å‡ºæ–¹ä½æ›´æ–°æŠ¥æ–‡
+	RfTy				AnalyChanRfTlrc;							//Rfåˆ†é€‰å®¹å·®èŒƒå›´
+	PaTy				PaTrackTlrc;								//Paè·Ÿè¸ªå®¹å·®èŒƒå›´
+	UINT 				BandNo;										//æ³¢æ®µå·
+	UINT 				AntenaNums;									//å¤©çº¿æ•°
+	UINT 				FreqLens;									//FREQæ•°ç»„é•¿åº¦
+	UINT 				MainDeltaPaGate;							//ä¸»å¤©çº¿æ­£è´Ÿè„‰å†²æ•°æœ€å°å€¼
+	UINT 				DeltaPaRgPulseMinNums;						//Paå®¹å·®èŒƒå›´å†…æœ€å°è„‰å†²æ•°
+	UINT 				SameAntenaNoMinNums;						//ç›¸åŒå¤©çº¿å·è„‰å†²æœ€å°å€¼
+	UINT 				SubDeltaPaGate;								//æ¬¡å¤©çº¿æ­£è´Ÿè„‰å†²æ•°æœ€å°å€¼
+	UINT 				DeltaPaTolerance;							//Paå®¹å·®ï¼Œåˆå§‹å€¼è®¾ä¸º0x1c0
+	int 				ChanNo;										//é€šé“å·
+	int					ChanDiscernStLoc;							//é€šé“åˆ†é€‰è„‰å†²å¼€å§‹ä½ç½®
+	int					ChanPulseNums;								//ä¸´æ—¶é€šé“å¯è¯»è„‰å†²æ•°
+	int					AnalyPulseNums;								//ä¸´æ—¶é€šé“æœ‰æ•ˆè„‰å†²æ•°ï¼Œå¯¹AnalyChannelä¸­æœ‰æ•ˆè„‰å†²è®¡æ•°
+	int 				DualRamValidChanNum;						//Ramç¼“å†²åŒºæœ‰æ•ˆé€šé“æ•°
+	int 				ResultNums;									//å½“å‰å·²åˆ†é€‰å‡ºç»“æœçš„ç»“æœè¡¨é•¿åº¦
+	int 				AgileAnalyTag;								//æ·å˜Rfh
+	int 				ParaUpdateTag;								//å‚æ•°æ›´æ–°
+	int 				DoaUpdataTag;								//æ–¹ä½æ›´æ–°
+	int 				ParaUpdateStTime;							//å‚æ•°æ›´æ–°å®šæ—¶è®¡æ•°
+	int 				DoaUpdataStTime;							//æ–¹ä½æ›´æ–°å®šæ—¶è®¡æ•°
+	int					ContDoaUpdataStTime;						//è¿ç»­æ³¢æ–¹ä½æ›´æ–°å®šæ—¶è®¡æ•°
+	int 				DisapJudgeTag;								//åˆ¤æ–­æ¶ˆå¤±
+	UINT				PortTimeBegin;								//è¶…æ—¶åˆ¤æ–­
+	_AgileChan			*AgileChan;									//æ·å˜ç´¯ç§¯è„‰å†²é€šé“
+	size_t 				*BarLocArray;								//ç”¨äºå­˜å‚¨ç›´æ–¹å›¾æŸ±åœ°å€çš„æ•°ç»„
+	size_t 				*AddrPartArray;								//ç”¨äºå­˜å‚¨ç›´æ–¹å›¾æŸ±å†…åœ°å€å¯¹åœ°å€çš„æ•°ç»„
+	int					*AnalysisedChannel;							//å·²åˆ†æé€šé“çŠ¶æ€æ•°ç»„      ç±»å‹å¦‚_AnalysisedType
+	float 				*PwAnalArray;								//Pwç¼“å†²åˆ†ææ•°ç»„
+	int 				*PaAnalArray;								//Paç¼“å†²åˆ†ææ•°ç»„
+	_AddressPairType	*AddressPair;								//ç”¨äºåºåˆ—æœç´¢åˆ†é€‰æ–¹æ³•çš„åœ°å€å¯¹pair
+	int 				*PaToDoaArray;								//æ¯”å¹…æµ‹å‘æ³•è®¡ç®—Doaçš„Paæ•°ç»„
+	int 				*LastTimeOfResult;							//Ramç¼“å†²åŒºResultç§’è®¡æ•°æ•°ç»„
+	_Result				*Result;									//ç»“æœè¡¨æ•°ç»„
 public:
 	_PdwDiscern()																				//Construction func
 				:AnalyChanRfTlrc(0),
@@ -198,7 +198,7 @@ public:
 		COUTLINE;
 		COUTSTREND(":  Using class _PdwDiscern error!");
 	}
-	_PdwDiscern(_DualRamType	&DualRam_,														//Ê¹ÓÃ¸ÃÀàÊµÀı»¯¶ÔÏó£¬Ğè°ó¶¨Ò»¸ö_DualRamTypeÀàĞÍµÄ¶ÔÏóÒıÓÃ
+	_PdwDiscern(_DualRamType	&DualRam_,														//ä½¿ç”¨è¯¥ç±»å®ä¾‹åŒ–å¯¹è±¡ï¼Œéœ€ç»‘å®šä¸€ä¸ª_DualRamTypeç±»å‹çš„å¯¹è±¡å¼•ç”¨
 				_TimerCount  	&TimerCount_,
 				size_t 			&TimeBegin_,
 				_SysCmd 		&SysCmd_
@@ -232,7 +232,7 @@ public:
 		Clear();
 #if _MSC_VER
 #elif PPC
-		*((USHORT *)0xEC0000A0) = 0x7F;								//ÖÃÌìÏßÉ¨Ãè·½Ê½
+		*((USHORT *)0xEC0000A0) = 0x7F;								//ç½®å¤©çº¿æ‰«ææ–¹å¼
 		*((USHORT *)0xEC000060) = 0x8000;							//Reset 8255
 #endif
 	}
@@ -273,7 +273,7 @@ public:
 			DeltaPaRgPulseMinNums	= 2;
 		}
 	}
-	virtual void 	run(size_t& CtrlSign, size_t& TaskDeleteSign)																		//Ö÷º¯Êı
+	virtual void 	run(size_t& CtrlSign, size_t& TaskDeleteSign)																		//ä¸»å‡½æ•°
 	{
 		bool SingleChanProcedTag;
 		while(CtrlSign)
@@ -328,7 +328,7 @@ public:
 		}
 		TaskDeleteSign = 1;
 	}
-	virtual int  	NextValidChannel()															//²éÕÒÏÂÒ»¸öÓĞĞ§Í¨µÀ£¬²¢·µ»Ø¸ÃÍ¨µÀÓĞĞ§Âö³åÊı
+	virtual int  	NextValidChannel()															//æŸ¥æ‰¾ä¸‹ä¸€ä¸ªæœ‰æ•ˆé€šé“ï¼Œå¹¶è¿”å›è¯¥é€šé“æœ‰æ•ˆè„‰å†²æ•°
 	{
 		while(ChanNo < DualRamValidChanNum + DualRamNormalStart - 1)
 		{
@@ -349,10 +349,10 @@ public:
 		ChanNo = DualRamNormalStart-1;
 		return 0;
 	}
-	virtual int  	CollectPulseToAnalyChannel()												//½«Ram»º³åÇø·ÖÎöÍ¨µÀRfÔÚAnalyChanRfTol·¶Î§ÄÚµÄÂö³åÊäÈëµ½ÁÙÊ±Í¨µÀ
+	virtual int  	CollectPulseToAnalyChannel()												//å°†Ramç¼“å†²åŒºåˆ†æé€šé“Rfåœ¨AnalyChanRfTolèŒƒå›´å†…çš„è„‰å†²è¾“å…¥åˆ°ä¸´æ—¶é€šé“
 	{
 		int Count = 0;
-		RfTy RfRef = 0, RfTmp = 0;						//»ù×¼RF,µ±Ç°Âö³åRF
+		RfTy RfRef = 0, RfTmp = 0;						//åŸºå‡†RF,å½“å‰è„‰å†²RF
 		_PDWType &PdwTmp = DualRam[ChanNo].PulseWord;
 		ChanDiscernStLoc = DualRam[ChanNo].DiscernStLoc;
 		ChanPulseNums 	 = DualRam[ChanNo].DiscernPulseNums.GetVal();
@@ -380,7 +380,7 @@ public:
 		}
 		return Count;
 	}
-	virtual int  	CollectPulseToAnalyChannel(int ChannelNo)									//½«Ram»º³åÇøChannelNoÍ¨µÀRfÔÚ£¨Cmptn[i].Rfl,Cmptn[i].Rfh£©·¶Î§ÄÚµÄÂö³åÊäÈëµ½ÁÙÊ±Í¨µÀ
+	virtual int  	CollectPulseToAnalyChannel(int ChannelNo)									//å°†Ramç¼“å†²åŒºChannelNoé€šé“Rfåœ¨ï¼ˆCmptn[i].Rfl,Cmptn[i].Rfhï¼‰èŒƒå›´å†…çš„è„‰å†²è¾“å…¥åˆ°ä¸´æ—¶é€šé“
 	{
 		int Count = 0;
 		RfTy RfRef = 0, RfTmp = 0;
@@ -412,7 +412,7 @@ public:
 		}
 		return Count;
 	}
-	virtual int 	ClctAgilePulseToAnalChan(int *AgiChanNo, int ValidAgiChLens)				//¶àÍ¨µÀ½İ±äÂö³åÊäÈëµ½ÁÙÊ±Í¨µÀ, ToaTy Restrict
+	virtual int 	ClctAgilePulseToAnalChan(int *AgiChanNo, int ValidAgiChLens)				//å¤šé€šé“æ·å˜è„‰å†²è¾“å…¥åˆ°ä¸´æ—¶é€šé“, ToaTy Restrict
 	{
 		int AgiChanBeginRecord[15] = {0};
 		int RfCounts = 0, Rtn = 0;
@@ -430,9 +430,9 @@ public:
 			ChanPulseNums	 = (ChanPulseNums >= NormalAnalyNum)?NormalAnalyNum:ChanPulseNums;
 			for(int j = AgiChanBeginRecord[i]; j < ChanDiscernStLoc + ChanPulseNums - 1; j++)
 			{
-				if(DualRam[ChanNo].PulseWord.Deducted[j] == 1)        	//´ÓµÚÒ»¸öÍ¨µÀÀïÑ°ÕÒÂö³åÁĞµÄtoa·¶Î§toa0~toa1
+				if(DualRam[ChanNo].PulseWord.Deducted[j] == 1)        	//ä»ç¬¬ä¸€ä¸ªé€šé“é‡Œå¯»æ‰¾è„‰å†²åˆ—çš„toaèŒƒå›´toa0~toa1
 				{
-					continue;          									//±»¿Û³ıµÄÂö³å continue;
+					continue;          									//è¢«æ‰£é™¤çš„è„‰å†² continue;
 				}
 				for(int k = j + 1; k < ChanDiscernStLoc + ChanPulseNums; k++)
 				{
@@ -496,7 +496,7 @@ public:
 			int Temp = 0;
 			TonTy PreTon, NextTon;
 			ToaTy PreToa, NextToa;
-			for(int j = 0; j < AnalyPulseNums; j++)							//°´Toa´ÓĞ¡µ½´óÅÅĞò
+			for(int j = 0; j < AnalyPulseNums; j++)							//æŒ‰Toaä»å°åˆ°å¤§æ’åº
 			{
 				for(int k = 0; k < AnalyPulseNums - j - 1; k++)
 				{
@@ -562,7 +562,7 @@ public:
 		}
 		return Rtn;
 	}
-	virtual int		AnalChanDeductPrcs()														//È¥³ı·ÖÎöÍ¨µÀÖĞÒÑ·ÖÑ¡Âö³å
+	virtual int		AnalChanDeductPrcs()														//å»é™¤åˆ†æé€šé“ä¸­å·²åˆ†é€‰è„‰å†²
 	{
 		int i = 0, Loc = 0, Next = 0;
 		for(i = 0; i < AnalyPulseNums; i++)
@@ -598,7 +598,7 @@ public:
 		AnalyPulseNums = i;
 		return i;
 	}
-	virtual void 	CancelDeduct()																//È¡ÏûRam»º³åÇø·ÖÎöÍ¨µÀÂö³å¿Û³ı±êÖ¾²¢ÖÃÂö³åÒÑ·ÖÎö±êÖ¾
+	virtual void 	CancelDeduct()																//å–æ¶ˆRamç¼“å†²åŒºåˆ†æé€šé“è„‰å†²æ‰£é™¤æ ‡å¿—å¹¶ç½®è„‰å†²å·²åˆ†ææ ‡å¿—
 	{
 		if(AnalyPulseNums > 0)
 		{
@@ -613,7 +613,7 @@ public:
 		}
 		AnalyPulseNums = 0;
 	}
-	virtual bool	AllChanAnalysisedJudge()													//Ram»º³åÇøÓĞĞ§Í¨µÀÍê³É·ÖÑ¡ÅĞ¶Ï
+	virtual bool	AllChanAnalysisedJudge()													//Ramç¼“å†²åŒºæœ‰æ•ˆé€šé“å®Œæˆåˆ†é€‰åˆ¤æ–­
 	{
 		bool Rtn = true;
 		for(int i = DualRamNormalStart; i < DualRamNormalStart+DualRamValidChanNum; i++)
@@ -626,7 +626,7 @@ public:
 		}
 		return Rtn;
 	}
-	virtual int  	SingleChanAnalysis()														//Ô¤ÉèãĞÖµÆÕÍ¨·ÖÑ¡
+	virtual int  	SingleChanAnalysis()														//é¢„è®¾é˜ˆå€¼æ™®é€šåˆ†é€‰
 	{
 		int AnalysisedPulseNum = 0, DiscernRtn = 0;
 		while(1)
@@ -667,12 +667,12 @@ public:
 			}
 			if(AnalysisedChannel[ChanNo] == ChanRemaindedPulse) 
 			{
-				CancelDeduct();                                		//È¡Ïû¿Û³ı±êÖ¾
+				CancelDeduct();                                		//å–æ¶ˆæ‰£é™¤æ ‡å¿—
 			}
 		}
 		return 1;
 	}
-	virtual int 	HistogramDiscern()															//Ö±·½Í¼·ÖÑ¡£¬·ÖÑ¡Ë³Ğò£º²Î²î -> ¹Ì¶¨ -> ¶¶¶¯
+	virtual int 	HistogramDiscern()															//ç›´æ–¹å›¾åˆ†é€‰ï¼Œåˆ†é€‰é¡ºåºï¼šå‚å·® -> å›ºå®š -> æŠ–åŠ¨
 	{
 		int rtn;
 		MutiHistogram.CreatHistogram(AnalyChannel.Toa,AnalyPulseNums,1);
@@ -693,7 +693,7 @@ public:
 		}
 		return NoDiscernType;
 	}
-	virtual int  	JaggDiscern()																//²Î²îĞÅºÅ·ÖÑ¡
+	virtual int  	JaggDiscern()																//å‚å·®ä¿¡å·åˆ†é€‰
 	{
 		int rtn = 0, FilterBarLens = 0, AddrPartLens = 0, FstPri = 0, SecPri = 0;
 		float PeriodTmp = 0;
@@ -754,7 +754,7 @@ public:
 		}
 		return rtn;
 	}
-	virtual int  	FixDiscern()																//¹Ì¶¨ĞÅºÅ·ÖÑ¡ 
+	virtual int  	FixDiscern()																//å›ºå®šä¿¡å·åˆ†é€‰ 
 	{
 		int temp = 0, rtn = 0,FixPulseSum = 0 ,FilterBarLens = 0, AddrPartLens = 0;
 		FilterBarLens = MutiHistogram.Filter(1,Filter_FixLens,BarLocArray,16,1);
@@ -784,7 +784,7 @@ public:
 		}
 		return FixPulseSum;
 	}
-	virtual int  	DitherDiscern(int PriFixDitherType, int RfFixAgileType)												//¶¶¶¯ĞÅºÅ·ÖÑ¡
+	virtual int  	DitherDiscern(int PriFixDitherType, int RfFixAgileType)												//æŠ–åŠ¨ä¿¡å·åˆ†é€‰
 	{
 		int temp = 0,rtn = 0,FilterBarLens = 0,DitherAddrLens = 0,AddrPartLens = 0,DitherPulseSum = 0;
 		MutiHistogram.HistogramSort(1,"Key",TestMin);
@@ -852,7 +852,7 @@ public:
 		}
 		return rtn;
 	}
-	virtual int 	MutiSignalDiscern()															//¶à²¿ĞÅºÅ·ÖÑ¡
+	virtual int 	MutiSignalDiscern()															//å¤šéƒ¨ä¿¡å·åˆ†é€‰
 	{
 		const int FIX_DISCERN_MINNUM = 3,DITHER_DISCERN_MINNUM = 7, DITHER_PRI_MIN = 20;
 		ToaTy PriTmp,PriRef,PriLoc,PriTolrc = 2,PriMod,PriDiv;
@@ -1174,7 +1174,7 @@ public:
 		delete[] PriArray;
 		return rtn;
 	}
-	virtual void 	SingChanAgileDiscern()														//µ¥Í¨µÀ½İ±äĞÅºÅ·ÖÑ¡
+	virtual void 	SingChanAgileDiscern()														//å•é€šé“æ·å˜ä¿¡å·åˆ†é€‰
 	{
 		int RfCounts = 0, SingleChanAgileRtn = 0;
 		for (ChanNo = DualRamNormalStart; ChanNo < DualRamNormalStart + DualRamValidChanNum; ChanNo++)
@@ -1218,7 +1218,7 @@ public:
 			}
 		}
 	}
-	virtual int 	AgainDiscern()																//½İ±ä±ä²ÎÊıÔÙ´ÎĞÅºÅ·ÖÑ¡
+	virtual int 	AgainDiscern()																//æ·å˜å˜å‚æ•°å†æ¬¡ä¿¡å·åˆ†é€‰
 	{
 		MutiHistogram.CreatHistogram(AnalyChannel.Toa,AnalyPulseNums,1);
 		AgileAnalyTag = 0xffff;
@@ -1238,7 +1238,7 @@ public:
 		AgileAnalyTag = 0;
 		return 1;
 	}
-	virtual int 	AgileDitherDiscern()														//½İ±ä¶¶¶¯ĞÅºÅ·ÖÑ¡
+	virtual int 	AgileDitherDiscern()														//æ·å˜æŠ–åŠ¨ä¿¡å·åˆ†é€‰
 	{
 		ToaTy PriRef, PriDitherTlrc, PriFixTlrc;
 		int Rtn = 0, temp, PriFixCounts = 0, PriDitherCounts = 0;
@@ -1312,7 +1312,7 @@ public:
 		delete[] PriArray;
 		return Rtn;
 	}
-	virtual void 	DitherParaAnaly(ToaTy *PriArray, ToaTy PriRef, int PriInitSt)				//ÉèÖÃ½İ±ä¶¶¶¯²ÎÊı
+	virtual void 	DitherParaAnaly(ToaTy *PriArray, ToaTy PriRef, int PriInitSt)				//è®¾ç½®æ·å˜æŠ–åŠ¨å‚æ•°
 	{
 		int DitherPri = 0, DitherPriSum = 0, DitherPriLens = 0, DitherPriRange = 0;
 		ToaTy ToaTlrc;
@@ -1363,7 +1363,7 @@ public:
 			ResultTmp.Pri = 0;
 		}
 	}
-	virtual void 	MutiChanAgileDiscern()           											//¶àÍ¨µÀ½İ±äĞÅºÅ·ÖÑ¡
+	virtual void 	MutiChanAgileDiscern()           											//å¤šé€šé“æ·å˜ä¿¡å·åˆ†é€‰
 	{
 		int *AgiChanNo = new int[DualRamNormalStart + DualRamValidChanNum];
 		int ValidAgiChLens = 0;
@@ -1385,7 +1385,7 @@ public:
 					ChanPulseNums 	 = (ChanPulseNums >= NormalAnalyNum)?NormalAnalyNum:ChanPulseNums;
 					for(int j = ChanDiscernStLoc; j < ChanDiscernStLoc + ChanPulseNums; j++) 
 					{
-						if(DualRam[ChanlNoTmp].PulseWord.Deducted[j] == 0) //ÕÒÒ»Ã»±»¿Û³ı¹ıµÄÓĞĞ§ÔØÆµ
+						if(DualRam[ChanlNoTmp].PulseWord.Deducted[j] == 0) //æ‰¾ä¸€æ²¡è¢«æ‰£é™¤è¿‡çš„æœ‰æ•ˆè½½é¢‘
 						{
 							RfRef = DualRam[ChanlNoTmp].PulseWord.Rf[j];
 							PwRef = DualRam[ChanlNoTmp].PulseWord.Pw[j];
@@ -1444,7 +1444,7 @@ public:
 		}
 		delete[] AgiChanNo;
 	}
-	virtual int 	T50ClctAgilePulseToAnalChan(int *AgiChanNo, int ValidAgiChLens)				//¶àÍ¨µÀ½İ±äÂö³åÊäÈëµ½ÁÙÊ±Í¨µÀ, ToaTy Restrict
+	virtual int 	T50ClctAgilePulseToAnalChan(int *AgiChanNo, int ValidAgiChLens)				//å¤šé€šé“æ·å˜è„‰å†²è¾“å…¥åˆ°ä¸´æ—¶é€šé“, ToaTy Restrict
 	{
 		int AgiChanBeginRecord[15] = {0};
 		int RfCounts = 0, Rtn = 0;
@@ -1456,9 +1456,9 @@ public:
 			ChanPulseNums 	 = DualRam[ChanNo].DiscernPulseNums.GetVal() + ChanDiscernStLoc;
 			for(int j = AgiChanBeginRecord[i]; j < ChanPulseNums; j++)
 			{
-				if(DualRam[ChanNo].PulseWord.Deducted[j] == 1)        	//´ÓµÚÒ»¸öÍ¨µÀÀïÑ°ÕÒÂö³åÁĞµÄtoa·¶Î§toa0~toa1
+				if(DualRam[ChanNo].PulseWord.Deducted[j] == 1)        	//ä»ç¬¬ä¸€ä¸ªé€šé“é‡Œå¯»æ‰¾è„‰å†²åˆ—çš„toaèŒƒå›´toa0~toa1
 				{
-					continue;          									//±»¿Û³ıµÄÂö³å continue;
+					continue;          									//è¢«æ‰£é™¤çš„è„‰å†² continue;
 				}
 				AgileChan->AgileRf[AnalyPulseNums] 	= DualRam[ChanNo].PulseWord.Rf[j];
 				AgileChan->AgilePw[AnalyPulseNums] 	= DualRam[ChanNo].PulseWord.Pw[j];
@@ -1478,7 +1478,7 @@ public:
 			int Temp = 0;
 			TonTy PreTon, NextTon;
 			ToaTy PreToa, NextToa;
-			for(int j = 0; j < AnalyPulseNums; j++)							//°´Toa´ÓĞ¡µ½´óÅÅĞò
+			for(int j = 0; j < AnalyPulseNums; j++)							//æŒ‰Toaä»å°åˆ°å¤§æ’åº
 			{
 				for(int k = 0; k < AnalyPulseNums - j - 1; k++)
 				{
@@ -1585,7 +1585,7 @@ public:
 		}
 		return Rtn;
 	}
-	virtual void 	T50MutiChanAgileDiscern()           											//¶àÍ¨µÀ½İ±äĞÅºÅ·ÖÑ¡
+	virtual void 	T50MutiChanAgileDiscern()           											//å¤šé€šé“æ·å˜ä¿¡å·åˆ†é€‰
 	{
 		int *AgiChanNo = new int[DualRamNormalStart + DualRamValidChanNum];
 		int ValidAgiChLens = 0;
@@ -1610,7 +1610,7 @@ public:
 					ChanPulseNums 	 = ChanDiscernStLoc + DualRam[i].DiscernPulseNums.GetVal();
 					for(int j = 0; j < ChanPulseNums; j++) 
 					{
-						if(DualRam[i].PulseWord.Deducted[j] == 0) //ÕÒÒ»Ã»±»¿Û³ı¹ıµÄÓĞĞ§ÔØÆµ
+						if(DualRam[i].PulseWord.Deducted[j] == 0) //æ‰¾ä¸€æ²¡è¢«æ‰£é™¤è¿‡çš„æœ‰æ•ˆè½½é¢‘
 						{
 							RfRef = DualRam[i].PulseWord.Rf[j];
 							PwRef = DualRam[i].PulseWord.Pw[j];
@@ -1935,10 +1935,10 @@ public:
 		}
 		else
 		{
-			COUTSTREND("Á¬Ğø²¨Í¨µÀÒÑÂú£¡");
+			COUTSTREND("è¿ç»­æ³¢é€šé“å·²æ»¡ï¼");
 		}
 	}
-	virtual void 	ContiDoaUpdata()        															//·½Î»¸üĞÂ
+	virtual void 	ContiDoaUpdata()        															//æ–¹ä½æ›´æ–°
 	{
 		if(SysCmd.DoaUpdata == 1)
 		{
@@ -1969,7 +1969,7 @@ public:
 			}
 		}
 	}
-	virtual void 	ContiDisappearJudge()        													//ÅĞÏûÊ§
+	virtual void 	ContiDisappearJudge()        													//åˆ¤æ¶ˆå¤±
 	{
 		UINT DisappearTimeOut = 5;
 		if(BandNo == 1)														// BandNo 1
@@ -2029,14 +2029,14 @@ public:
 			}
 			if(AnalysisedChannel[ChanNo] == ChanRemaindedPulse) 
 			{
-				CancelDeduct();                                		//È¡Ïû¿Û³ı±êÖ¾
+				CancelDeduct();                                		//å–æ¶ˆæ‰£é™¤æ ‡å¿—
 			}
 		}
 		ContiDoaUpdata();
 		ContiDisappearJudge();
 		return rtn;
 	}
-	virtual void 	ParaUpdate()        														//²ÎÊı¸üĞÂ
+	virtual void 	ParaUpdate()        														//å‚æ•°æ›´æ–°
 	{
 		if(TimerCount.Ms - ParaUpdateStTime > ParaUpdataTimeOut)
 		{
@@ -2055,7 +2055,7 @@ public:
 			ParaUpdateStTime = TimerCount.Ms;
 		}
 	}
-	virtual void 	DoaUpdata()        															//·½Î»¸üĞÂ
+	virtual void 	DoaUpdata()        															//æ–¹ä½æ›´æ–°
 	{
 		if(SysCmd.DoaUpdata == 1)
 		{
@@ -2086,7 +2086,7 @@ public:
 			}
 		}
 	}
-	virtual void 	DisappearJudge()        													//ÅĞÏûÊ§
+	virtual void 	DisappearJudge()        													//åˆ¤æ¶ˆå¤±
 	{
 		UINT DisappearTimeOut = 60;
 		if(BandNo == 1)														// BandNo 1
@@ -2136,7 +2136,7 @@ public:
 			}
 		}
 	}
-	virtual void 	ScanAnalysis()																//É¨Ãè·ÖÎö
+	virtual void 	ScanAnalysis()																//æ‰«æåˆ†æ
 	{
 		for (int i = 0; i < ResultNums; i++)
 		{
@@ -2163,7 +2163,7 @@ public:
 			}
 		}
 	}
-	virtual void 	SetScanPara(int ResultNo)													//µ¥Í¨µÀÉ¨Ãè·ÖÎö
+	virtual void 	SetScanPara(int ResultNo)													//å•é€šé“æ‰«æåˆ†æ
 	{
 		_PDWChannelType &PDWChannelTmp = DualRam[ChanNo];
 		_PDWType &PdwTmp = DualRam[ChanNo].PulseWord;
@@ -2244,7 +2244,7 @@ public:
 		}
 		if(GapCounts == 0)
 		{
-			Result[ResultNo].ScanType = 1; //¸ú×Ù
+			Result[ResultNo].ScanType = 1; //è·Ÿè¸ª
 			Result[ResultNo].ScanPeriod = 0;
 			Result[ResultNo].AntenaRpm 	= 0;
 			Result[ResultNo].IrradiateTime = 0;
@@ -2333,7 +2333,7 @@ public:
 		delete[] PaArray;
 		return;
 	}
-	virtual int 	ResultTmpRfPwPaSet(_AddressPairType *AddrPartArray,int Lens)				//ÉèÖÃResultTmpµÄRf¡¢Pw¡¢Pa²ÎÊı²¢·µ»ØPaAnalArrayÓĞĞ§³¤¶È,ÊäÈëÊı¾İÎªAddressPartArray
+	virtual int 	ResultTmpRfPwPaSet(_AddressPairType *AddrPartArray,int Lens)				//è®¾ç½®ResultTmpçš„Rfã€Pwã€Paå‚æ•°å¹¶è¿”å›PaAnalArrayæœ‰æ•ˆé•¿åº¦,è¾“å…¥æ•°æ®ä¸ºAddressPartArray
 	{
 		int 	PdwNums = 0,PaNums = 0;
 		float 	RfTemp = 0.0, PwTemp = 0, PaTemp = 0;
@@ -2378,7 +2378,7 @@ public:
 		ResultTmp.Rfh = (AgileAnalyTag != 0xffff)?0:RfHTemp;
 		return PaNums;
 	}
-	virtual int 	ResultTmpRfPwPaSet(size_t *BarLocArray,int Lens)							//ÉèÖÃResultTmpµÄRf¡¢Pw¡¢Pa²ÎÊı²¢·µ»ØPaAnalArrayÓĞĞ§³¤¶È,ÊäÈëÊı¾İÎªBarLocArray
+	virtual int 	ResultTmpRfPwPaSet(size_t *BarLocArray,int Lens)							//è®¾ç½®ResultTmpçš„Rfã€Pwã€Paå‚æ•°å¹¶è¿”å›PaAnalArrayæœ‰æ•ˆé•¿åº¦,è¾“å…¥æ•°æ®ä¸ºBarLocArray
 	{
 		int 	BarLocLens = 0, PdwNums = 0,PaNums = 0;
 		float 	RfTemp = 0.0, PwTemp = 0, PaTemp = 0;
@@ -2427,7 +2427,7 @@ public:
 		ResultTmp.Rfh = (AgileAnalyTag != 0xffff)?0:RfHTemp;
 		return PaNums;
 	}
-	virtual float 	MostPwSet(int n)															//PwµÄºÏÊÊÖµÉèÖÃ
+	virtual float 	MostPwSet(int n)															//Pwçš„åˆé€‚å€¼è®¾ç½®
 	{
 		map<float,int> PwCount;
 		float rPw;
@@ -2457,29 +2457,29 @@ public:
 		map<float,int>::iterator iterPw = max_element(PwCount.begin(), PwCount.end(), PwCountCmp<float,int>);
 		return iterPw->first;
 	}
-	virtual int 	CalculateDoa(int PaNums)													//»ñÈ¡PaAnalArrayÖĞÓĞĞ§Âö³åÊ¹ÓÃ±È·ù²âÏò·¨ÇóDoa
+	virtual int 	CalculateDoa(int PaNums)													//è·å–PaAnalArrayä¸­æœ‰æ•ˆè„‰å†²ä½¿ç”¨æ¯”å¹…æµ‹å‘æ³•æ±‚Doa
 	{
 		if(PaNums == 0)
 		{
 			COUTSTR("func(CalculateDoa): PaNums == 0!");
-			return 361;										//´óÓÚ360£¬¿ÉÌø³öºóĞø²¿·Ö
+			return 361;										//å¤§äº360ï¼Œå¯è·³å‡ºåç»­éƒ¨åˆ†
 		}
-		extern char XLI[][1696];//Ğ±ÂÊ
-		extern int 	FRES[][107]/*ÆµÂÊ*/, ZOUDT[][848]/*Ö÷Öá*/, DOATT[][848]/*ÌìÏß½»²æµã*/;
-		pair<int,int> MainAntenaNo,LeftAntenaNo,RightAntenaNo;				//Ö÷ÌìÏßºÅ¡¢×óÌìÏßºÅ¡¢ÓÒÌìÏßÌìÏßºÅ
-		int FreqIndex = 0/*µ±Ç°ĞÅºÅ¶ÔÓ¦µÄÆµÂÊ±íË÷ÒıÖµ*/, PaCounts = 0, AntenaValidPa = 0, AntenaDoaTag = 0;
+		extern char XLI[][1696];//æ–œç‡
+		extern int 	FRES[][107]/*é¢‘ç‡*/, ZOUDT[][848]/*ä¸»è½´*/, DOATT[][848]/*å¤©çº¿äº¤å‰ç‚¹*/;
+		pair<int,int> MainAntenaNo,LeftAntenaNo,RightAntenaNo;				//ä¸»å¤©çº¿å·ã€å·¦å¤©çº¿å·ã€å³å¤©çº¿å¤©çº¿å·
+		int FreqIndex = 0/*å½“å‰ä¿¡å·å¯¹åº”çš„é¢‘ç‡è¡¨ç´¢å¼•å€¼*/, PaCounts = 0, AntenaValidPa = 0, AntenaDoaTag = 0;
 		int Temp1, Temp2, BX = 0, SI = 0;
-		ResultTmp.Pa = *(max_element(PaAnalArray,&(PaAnalArray[PaNums-1]),PaCmp<int>));							//È¡Êı¾İÖĞ×î´óPAOÖµÎª·ù¶ÈÖµ
-		FreqIndex = CountCmp2(&(FRES[BandNo][0]),&(FRES[BandNo][FreqLens-1]),ResultTmp.Rfl&0xFFF,RfCmp2<int>);	//ÒÀ¾İµ±Ç°ĞÅºÅµÄ RF²é±íFRES£¬È¡³öRF¶ÔÓ¦µÄË÷ÒıÖµ, ´æÈëFres_Index
-		PaCounts = SeekPaToDoa(PaAnalArray, PaNums, PaToDoaArray, MainDeltaPaGate);																			//Í³¼Æµ±Ç°ĞÅºÅµÄDPAÕı¸ºÖµ£¬²¢½«Öµ´æÈë£¬¶Ô¾ÍÊı×éÖĞ,µ±ÕıÖµºÍ¸ºÖµ¾ù²»×ã4¸öÂö³åÊ±£¬·½Î»¼ÆËãÊ§°Ü£¬·µ0x200
+		ResultTmp.Pa = *(max_element(PaAnalArray,&(PaAnalArray[PaNums-1]),PaCmp<int>));							//å–æ•°æ®ä¸­æœ€å¤§PAOå€¼ä¸ºå¹…åº¦å€¼
+		FreqIndex = CountCmp2(&(FRES[BandNo][0]),&(FRES[BandNo][FreqLens-1]),ResultTmp.Rfl&0xFFF,RfCmp2<int>);	//ä¾æ®å½“å‰ä¿¡å·çš„ RFæŸ¥è¡¨FRESï¼Œå–å‡ºRFå¯¹åº”çš„ç´¢å¼•å€¼, å­˜å…¥Fres_Index
+		PaCounts = SeekPaToDoa(PaAnalArray, PaNums, PaToDoaArray, MainDeltaPaGate);																			//ç»Ÿè®¡å½“å‰ä¿¡å·çš„DPAæ­£è´Ÿå€¼ï¼Œå¹¶å°†å€¼å­˜å…¥ï¼Œå¯¹å°±æ•°ç»„ä¸­,å½“æ­£å€¼å’Œè´Ÿå€¼å‡ä¸è¶³4ä¸ªè„‰å†²æ—¶ï¼Œæ–¹ä½è®¡ç®—å¤±è´¥ï¼Œè¿”0x200
 		if(PaCounts == 0)
 		{
 			return 0x200;
 		}
-		AntenaValidPa = FindValidPa(PaCounts);								//ÕÒ ³öµ±Ç°ĞÅºÅÖĞµÄDPA×î´óÖµ£¬¶ÔÓ¦ÌìÏßºÅ¶¨ÒåÎªÖ÷ÌìÏßºÅ
+		AntenaValidPa = FindValidPa(PaCounts);								//æ‰¾ å‡ºå½“å‰ä¿¡å·ä¸­çš„DPAæœ€å¤§å€¼ï¼Œå¯¹åº”å¤©çº¿å·å®šä¹‰ä¸ºä¸»å¤©çº¿å·
 		MainAntenaNo.first  = PaToDoaArray[AntenaValidPa]>>13;
 		MainAntenaNo.second = PaToDoaArray[AntenaValidPa];
-		if(MainAntenaNo.first == AntenaNums)      	 						//¼ÆËã×óÓÒÁÚÌìÏßºÅ         
+		if(MainAntenaNo.first == AntenaNums)      	 						//è®¡ç®—å·¦å³é‚»å¤©çº¿å·         
 		{
 			RightAntenaNo.first = 0;
 		}
@@ -2495,9 +2495,9 @@ public:
 		{
 			LeftAntenaNo.first = MainAntenaNo.first - 1;					//tnx[2] is l;
 		}
-		LeftAntenaNo.second  = FindLorR(LeftAntenaNo.first,PaNums);			//Âö³åÊıĞ¡ÓÚ3¸ö£¬»ò£¬ÕıÖµ»ò¸ºÖµÂö³åÊıĞ¡ÓÚ2£¬ÖÃ0xAA
+		LeftAntenaNo.second  = FindLorR(LeftAntenaNo.first,PaNums);			//è„‰å†²æ•°å°äº3ä¸ªï¼Œæˆ–ï¼Œæ­£å€¼æˆ–è´Ÿå€¼è„‰å†²æ•°å°äº2ï¼Œç½®0xAA
 		RightAntenaNo.second = FindLorR(RightAntenaNo.first,PaNums);
-		if((LeftAntenaNo.second == 0xaa) && (RightAntenaNo.second == 0xaa))	//×óÓÒÁÚÅĞ±ğ
+		if((LeftAntenaNo.second == 0xaa) && (RightAntenaNo.second == 0xaa))	//å·¦å³é‚»åˆ¤åˆ«
 		{
 			AntenaDoaTag = 2;															//only master;
 		}
@@ -2673,7 +2673,7 @@ public:
 		}
 		return Temp1;	  
 	}
-	virtual int 	SeekPaToDoa(int *PaArray, int PaArrayLens, int *OutArray, int Gate)			//±êÖ¾Î»ÊÕ¼¯PaArrayÖĞÕı¸ºÓĞĞ§Âö³åÊıOutArray£¬·µ»ØÖµÎªOutArrayÓĞĞ§Êı£¬Èô²»³¬¹ıGate£¬·µ»Ø0
+	virtual int 	SeekPaToDoa(int *PaArray, int PaArrayLens, int *OutArray, int Gate)			//æ ‡å¿—ä½æ”¶é›†PaArrayä¸­æ­£è´Ÿæœ‰æ•ˆè„‰å†²æ•°OutArrayï¼Œè¿”å›å€¼ä¸ºOutArrayæœ‰æ•ˆæ•°ï¼Œè‹¥ä¸è¶…è¿‡Gateï¼Œè¿”å›0
 	{
 		int PaCounts = 0;
 		for(int i = 0; i < PaArrayLens; i++)
@@ -2683,7 +2683,7 @@ public:
 				OutArray[PaCounts++]=PaArray[i];     				//+
 			}
 		} 
-		if(PaCounts < Gate) 										//ÕıÖµ²»¹»Êı£¬²é¸ºÖµ
+		if(PaCounts < Gate) 										//æ­£å€¼ä¸å¤Ÿæ•°ï¼ŒæŸ¥è´Ÿå€¼
 		{
 			PaCounts=0;
 			for(int i = 0; i < PaArrayLens; i++)
@@ -2693,14 +2693,14 @@ public:
 					OutArray[PaCounts++]=PaArray[i];    			//-
 				}
 			}
-			if(PaCounts < Gate)										//¸ºÖµ²»¹»Êı£¬·µ»Ø0x200
+			if(PaCounts < Gate)										//è´Ÿå€¼ä¸å¤Ÿæ•°ï¼Œè¿”å›0x200
 			{
 				PaCounts = 0;
 			}
 		}
 		return PaCounts;
 	}
-	virtual int 	FindLorR(int AntenaNo, int AnalyNums)										//×óÓÒÏÏÓĞĞ§Âö³å·ù¶È×î´óÖµ
+	virtual int 	FindLorR(int AntenaNo, int AnalyNums)										//å·¦å³èˆ·æœ‰æ•ˆè„‰å†²å¹…åº¦æœ€å¤§å€¼
 	{
 	    UINT Rtn = 0, PaCounts = 0, SameAntenaNoNums=0;
 	    int *Doapa = new int[AnalyNums];
@@ -2714,7 +2714,7 @@ public:
 	    }
 	    if(SameAntenaNoNums < SameAntenaNoMinNums)
 	    {
-	    	Rtn = 0xAA; 											//´¦ÀíÊıÁ¿²»¹»£¬·µ»Ø
+	    	Rtn = 0xAA; 											//å¤„ç†æ•°é‡ä¸å¤Ÿï¼Œè¿”å›
 	    }
 	    else
 	    {
@@ -2732,7 +2732,7 @@ public:
 	    delete[] Doapa;
 	    return Rtn;
 	}
-	virtual int 	FindValidPa(int PaNums, int *PaArray = NULL)								//È¡×î´óÖµ£¬¸öÊı³¬¹ıÃÅÏŞ£¬Ôò·µ»Ø¸ÃÖµÎ»ÖÃ,·ñÔòÈ¡´Î´óÖµ£¬Èç¹û¸öÊı³¬¹ıÃÅÏŞ£¬Ôò·µ»Ø¸ÃÖµÎ»ÖÃ,Èç¹ûÁ½¶¼¾ù²»¹ıÃÅÏŞ£¬Ôò·µ»Ø¸öÊı×î¶àµÄÖµÎ»ÖÃ
+	virtual int 	FindValidPa(int PaNums, int *PaArray = NULL)								//å–æœ€å¤§å€¼ï¼Œä¸ªæ•°è¶…è¿‡é—¨é™ï¼Œåˆ™è¿”å›è¯¥å€¼ä½ç½®,å¦åˆ™å–æ¬¡å¤§å€¼ï¼Œå¦‚æœä¸ªæ•°è¶…è¿‡é—¨é™ï¼Œåˆ™è¿”å›è¯¥å€¼ä½ç½®,å¦‚æœä¸¤éƒ½å‡ä¸è¿‡é—¨é™ï¼Œåˆ™è¿”å›ä¸ªæ•°æœ€å¤šçš„å€¼ä½ç½®
 	{
 		if(PaArray == NULL)
 		{
@@ -2740,8 +2740,8 @@ public:
 		}
 		UINT PaCounts = 0, PaRef = 0;
 		pair<int,int> LocCount[2];
-		std::sort(PaArray,&PaArray[PaNums],PaSort<int>);	//ÓÉĞ¡µ½´óÅÅĞò
-		LocCount[0].first = PaNums-1;						//ÕÒµÚÒ»¸ö×î´óÖµ¸öÊı
+		std::sort(PaArray,&PaArray[PaNums],PaSort<int>);	//ç”±å°åˆ°å¤§æ’åº
+		LocCount[0].first = PaNums-1;						//æ‰¾ç¬¬ä¸€ä¸ªæœ€å¤§å€¼ä¸ªæ•°
 		PaRef=PaArray[LocCount[0].first]&0xffc0;
 		for(int i = LocCount[0].first; i > 0; i--)
 		{
@@ -2760,7 +2760,7 @@ public:
 			}
 		}
 		LocCount[0].second = PaCounts;
-		PaCounts=0;											//ÕÒµÚ¶ş¸ö×î´óÖµ¸öÊı
+		PaCounts=0;											//æ‰¾ç¬¬äºŒä¸ªæœ€å¤§å€¼ä¸ªæ•°
 		PaRef=PaArray[LocCount[1].first]&0xffc0;
 		for(int i = LocCount[1].first; i > 0; i--)
 		{
@@ -2777,10 +2777,10 @@ public:
 				break;
 			}
 		}
-		LocCount[1].second = PaCounts;						//¶¼²»¹ıÃÅÏŞ£¬È¡¸öÊı¶àµÄ
+		LocCount[1].second = PaCounts;						//éƒ½ä¸è¿‡é—¨é™ï¼Œå–ä¸ªæ•°å¤šçš„
 		return (LocCount[0].second >= LocCount[1].second)?LocCount[0].first:LocCount[1].first;
 	}
-	virtual void 	ResultOutput()																//½á¹û±íÊä³ö
+	virtual void 	ResultOutput()																//ç»“æœè¡¨è¾“å‡º
 	{
 		int CompParaRtn = 0, ResultNo = 0, rtnSign = 0;
 		if(ResultTmp.Rfl == 0) 
@@ -2882,13 +2882,13 @@ public:
 		{
 			return;
 		}
-		if (CompParaRtn != 0)  	//ÕÒµ½ÓĞ½á¹û
+		if (CompParaRtn != 0)  	//æ‰¾åˆ°æœ‰ç»“æœ
 		{
 			Result[ResultNo].Flag_Change_Prf = 0;
 			Result[ResultNo].Flag_Change_Rf = 0;
 			FoundResult(ResultNo, CompParaRtn);
 		}
-		else    				//Î´ÕÒµ½½á¹û
+		else    				//æœªæ‰¾åˆ°ç»“æœ
 		{
 			ResultNo = NotFoundResult();
 			int RadarNumber = DualRam[ChanNo].RadarNumber;
@@ -2921,7 +2921,7 @@ public:
 		}
 		LastTimeOfResult[ResultNo] = TimerCount.Seconds;
 	}
-	virtual int 	CompPara(int i)																//·ÖÑ¡À×´ïÁÙÊ±½á¹û±íÍ¬½á¹û±í²ÎÊı¶Ô±È
+	virtual int 	CompPara(int i)																//åˆ†é€‰é›·è¾¾ä¸´æ—¶ç»“æœè¡¨åŒç»“æœè¡¨å‚æ•°å¯¹æ¯”
 	{
 		int MinPri = 0, DeltaRf = 0, DeltaPri = 0, DeltaPw = 0, DeltaDoa = 5, CmpFlg1 = 0, CmpFlg2 = 0;
 		ClearCompFlag();
@@ -2951,15 +2951,15 @@ public:
 			DeltaPri = 1;
 		}
 		DeltaPw = (Result[i].ResultData.Pw <= 0x28)?5:int(Result[i].ResultData.Pw * 12 / 100);
-		CompFlag.SamePw   = (ABS(Result[i].ResultData.Pw - ResultTmp.Pw) <= DeltaPw)?1:0;		//Í¬Âö¿í
-		CompFlag.SameDoa  = (ABS(Result[i].ResultData.Doa - ResultTmp.Doa) <= DeltaDoa)?1:0;   	//Í¬·½Î»
-		CompFlag.SameRf   = (ABS(Result[i].ResultData.Rfl - ResultTmp.Rfl) <= DeltaRf)?1:0;   	//Í¬ÔØÆµ
-		CompFlag.SameType = (Result[i].ResultData.Type == ResultTmp.Type)?1:0;					//Í¬ÀàĞÍ
-		CompFlag.SameTime = (ABS(Result[i].ResultData.dtime - ResultTmp.dtime) 					//Í¬dtime
+		CompFlag.SamePw   = (ABS(Result[i].ResultData.Pw - ResultTmp.Pw) <= DeltaPw)?1:0;		//åŒè„‰å®½
+		CompFlag.SameDoa  = (ABS(Result[i].ResultData.Doa - ResultTmp.Doa) <= DeltaDoa)?1:0;   	//åŒæ–¹ä½
+		CompFlag.SameRf   = (ABS(Result[i].ResultData.Rfl - ResultTmp.Rfl) <= DeltaRf)?1:0;   	//åŒè½½é¢‘
+		CompFlag.SameType = (Result[i].ResultData.Type == ResultTmp.Type)?1:0;					//åŒç±»å‹
+		CompFlag.SameTime = (ABS(Result[i].ResultData.dtime - ResultTmp.dtime) 					//åŒdtime
 				             <= (AnalyPulseNums * MinPri))?1:0;							
 		if (ABS(Result[i].ResultData.Pri - ResultTmp.Pri) <= DeltaPri)
 		{
-			CompFlag.SamePri = 1;         														//Í¬ÖØÆµ
+			CompFlag.SamePri = 1;         														//åŒé‡é¢‘
 		}
 		else 
 		{
@@ -3040,13 +3040,13 @@ public:
 		}
 		if ((CompFlag.SameDoa) && (CompFlag.SameRf) && ((ResultTmp.Type >= 4) && (CompFlag.SameType)))
 		{
-			return 7;     //Í¬ÖØÆµÇÒÍ¬ÔØÆµÔòÈÏÎªÊÇÍ¬Ò»²¿
+			return 7;     //åŒé‡é¢‘ä¸”åŒè½½é¢‘åˆ™è®¤ä¸ºæ˜¯åŒä¸€éƒ¨
 		}
 		if ((CompFlag.SameDoa) && (CompFlag.SameRf) && (!CompFlag.SameType))
 		{
 			if (((Result[i].ResultData.Type == 4) && (ResultTmp.Type == 1)) || ((Result[i].ResultData.Type == 7) && (ResultTmp.Type == 3)) || ((Result[i].ResultData.Type == 5) && (ResultTmp.Type == 2)))
 			{
-				return 2;     //Í¬ÖØÆµÇÒÍ¬ÔØÆµÔòÈÏÎªÊÇÍ¬Ò»²¿
+				return 2;     //åŒé‡é¢‘ä¸”åŒè½½é¢‘åˆ™è®¤ä¸ºæ˜¯åŒä¸€éƒ¨
 			}
 			if (((Result[i].ResultData.Type == 1) && (ResultTmp.Type == 4)) || ((Result[i].ResultData.Type == 3) && (ResultTmp.Type == 7)) || ((Result[i].ResultData.Type == 2) && (ResultTmp.Type == 5)))
 			{
@@ -3069,7 +3069,7 @@ public:
 		}
 		if ((CompFlag.SameDoa) && (CompFlag.SameRf) && (!CompFlag.SameTime))
 		{
-			return 1;     //Í¬ÖØÆµÇÒÍ¬ÔØÆµÔòÈÏÎªÊÇÍ¬Ò»²¿
+			return 1;     //åŒé‡é¢‘ä¸”åŒè½½é¢‘åˆ™è®¤ä¸ºæ˜¯åŒä¸€éƒ¨
 		}
 		MinPri = 0;
 		if (CompFlag.SamePri)
@@ -3082,11 +3082,11 @@ public:
 		}
 		if ((CompFlag.SameType) && (CompFlag.SameRf) && (CompFlag.SameDoa) && (MinPri >= 1))
 		{
-			return 1;     //Í¬ÖØÆµÇÒÍ¬ÔØÆµÔòÈÏÎªÊÇÍ¬Ò»²¿
+			return 1;     //åŒé‡é¢‘ä¸”åŒè½½é¢‘åˆ™è®¤ä¸ºæ˜¯åŒä¸€éƒ¨
 		}
 		return 0;
 	}
-	virtual int 	DoubleModJudge(int Prf1, int Prf2, int DeltaPrf)							//ÇóÓàÅĞ¶ÏÊÇ·ñ¶ªÂö³åÈÔÔÚÈİ²î·¶Î§ÄÚ
+	virtual int 	DoubleModJudge(int Prf1, int Prf2, int DeltaPrf)							//æ±‚ä½™åˆ¤æ–­æ˜¯å¦ä¸¢è„‰å†²ä»åœ¨å®¹å·®èŒƒå›´å†…
 	{
 		int rtn = 0;
 		int temp;
@@ -3119,7 +3119,7 @@ public:
 		}
 		return rtn;
 	}
-	virtual int 	AnalyIdenticalDoa(int i)													//ÏàÍ¬DoaÀÛ¼ÓÌæ»»
+	virtual int 	AnalyIdenticalDoa(int i)													//ç›¸åŒDoaç´¯åŠ æ›¿æ¢
 	{
 		if(Result[i].DifferentDoaTag == 1)
 		{
@@ -3147,7 +3147,7 @@ public:
 		}
 		return 0;
 	}
-	virtual int 	AnalyDifferentDoa(int i,int DeltaDoa = 10)									//²»Í¬DoaÀÛ¼ÓÌæ»»
+	virtual int 	AnalyDifferentDoa(int i,int DeltaDoa = 10)									//ä¸åŒDoaç´¯åŠ æ›¿æ¢
 	{
 		int AnalyDoaCountTmp = 0, IdenticalDoaCountTmp = 0;
 		Result[i].DifferentDoaTag = 1;
@@ -3159,7 +3159,7 @@ public:
 				Result[i].DifferentDoaCounts[j]++;
 				break;
 			}
-			else if(ABS((Result[i].DifferentDoa[j]) - ResultTmp.Doa) <= DeltaDoa) //ĞÂµÄ³¬²îDOAÓë±¸·İµ¥ÔªÏà±È½ÏÈİ²î
+			else if(ABS((Result[i].DifferentDoa[j]) - ResultTmp.Doa) <= DeltaDoa) //æ–°çš„è¶…å·®DOAä¸å¤‡ä»½å•å…ƒç›¸æ¯”è¾ƒå®¹å·®
 			{   
 				Result[i].DifferentDoaCounts[j]++;
 				AnalyDoaCountTmp 	= Result[i].AnalyDoaCounts;
@@ -3182,7 +3182,7 @@ public:
 		ResultTmp.Doa = Result[i].ResultData.Doa;
 		return 2;
 	}
-	virtual void 	FoundResult(int ResultNo, int CompParaRtn)									//µ±Ç°·ÖÑ¡ĞÍºÅÔÚ½á¹û±íÖĞ·¢ÏÖ
+	virtual void 	FoundResult(int ResultNo, int CompParaRtn)									//å½“å‰åˆ†é€‰å‹å·åœ¨ç»“æœè¡¨ä¸­å‘ç°
 	{
 		int RflTmp, RfhTmp;
 		if (Result[ResultNo].ResultData.Cmd == MissingMsgType)
@@ -3201,7 +3201,7 @@ public:
 		{
 			Result[ResultNo].ResultData.Cmd = ParaUpdataMsgType;
 		}
-		AnalyDiffTypeAndPri(ResultNo);               //ÖØÆµ¼ÆÊıÒÔ¾ö¶¨ÊÇ·ñ¸üĞÂÖØÆµ
+		AnalyDiffTypeAndPri(ResultNo);               //é‡é¢‘è®¡æ•°ä»¥å†³å®šæ˜¯å¦æ›´æ–°é‡é¢‘
 		switch (CompParaRtn) 
 		{
 		case 1:
@@ -3278,7 +3278,7 @@ public:
 		}
 		SetResultOtherPara(ResultNo);
 	}
-	virtual int 	NotFoundResult()															//µ±Ç°·ÖÑ¡ĞÍºÅÔÚ½á¹û±íÖĞÎ´·¢ÏÖ
+	virtual int 	NotFoundResult()															//å½“å‰åˆ†é€‰å‹å·åœ¨ç»“æœè¡¨ä¸­æœªå‘ç°
 	{
 		int ResultNumTmp;
 		if (ResultNums < 897) 
@@ -3312,7 +3312,7 @@ public:
 		SetResultOtherPara(ResultNumTmp);
 		return ResultNumTmp;
 	}
-	virtual void 	AnalyDiffTypeAndPri(int i)													//²»Í¬ÀàĞÍºÍ²»Í¬PriµÄÀÛ¼ÓÌæ»»
+	virtual void 	AnalyDiffTypeAndPri(int i)													//ä¸åŒç±»å‹å’Œä¸åŒPriçš„ç´¯åŠ æ›¿æ¢
 	{
 		int DeltaPri;
 		if (Result[i].ResultData.Type == ResultTmp.Type)
@@ -3388,7 +3388,7 @@ public:
 			Result[i].DifferentPriCount = 1;
 		}
 	}
-	virtual void 	SetResultOtherPara(int i)													//ÉèÖÃ½á¹û±íÆäËü²ÎÊı
+	virtual void 	SetResultOtherPara(int i)													//è®¾ç½®ç»“æœè¡¨å…¶å®ƒå‚æ•°
 	{
 		Result[i].ResultData.dtime = ResultTmp.dtime;
 		Result[i].ResultData.Doa = ResultTmp.Doa;
@@ -3421,7 +3421,7 @@ public:
 			Result[i].ResultData.DitherRnge = ResultTmp.DitherRnge;
 		}
 	}
-	virtual void 	MsgExport()																	//Ö±½ÓÊä³öMsg
+	virtual void 	MsgExport()																	//ç›´æ¥è¾“å‡ºMsg
 	{
 		UCHAR *OutData = (UCHAR *)(&Msg);
 		for(int i = 0; i < sizeof(_Msg); i++)
@@ -3429,7 +3429,7 @@ public:
 			WriteOutPort(USHORT(OutData[i]));
 		}
 	}
-	virtual void 	MsgExport(int ResultNo)														//Q¸æ¾¯
+	virtual void 	MsgExport(int ResultNo)														//Qå‘Šè­¦
 	{
 		SetMsg(ResultNo);
 		UCHAR *OutData = (UCHAR *)(&Msg);
@@ -3438,7 +3438,7 @@ public:
 			WriteOutPort(USHORT(OutData[i]));
 		}
 	}
-	virtual void 	SetMsg(int ResultNo)														//¸ù¾İ½á¹û±íÉèÖÃÊä³ö±¨ÎÄ
+	virtual void 	SetMsg(int ResultNo)														//æ ¹æ®ç»“æœè¡¨è®¾ç½®è¾“å‡ºæŠ¥æ–‡
 	{
 		ClearMsg();
 		Msg.Cmd = Result[ResultNo].ResultData.Cmd;
@@ -3503,7 +3503,7 @@ public:
 		Msg.ScanPara.IrradiateTime	= Msg.BigToLittle(Result[ResultNo].IrradiateTime);
 		Msg.BatchNo					= Msg.BigToLittle(Result[ResultNo].ResultNo+1);
 	}
-	virtual void 	SetMsg(_MsgCmd MsgCmd,_MsgPdwType &Ty,_MsgPdwPara &PdwPara,USHORT BatchNo)	//ÊÖ¶¯ÉèÖÃÊä³ö±¨ÎÄ LongMsgType ParaUpdataMsgType reply edit
+	virtual void 	SetMsg(_MsgCmd MsgCmd,_MsgPdwType &Ty,_MsgPdwPara &PdwPara,USHORT BatchNo)	//æ‰‹åŠ¨è®¾ç½®è¾“å‡ºæŠ¥æ–‡ LongMsgType ParaUpdataMsgType reply edit
 	{
 		ClearMsg();
 		_Msg MsgTmp;
@@ -3521,7 +3521,7 @@ public:
 		}
 		Msg = MsgTmp;
 	}
-	virtual void 	SetMsg(_MsgCmd MsgCmd,_MsgScanPara &MsgScanPara,USHORT BatchNo)				//ÊÖ¶¯ÉèÖÃÊä³ö±¨ÎÄ ShortMsgType reply edit
+	virtual void 	SetMsg(_MsgCmd MsgCmd,_MsgScanPara &MsgScanPara,USHORT BatchNo)				//æ‰‹åŠ¨è®¾ç½®è¾“å‡ºæŠ¥æ–‡ ShortMsgType reply edit
 	{
 		ClearMsg();
 		_Msg MsgTmp;
@@ -3536,7 +3536,7 @@ public:
 		}
 		Msg = MsgTmp;
 	}
-	virtual void 	SetMsg(_MsgCmd MsgCmd,USHORT BatchNo)										//ÊÖ¶¯ÉèÖÃÊä³ö±¨ÎÄ MissingMsgType reply edit
+	virtual void 	SetMsg(_MsgCmd MsgCmd,USHORT BatchNo)										//æ‰‹åŠ¨è®¾ç½®è¾“å‡ºæŠ¥æ–‡ MissingMsgType reply edit
 	{
 		ClearMsg();
 		_Msg MsgTmp;
@@ -3567,7 +3567,7 @@ public:
 		DoaUpdataMsg.Clear();
 		
 	}
-	virtual void 	Clear()																		//È«Çå³ı
+	virtual void 	Clear()																		//å…¨æ¸…é™¤
 	{
 		ChanNo 				= DualRamNormalStart-1;
 		ChanDiscernStLoc	= 0;
@@ -3599,7 +3599,7 @@ public:
 		ClearPaToDoaArray();
 		ClearLastTimeOfResult();
 	}
-	virtual void 	ClearTmp()																	//ÁÙÊ±Í¨µÀ»º´æÇå³ı
+	virtual void 	ClearTmp()																	//ä¸´æ—¶é€šé“ç¼“å­˜æ¸…é™¤
 	{
 		ClearAnalyChannel();
 		ClearMsg();
@@ -3636,17 +3636,17 @@ public:
 		}
 	}
 #if _MSC_VER
-	virtual inline USHORT ReadInPort()																//PowerPC ¶Ë¿ÚÊäÈë
+	virtual inline USHORT ReadInPort()																//PowerPC ç«¯å£è¾“å…¥
 	{
 		USHORT ReadInPortCmd = cin.get();
 		return ReadInPortCmd;
 	}
-	virtual inline void	  WriteOutPort(USHORT sh)													//Visual StudioÖØ¶¨ÏòÊä³ö
+	virtual inline void	  WriteOutPort(USHORT sh)													//Visual Studioé‡å®šå‘è¾“å‡º
 	{
 		NLOGK(sh);
 	}
 #elif PPC
-	virtual inline USHORT ReadInPort()																//PowerPC ¶Ë¿ÚÊäÈë
+	virtual inline USHORT ReadInPort()																//PowerPC ç«¯å£è¾“å…¥
 	{
 		if((0x8000&RdInPort()) != 0x8000)
 		{
@@ -3657,17 +3657,17 @@ public:
 			return 0;
 		}
 	}
-	virtual inline USHORT RdInPort(VtUSHORT *port = (VtUSHORT *)0xEC000040)							//¶ÁÊäÈë¶Ë¿Ú
+	virtual inline USHORT RdInPort(VtUSHORT *port = (VtUSHORT *)0xEC000040)							//è¯»è¾“å…¥ç«¯å£
 	{
 		return *port;
 	}
-	virtual inline USHORT RstThenRdInPort(VtUSHORT *InPort,VtUSHORT *Port = (VtUSHORT *)0xEC000042)	//Ğ´ÊäÈë¶Ë¿Ú
+	virtual inline USHORT RstThenRdInPort(VtUSHORT *InPort,VtUSHORT *Port = (VtUSHORT *)0xEC000042)	//å†™è¾“å…¥ç«¯å£
 	{
 		*Port = 1;
 		taskDelay(0);
 		return *InPort;
 	}
-	virtual inline void	  WriteOutPort(USHORT sh)													//PowerPC ¶Ë¿ÚÊä³ö
+	virtual inline void	  WriteOutPort(USHORT sh)													//PowerPC ç«¯å£è¾“å‡º
 	{
 		PortTimeBegin = TimerCount.Ms;
 		while((0x8000&RdOutPort()) == 0x8000)
@@ -3679,16 +3679,16 @@ public:
 		}
 		WrOutPort(sh);
 	}
-	virtual inline USHORT RdOutPort(VtUSHORT *port = (VtUSHORT *)0xEC000080)						//¶ÁÊä³ö¶Ë¿Ú
+	virtual inline USHORT RdOutPort(VtUSHORT *port = (VtUSHORT *)0xEC000080)						//è¯»è¾“å‡ºç«¯å£
 	{
 		return *port;
 	}
-	virtual inline void   WrOutPort(VtUSHORT outWord,VtUSHORT *port = (VtUSHORT *)0xEC000082)		//Ğ´Êä³ö¶Ë¿Ú
+	virtual inline void   WrOutPort(VtUSHORT outWord,VtUSHORT *port = (VtUSHORT *)0xEC000082)		//å†™è¾“å‡ºç«¯å£
 	{
 		*port = outWord;
 	}
 #endif
-	virtual inline _TonaJudgeType TonaJudge(TonTy &PreTon, ToaTy &PreToa, TonTy &NextTon, ToaTy &NextToa)	//Á½¸öTon¡¢ToaÅĞ¶Ï´óĞ¡, ´æÔÚÉè¼ÆÈ±Ïİ, ÒÔNextÎª×¼
+	virtual inline _TonaJudgeType TonaJudge(TonTy &PreTon, ToaTy &PreToa, TonTy &NextTon, ToaTy &NextToa)	//ä¸¤ä¸ªTonã€Toaåˆ¤æ–­å¤§å°, å­˜åœ¨è®¾è®¡ç¼ºé™·, ä»¥Nextä¸ºå‡†
 	{
 		if(PreTon > NextTon)
 		{
@@ -3763,7 +3763,7 @@ public:
 		return JudgeErr;
 	}
 	template<typename Ty>
-	inline int MaxElement(Ty *Arr, int Begin, int End,_MaxElemType MaxElemType = findit) 					//²éÕÒ×ó¿ªÓÒ±ÕÇø¼ä[Begin, End)×î´óÖµ, findit·µ»ØÆäÖµ, whereit·µ»ØÆäÖµÎ»ÖÃ
+	inline int MaxElement(Ty *Arr, int Begin, int End,_MaxElemType MaxElemType = findit) 					//æŸ¥æ‰¾å·¦å¼€å³é—­åŒºé—´[Begin, End)æœ€å¤§å€¼, finditè¿”å›å…¶å€¼, whereitè¿”å›å…¶å€¼ä½ç½®
 	{
 		int Rtn = 0;
 		Ty ArrValTmp = Arr[Begin];
@@ -3796,53 +3796,53 @@ public:
 	void	ShowStatus() const
 	{
 		NLOGKSSECBEG("PdwDiscern Status");
-		NLOGKSWIDTH(4,"PDWÍ¨µÀÊı(DualRamCha...)	",DualRamChannelNum);			//PDWÊı¾İÍ¨µÀµÄÍ¨µÀÊı
-		NLOGKSWIDTH(4,"Ã¿Í¨µÀÀ×´ïÊı(ChannelRa...)	",ChannelRadarMaxNo);			//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡À×´ïµÄ×î´óÊı
-		NLOGKSWIDTH(4,"±ê×¼Í¨µÀÆğÊ¼(DualRamNo...)	",DualRamNormalStart);			//Ram»º³åÇø±ê×¼ÓĞĞ§Í¨µÀÆğÊ¼Öµ
-        NLOGKSWIDTH(4,"ÁÙÊ±Í¨µÀÂö³åÊı(Analysis...)	",AnalysisNum);					//ÁÙÊ±Í¨µÀµÄ×î´óÂö³åÊı
-        NLOGKSWIDTH(4,"µ¥Í¨µÀ·ÖÑ¡³¬Ê±(SingleCh...)	",SingleChanAnalyTimeOut);		//È«²¿ÓĞĞ§µ¥Í¨µÀ·ÖÑ¡³¬Ê±
-        NLOGKSWIDTH(4,"·ÖÑ¡³õÊ¼ãĞÖµ(NormalAna...)	",NormalAnalyNum);				//·ÖÑ¡³õÊ¼ãĞÖµ£¬µ±ÒÔ´ÎãĞÖµ½øĞĞ·ÖÑ¡Ê±£¬±êÖ¾Ô¤´¦Àí²¢Î´¶Ô¸ÃÍ¨µÀµ÷ÕûãĞÖµ
-        NLOGKSWIDTH(4,"¶àĞÅºÅ·ÖÑ¡Âö³åÊı(MutiSig...)	",MutiSignalAnalyMinNum);		//²Î¼Ó¶àĞÅºÅ·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-        NLOGKSWIDTH(4,"Ö±·½Í¼·ÖÑ¡Âö³åÊı(HistAna...)	",HistAnalyMinNum);				//²Î¼ÓÖ±·½Í¼·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-        NLOGKSWIDTH(4,"µ¥Ch½İ±äRF×îĞ¡·¶Î§(Sing...)"	 ,SingAgileRfRgMin);			//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×îĞ¡RF±ä»¯·¶Î§
-        NLOGKSWIDTH(4,"µ¥Ch½İ±äRF×î´ó·¶Î§(Sing...)"	 ,SingChanAgileTlrc);			//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-        NLOGKSWIDTH(4,"¶àCh½İ±äRF×î´ó·¶Î§(Muti...)"	 ,MutiChanAgileTlrc);			//²Î¼Ó¶àÍ¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-        NLOGKSWIDTH(4,"½İ±ä×îĞ¡Âö³åÊı(AgileAna...)	",AgileAnaMinNum);				//²Î¼Ó½İ±ä·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-		NLOGKSWIDTH(4,"É¨Ãè·ÖÎöÂö³åÊı(ScanThre...)	",ScanThreshold);				//²Î¼ÓÉ¨Ãè·ÖÎöµÄ×îĞ¡Âö³åÊı
-		NLOGKSWIDTH(4,"²ÎÊı¸üĞÂTimeOut(ParaU...)	",ParaUpdataTimeOut);			//²ÎÊı¸üĞÂTimeOut
-		NLOGKSWIDTH(4,"Rf·ÖÑ¡Èİ²î·¶Î§(AnalyCh...)	",AnalyChanRfTlrc);          	//Rf·ÖÑ¡Èİ²î·¶Î§
-		NLOGKSWIDTH(4,"Pa¸ú×ÙÈİ²î·¶Î§(PaTrack...)	",PaTrackTlrc);              	//Pa¸ú×ÙÈİ²î·¶Î§
-		NLOGKSWIDTH(4,"²¨¶ÎºÅ(BandNo)			"	 ,BandNo);						//²¨¶ÎºÅ
-		NLOGKSWIDTH(4,"ÌìÏßÊı(AntenaNums)		"	 ,AntenaNums);              	//ÌìÏßÊı
-		NLOGKSWIDTH(4,"FREQÊı×é³¤¶È(FreqLen...)	"	 ,FreqLens);                	//FREQÊı×é³¤¶È
-		NLOGKSWIDTH(4,"Ö÷ÌìÏßÂö³å×îĞ¡Öµ(Mai...)	"	 ,MainDeltaPaGate);          	//Ö÷ÌìÏßÕı¸ºÂö³åÊı×îĞ¡Öµ 
-		NLOGKSWIDTH(4,"PaÈİ²î·¶Î§Âö³åÊı(De...)    "	 ,DeltaPaRgPulseMinNums);   	//PaÈİ²î·¶Î§ÄÚ×îĞ¡Âö³åÊı
-		NLOGKSWIDTH(4,"ÌìÏßÂö³å×îĞ¡Öµ(...)		"	 ,SameAntenaNoMinNums);      	//ÏàÍ¬ÌìÏßºÅÂö³å×îĞ¡Öµ		CONSTANT
-		NLOGKSWIDTH(4,"´ÎÌìÏßÂö³åÊı×îĞ¡Öµ(...) 	"		 ,SubDeltaPaGate);           	//´ÎÌìÏßÕı¸ºÂö³åÊı×îĞ¡Öµ 		CONSTANT
-		NLOGKSWIDTH(4,"PaÈİ²î(DeltaPaToler...) 	",DeltaPaTolerance);         	//PaÈİ²î£¬³õÊ¼ÖµÉèÎª0x1c0 	CONSTANT
-		NLOGKSWIDTH(4,"·½Î»¸üĞÂ(SystemCmd)		"	 ,SysCmd.DoaUpdata);         	//·½Î»¸üĞÂ 
-		NLOGKSWIDTH(4,"Í¨µÀºÅ(ChanNo)			"	 ,ChanNo);                   	//Í¨µÀºÅ
-		NLOGKSWIDTH(4,"Í¨µÀ·ÖÑ¡Âö³å¿ªÊ¼Î»ÖÃ(...)	"	 ,ChanDiscernStLoc);            //Í¨µÀ·ÖÑ¡Âö³å¿ªÊ¼Î»ÖÃ
-		NLOGKSWIDTH(4,"ÁÙÊ±Í¨µÀ¿É¶ÁÂö³åÊı(...)	"		 ,ChanPulseNums);            	//ÁÙÊ±Í¨µÀ¿É¶ÁÂö³åÊı
-		NLOGKSWIDTH(4,"ÁÙÊ±Í¨µÀÓĞĞ§Âö³åÊı(...)	"		 ,AnalyPulseNums);           	//ÁÙÊ±Í¨µÀÓĞĞ§Âö³åÊı£¬¶ÔAnalyChannelÖĞÓĞĞ§Âö³å¼ÆÊı
-		NLOGKSWIDTH(4,"Ram»º³åÇøÓĞĞ§Í¨µÀÊı(...)	"	 ,DualRamValidChanNum);      	//Ram»º³åÇøÓĞĞ§Í¨µÀÊı
-		NLOGKSWIDTH(4,"½á¹û±í³¤¶È(ResultNums...)	",ResultNums);               	//µ±Ç°ÒÑ·ÖÑ¡³ö½á¹ûµÄ½á¹û±í³¤¶È
-		NLOGKSWIDTH(4,"½İ±äRfh(AgileAnalyT...)	",AgileAnalyTag);            	//½İ±äRfh
-		NLOGKSWIDTH(4,"²ÎÊı¸üĞÂ(ParaUpdateTa...)	",ParaUpdateTag);            	//²ÎÊı¸üĞÂ
-		NLOGKSWIDTH(4,"²ÎÊı¸üĞÂ¶¨Ê±¼ÆÊı(ParaUpd...)"	 ,ParaUpdateStTime);            //²ÎÊı¸üĞÂ¶¨Ê±¼ÆÊı
-		NLOGKSWIDTH(4,"·½Î»¸üĞÂ(DoaUpdataTag...)	",DoaUpdataTag);            	//·½Î»¸üĞÂ
-		NLOGKSWIDTH(4,"·½Î»¸üĞÂ¶¨Ê±¼ÆÊı(DoaUpda...)"	 ,DoaUpdataStTime);            	//·½Î»¸üĞÂ¶¨Ê±¼ÆÊı
-		NLOGKSWIDTH(4,"Á¬Ğø²¨·½Î»¸üĞÂ¼ÆÊı(ContDo...)"	 ,ContDoaUpdataStTime);         //Á¬Ğø²¨·½Î»¸üĞÂ¶¨Ê±¼ÆÊı
-		NLOGKSWIDTH(4,"ÅĞ¶ÏÏûÊ§(DisapJudgeTa...)	",DisapJudgeTag);            	//ÅĞ¶ÏÏûÊ§
-		NLOGKSWIDTH(4,"³¬Ê±ÅĞ¶Ï(PortTimeBegi...)	",PortTimeBegin);				//³¬Ê±ÅĞ¶Ï
+		NLOGKSWIDTH(4,"PDWé€šé“æ•°(DualRamCha...)	",DualRamChannelNum);			//PDWæ•°æ®é€šé“çš„é€šé“æ•°
+		NLOGKSWIDTH(4,"æ¯é€šé“é›·è¾¾æ•°(ChannelRa...)	",ChannelRadarMaxNo);			//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é›·è¾¾çš„æœ€å¤§æ•°
+		NLOGKSWIDTH(4,"æ ‡å‡†é€šé“èµ·å§‹(DualRamNo...)	",DualRamNormalStart);			//Ramç¼“å†²åŒºæ ‡å‡†æœ‰æ•ˆé€šé“èµ·å§‹å€¼
+        NLOGKSWIDTH(4,"ä¸´æ—¶é€šé“è„‰å†²æ•°(Analysis...)	",AnalysisNum);					//ä¸´æ—¶é€šé“çš„æœ€å¤§è„‰å†²æ•°
+        NLOGKSWIDTH(4,"å•é€šé“åˆ†é€‰è¶…æ—¶(SingleCh...)	",SingleChanAnalyTimeOut);		//å…¨éƒ¨æœ‰æ•ˆå•é€šé“åˆ†é€‰è¶…æ—¶
+        NLOGKSWIDTH(4,"åˆ†é€‰åˆå§‹é˜ˆå€¼(NormalAna...)	",NormalAnalyNum);				//åˆ†é€‰åˆå§‹é˜ˆå€¼ï¼Œå½“ä»¥æ¬¡é˜ˆå€¼è¿›è¡Œåˆ†é€‰æ—¶ï¼Œæ ‡å¿—é¢„å¤„ç†å¹¶æœªå¯¹è¯¥é€šé“è°ƒæ•´é˜ˆå€¼
+        NLOGKSWIDTH(4,"å¤šä¿¡å·åˆ†é€‰è„‰å†²æ•°(MutiSig...)	",MutiSignalAnalyMinNum);		//å‚åŠ å¤šä¿¡å·åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+        NLOGKSWIDTH(4,"ç›´æ–¹å›¾åˆ†é€‰è„‰å†²æ•°(HistAna...)	",HistAnalyMinNum);				//å‚åŠ ç›´æ–¹å›¾åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+        NLOGKSWIDTH(4,"å•Chæ·å˜RFæœ€å°èŒƒå›´(Sing...)"	 ,SingAgileRfRgMin);			//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å°RFå˜åŒ–èŒƒå›´
+        NLOGKSWIDTH(4,"å•Chæ·å˜RFæœ€å¤§èŒƒå›´(Sing...)"	 ,SingChanAgileTlrc);			//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+        NLOGKSWIDTH(4,"å¤šChæ·å˜RFæœ€å¤§èŒƒå›´(Muti...)"	 ,MutiChanAgileTlrc);			//å‚åŠ å¤šé€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+        NLOGKSWIDTH(4,"æ·å˜æœ€å°è„‰å†²æ•°(AgileAna...)	",AgileAnaMinNum);				//å‚åŠ æ·å˜åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+		NLOGKSWIDTH(4,"æ‰«æåˆ†æè„‰å†²æ•°(ScanThre...)	",ScanThreshold);				//å‚åŠ æ‰«æåˆ†æçš„æœ€å°è„‰å†²æ•°
+		NLOGKSWIDTH(4,"å‚æ•°æ›´æ–°TimeOut(ParaU...)	",ParaUpdataTimeOut);			//å‚æ•°æ›´æ–°TimeOut
+		NLOGKSWIDTH(4,"Rfåˆ†é€‰å®¹å·®èŒƒå›´(AnalyCh...)	",AnalyChanRfTlrc);          	//Rfåˆ†é€‰å®¹å·®èŒƒå›´
+		NLOGKSWIDTH(4,"Paè·Ÿè¸ªå®¹å·®èŒƒå›´(PaTrack...)	",PaTrackTlrc);              	//Paè·Ÿè¸ªå®¹å·®èŒƒå›´
+		NLOGKSWIDTH(4,"æ³¢æ®µå·(BandNo)			"	 ,BandNo);						//æ³¢æ®µå·
+		NLOGKSWIDTH(4,"å¤©çº¿æ•°(AntenaNums)		"	 ,AntenaNums);              	//å¤©çº¿æ•°
+		NLOGKSWIDTH(4,"FREQæ•°ç»„é•¿åº¦(FreqLen...)	"	 ,FreqLens);                	//FREQæ•°ç»„é•¿åº¦
+		NLOGKSWIDTH(4,"ä¸»å¤©çº¿è„‰å†²æœ€å°å€¼(Mai...)	"	 ,MainDeltaPaGate);          	//ä¸»å¤©çº¿æ­£è´Ÿè„‰å†²æ•°æœ€å°å€¼ 
+		NLOGKSWIDTH(4,"Paå®¹å·®èŒƒå›´è„‰å†²æ•°(De...)    "	 ,DeltaPaRgPulseMinNums);   	//Paå®¹å·®èŒƒå›´å†…æœ€å°è„‰å†²æ•°
+		NLOGKSWIDTH(4,"å¤©çº¿è„‰å†²æœ€å°å€¼(...)		"	 ,SameAntenaNoMinNums);      	//ç›¸åŒå¤©çº¿å·è„‰å†²æœ€å°å€¼		CONSTANT
+		NLOGKSWIDTH(4,"æ¬¡å¤©çº¿è„‰å†²æ•°æœ€å°å€¼(...) 	"		 ,SubDeltaPaGate);           	//æ¬¡å¤©çº¿æ­£è´Ÿè„‰å†²æ•°æœ€å°å€¼ 		CONSTANT
+		NLOGKSWIDTH(4,"Paå®¹å·®(DeltaPaToler...) 	",DeltaPaTolerance);         	//Paå®¹å·®ï¼Œåˆå§‹å€¼è®¾ä¸º0x1c0 	CONSTANT
+		NLOGKSWIDTH(4,"æ–¹ä½æ›´æ–°(SystemCmd)		"	 ,SysCmd.DoaUpdata);         	//æ–¹ä½æ›´æ–° 
+		NLOGKSWIDTH(4,"é€šé“å·(ChanNo)			"	 ,ChanNo);                   	//é€šé“å·
+		NLOGKSWIDTH(4,"é€šé“åˆ†é€‰è„‰å†²å¼€å§‹ä½ç½®(...)	"	 ,ChanDiscernStLoc);            //é€šé“åˆ†é€‰è„‰å†²å¼€å§‹ä½ç½®
+		NLOGKSWIDTH(4,"ä¸´æ—¶é€šé“å¯è¯»è„‰å†²æ•°(...)	"		 ,ChanPulseNums);            	//ä¸´æ—¶é€šé“å¯è¯»è„‰å†²æ•°
+		NLOGKSWIDTH(4,"ä¸´æ—¶é€šé“æœ‰æ•ˆè„‰å†²æ•°(...)	"		 ,AnalyPulseNums);           	//ä¸´æ—¶é€šé“æœ‰æ•ˆè„‰å†²æ•°ï¼Œå¯¹AnalyChannelä¸­æœ‰æ•ˆè„‰å†²è®¡æ•°
+		NLOGKSWIDTH(4,"Ramç¼“å†²åŒºæœ‰æ•ˆé€šé“æ•°(...)	"	 ,DualRamValidChanNum);      	//Ramç¼“å†²åŒºæœ‰æ•ˆé€šé“æ•°
+		NLOGKSWIDTH(4,"ç»“æœè¡¨é•¿åº¦(ResultNums...)	",ResultNums);               	//å½“å‰å·²åˆ†é€‰å‡ºç»“æœçš„ç»“æœè¡¨é•¿åº¦
+		NLOGKSWIDTH(4,"æ·å˜Rfh(AgileAnalyT...)	",AgileAnalyTag);            	//æ·å˜Rfh
+		NLOGKSWIDTH(4,"å‚æ•°æ›´æ–°(ParaUpdateTa...)	",ParaUpdateTag);            	//å‚æ•°æ›´æ–°
+		NLOGKSWIDTH(4,"å‚æ•°æ›´æ–°å®šæ—¶è®¡æ•°(ParaUpd...)"	 ,ParaUpdateStTime);            //å‚æ•°æ›´æ–°å®šæ—¶è®¡æ•°
+		NLOGKSWIDTH(4,"æ–¹ä½æ›´æ–°(DoaUpdataTag...)	",DoaUpdataTag);            	//æ–¹ä½æ›´æ–°
+		NLOGKSWIDTH(4,"æ–¹ä½æ›´æ–°å®šæ—¶è®¡æ•°(DoaUpda...)"	 ,DoaUpdataStTime);            	//æ–¹ä½æ›´æ–°å®šæ—¶è®¡æ•°
+		NLOGKSWIDTH(4,"è¿ç»­æ³¢æ–¹ä½æ›´æ–°è®¡æ•°(ContDo...)"	 ,ContDoaUpdataStTime);         //è¿ç»­æ³¢æ–¹ä½æ›´æ–°å®šæ—¶è®¡æ•°
+		NLOGKSWIDTH(4,"åˆ¤æ–­æ¶ˆå¤±(DisapJudgeTa...)	",DisapJudgeTag);            	//åˆ¤æ–­æ¶ˆå¤±
+		NLOGKSWIDTH(4,"è¶…æ—¶åˆ¤æ–­(PortTimeBegi...)	",PortTimeBegin);				//è¶…æ—¶åˆ¤æ–­
 		NLOGKSSECEND("PdwDiscern Status");
 	}
 	void 	ShowLastTimeOfResult() const
 	{
-		NLOGKSWIDTH(5,"µ±Ç°¶¨Ê±Æ÷(s)",TimerCount.Seconds);
+		NLOGKSWIDTH(5,"å½“å‰å®šæ—¶å™¨(s)",TimerCount.Seconds);
 		for(int i = 0; i < ResultNums; i++)
 		{
-			NLOGKSWIDTH(5,"No",i,"½á¹û±í(s)",LastTimeOfResult[i]);
+			NLOGKSWIDTH(5,"No",i,"ç»“æœè¡¨(s)",LastTimeOfResult[i]);
 		}
 	}
 	void	ShowTimeBegin() const
@@ -3859,42 +3859,42 @@ public:
 	virtual void	ShowResult(size_t ResultNo) const
 	{
 		int i = ResultNo;
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤> 		½á¹û±í±íÍ· 		<¡¤¡¤¡¤¡¤¡¤¡¤¡¤| ĞòºÅ£º ",i);
-		NLOGKSBYHEXWIDTH(5,"|¡¤¡¤¡¤¡¤¡¤HEX ÃüÁî(Cmd)				"		,UINT(Result[i].ResultData.Cmd				));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ±êºÅ(ResultNo)			"		,UINT(Result[i].ResultNo					));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ Í¨µÀ(ChanNo)			"		,UINT(Result[i].ChanNo						));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÀàĞÍ(Type)				"		,UINT(Result[i].ResultData.Type				));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÔØÆµ(Rfl)				"		,UINT((BandNo == 1)?((Result[i].ResultData.Rfl & 0x0FFF)*3 + 6144):(Result[i].ResultData.Rfl & 0x0FFF)*2));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÔØÆµ·¶Î§(Rfh)			"			,(Result[i].ResultData.Rfh == 0)?0:(UINT((BandNo == 1)?((Result[i].ResultData.Rfh & 0x0FFF)*3 + 6144):(Result[i].ResultData.Rfh & 0x0FFF)*2)));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÖØÆµ(Pri)				"		,UINT((Result[i].ResultData.Pri)			));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·> 		ç»“æœè¡¨è¡¨å¤´ 		<Â·Â·Â·Â·Â·Â·Â·| åºå·ï¼š ",i);
+		NLOGKSBYHEXWIDTH(5,"|Â·Â·Â·Â·Â·HEX å‘½ä»¤(Cmd)				"		,UINT(Result[i].ResultData.Cmd				));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· æ ‡å·(ResultNo)			"		,UINT(Result[i].ResultNo					));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· é€šé“(ChanNo)			"		,UINT(Result[i].ChanNo						));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ç±»å‹(Type)				"		,UINT(Result[i].ResultData.Type				));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· è½½é¢‘(Rfl)				"		,UINT((BandNo == 1)?((Result[i].ResultData.Rfl & 0x0FFF)*3 + 6144):(Result[i].ResultData.Rfl & 0x0FFF)*2));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· è½½é¢‘èŒƒå›´(Rfh)			"			,(Result[i].ResultData.Rfh == 0)?0:(UINT((BandNo == 1)?((Result[i].ResultData.Rfh & 0x0FFF)*3 + 6144):(Result[i].ResultData.Rfh & 0x0FFF)*2)));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· é‡é¢‘(Pri)				"		,UINT((Result[i].ResultData.Pri)			));
 		if((Result[i].ResultData.Type == 2) || (Result[i].ResultData.Type == 5))
 		{
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ¶¶¶¯·¶Î§(DitherRnge)		"		,UINT((Result[i].ResultData.DitherRnge)		));
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· æŠ–åŠ¨èŒƒå›´(DitherRnge)		"		,UINT((Result[i].ResultData.DitherRnge)		));
 		}
 		if((Result[i].ResultData.Type == 3) || (Result[i].ResultData.Type == 7))
 		{
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ²Î²îÊı(JaggNums)			"		,UINT(Result[i].ResultData.JaggNums			));
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ Ö¡ÖÜÆÚ(FramePeriods)		"		,UINT((Result[i].ResultData.FramePeriods)	));
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÏàÖÜÆÚ¢Ù(PhasePeriods[0])		"	,UINT((Result[i].ResultData.PhasePeriods[0])));
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÏàÖÜÆÚ¢Ú(PhasePeriods[1])		"	,UINT((Result[i].ResultData.PhasePeriods[1]))); 	
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÏàÖÜÆÚ¢Û(PhasePeriods[2])		"	,UINT((Result[i].ResultData.PhasePeriods[2]))); 	
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÏàÖÜÆÚ¢Ü(PhasePeriods[3])		"	,UINT((Result[i].ResultData.PhasePeriods[3]))); 	
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÏàÖÜÆÚ¢İ(PhasePeriods[4])		"	,UINT((Result[i].ResultData.PhasePeriods[4]))); 	
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÏàÖÜÆÚ¢Ş(PhasePeriods[5])		"	,UINT((Result[i].ResultData.PhasePeriods[5]))); 	
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÏàÖÜÆÚ¢ß(PhasePeriods[6])		"	,UINT((Result[i].ResultData.PhasePeriods[6]))); 	
-			NLOGKSWIDTH	(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÏàÖÜÆÚ¢à(PhasePeriods[7])		"	,UINT((Result[i].ResultData.PhasePeriods[7]))); 	
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· å‚å·®æ•°(JaggNums)			"		,UINT(Result[i].ResultData.JaggNums			));
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· å¸§å‘¨æœŸ(FramePeriods)		"		,UINT((Result[i].ResultData.FramePeriods)	));
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ç›¸å‘¨æœŸâ‘ (PhasePeriods[0])		"	,UINT((Result[i].ResultData.PhasePeriods[0])));
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ç›¸å‘¨æœŸâ‘¡(PhasePeriods[1])		"	,UINT((Result[i].ResultData.PhasePeriods[1]))); 	
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ç›¸å‘¨æœŸâ‘¢(PhasePeriods[2])		"	,UINT((Result[i].ResultData.PhasePeriods[2]))); 	
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ç›¸å‘¨æœŸâ‘£(PhasePeriods[3])		"	,UINT((Result[i].ResultData.PhasePeriods[3]))); 	
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ç›¸å‘¨æœŸâ‘¤(PhasePeriods[4])		"	,UINT((Result[i].ResultData.PhasePeriods[4]))); 	
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ç›¸å‘¨æœŸâ‘¥(PhasePeriods[5])		"	,UINT((Result[i].ResultData.PhasePeriods[5]))); 	
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ç›¸å‘¨æœŸâ‘¦(PhasePeriods[6])		"	,UINT((Result[i].ResultData.PhasePeriods[6]))); 	
+			NLOGKSWIDTH	(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ç›¸å‘¨æœŸâ‘§(PhasePeriods[7])		"	,UINT((Result[i].ResultData.PhasePeriods[7]))); 	
 		}
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ Âö¿í(Pw)				"		,UINT((Result[i].ResultData.Pw * 25)		));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ Âö·ù(Pa)				"		,UINT(Result[i].ResultData.Pa&0x3F			));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ·½Ïò(Doa)				"		,UINT(Result[i].ResultData.Doa				));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ¸©Ñö(Aoa)				"		,UINT(Result[i].ResultData.Aoa				));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ·¢ÏÖÊ±¼ä(dtime)			"		,UINT((Result[i].ResultData.dtime) 			));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ É¨ÃèÀàĞÍ(ScanType)			"	,UINT(Result[i].ScanType					));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÌìÏß×ªËÙ(AntenaRpm)		"		,UINT(Result[i].AntenaRpm					));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ É¨ÃèÖÜÆÚ(ScanPeriod)		"		,UINT(Result[i].ScanPeriod					));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ ÕÕÉäÊ±¼ä(IrradiateTime)		"	,UINT(Result[i].IrradiateTime				));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤¡¤ É¨Ãè¼ÆÊı(ScanCounts)		"		,UINT(Result[i].ScanCounts					));
-		NLOGKSWIDTH		(5,"|¡¤¡¤¡¤¡¤¡¤¡¤¡¤> 		½á¹û±í±íÎ²  		<¡¤¡¤¡¤¡¤¡¤¡¤¡¤| ĞòºÅ£º ",i);
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· è„‰å®½(Pw)				"		,UINT((Result[i].ResultData.Pw * 25)		));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· è„‰å¹…(Pa)				"		,UINT(Result[i].ResultData.Pa&0x3F			));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· æ–¹å‘(Doa)				"		,UINT(Result[i].ResultData.Doa				));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ä¿¯ä»°(Aoa)				"		,UINT(Result[i].ResultData.Aoa				));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· å‘ç°æ—¶é—´(dtime)			"		,UINT((Result[i].ResultData.dtime) 			));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· æ‰«æç±»å‹(ScanType)			"	,UINT(Result[i].ScanType					));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· å¤©çº¿è½¬é€Ÿ(AntenaRpm)		"		,UINT(Result[i].AntenaRpm					));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· æ‰«æå‘¨æœŸ(ScanPeriod)		"		,UINT(Result[i].ScanPeriod					));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· ç…§å°„æ—¶é—´(IrradiateTime)		"	,UINT(Result[i].IrradiateTime				));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·Â· æ‰«æè®¡æ•°(ScanCounts)		"		,UINT(Result[i].ScanCounts					));
+		NLOGKSWIDTH		(5,"|Â·Â·Â·Â·Â·Â·Â·> 		ç»“æœè¡¨è¡¨å°¾  		<Â·Â·Â·Â·Â·Â·Â·| åºå·ï¼š ",i);
 	}
 	virtual void	ShowResult(size_t ResultNoSt, size_t ResultNoEnd) const
 	{
@@ -3934,7 +3934,7 @@ public:
 	{
 		if(AnalyPulseNums != 0)
 		{
-			NLOGKSBYHEXWIDTH(4,"|¡¤¡¤¡¤HEX AnalyChannel Begin>   AnalyPulseNums",AnalyPulseNums);
+			NLOGKSBYHEXWIDTH(4,"|Â·Â·Â·HEX AnalyChannel Begin>   AnalyPulseNums",AnalyPulseNums);
 			for(int i = 0; i < AnalyPulseNums; i++)
 			{
 				NLOGKSBYHEXWIDTH(4,"No",i,
@@ -3945,7 +3945,7 @@ public:
 								   "Ton",AnalyChannel.Ton[i]
 								 );
 			}
-			NLOGKSBYHEXWIDTH(4,"|¡¤¡¤¡¤HEX AnalyChannel End  >   AnalyPulseNums",AnalyPulseNums);
+			NLOGKSBYHEXWIDTH(4,"|Â·Â·Â·HEX AnalyChannel End  >   AnalyPulseNums",AnalyPulseNums);
 		}
 	}
 	void 	ShowMsg() const

@@ -89,21 +89,21 @@ enum _DebugStatusType
 /*-------------------------------------- DEBUG Sec --------------------------------------*/
 
 template<typename _DualRamType,
-         int DualRamChannelNum,										//PDWÊı¾İÍ¨µÀµÄÍ¨µÀÊı
-         int ChannelRadarMaxNo,										//Ã¿¸öPDWÊı¾İÍ¨µÀµÄ¿É·ÖÑ¡À×´ïµÄ×î´óÊı
-         int DualRamNormalStart,									//Ram»º³åÇø±ê×¼ÓĞĞ§Í¨µÀÆğÊ¼Öµ
-         int AnalysisNum,											//ÁÙÊ±Í¨µÀµÄ×î´óÂö³åÊı
-         int SingleChanAnalyTimeOut,								//È«²¿ÓĞĞ§µ¥Í¨µÀ·ÖÑ¡³¬Ê±
-         int NormalAnalyNum,										//·ÖÑ¡³õÊ¼ãĞÖµ£¬µ±ÒÔ´ÎãĞÖµ½øĞĞ·ÖÑ¡Ê±£¬±êÖ¾Ô¤´¦Àí²¢Î´¶Ô¸ÃÍ¨µÀµ÷ÕûãĞÖµ
-         int MutiSignalAnalyMinNum,									//²Î¼Ó¶àĞÅºÅ·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-         int HistAnalyMinNum,										//²Î¼ÓÖ±·½Í¼·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-         int SingAgileRfRgMin,										//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×îĞ¡RF±ä»¯·¶Î§
-         int SingChanAgileTlrc,										//²Î¼Óµ¥Í¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-         int MutiChanAgileTlrc,										//²Î¼Ó¶àÍ¨µÀ½İ±ä·ÖÑ¡µÄ×î´óRF±ä»¯·¶Î§
-         int AgileAnaMinNum,										//²Î¼Ó½İ±ä·ÖÑ¡µÄ×îĞ¡Âö³åÊı
-         int ScanThreshold,											//²Î¼ÓÉ¨Ãè·ÖÎöµÄ×îĞ¡Âö³åÊı
-		 int ParaUpdataTimeOut,										//²ÎÊı¸üĞÂ¼ä¸ôÊ±¼ä³¤¶È
-		 int DoaUpdataTimeOut>										//·½Î»¸üĞÂ¼ä¸ôÊ±¼ä³¤¶È
+         int DualRamChannelNum,										//PDWæ•°æ®é€šé“çš„é€šé“æ•°
+         int ChannelRadarMaxNo,										//æ¯ä¸ªPDWæ•°æ®é€šé“çš„å¯åˆ†é€‰é›·è¾¾çš„æœ€å¤§æ•°
+         int DualRamNormalStart,									//Ramç¼“å†²åŒºæ ‡å‡†æœ‰æ•ˆé€šé“èµ·å§‹å€¼
+         int AnalysisNum,											//ä¸´æ—¶é€šé“çš„æœ€å¤§è„‰å†²æ•°
+         int SingleChanAnalyTimeOut,								//å…¨éƒ¨æœ‰æ•ˆå•é€šé“åˆ†é€‰è¶…æ—¶
+         int NormalAnalyNum,										//åˆ†é€‰åˆå§‹é˜ˆå€¼ï¼Œå½“ä»¥æ¬¡é˜ˆå€¼è¿›è¡Œåˆ†é€‰æ—¶ï¼Œæ ‡å¿—é¢„å¤„ç†å¹¶æœªå¯¹è¯¥é€šé“è°ƒæ•´é˜ˆå€¼
+         int MutiSignalAnalyMinNum,									//å‚åŠ å¤šä¿¡å·åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+         int HistAnalyMinNum,										//å‚åŠ ç›´æ–¹å›¾åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+         int SingAgileRfRgMin,										//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å°RFå˜åŒ–èŒƒå›´
+         int SingChanAgileTlrc,										//å‚åŠ å•é€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+         int MutiChanAgileTlrc,										//å‚åŠ å¤šé€šé“æ·å˜åˆ†é€‰çš„æœ€å¤§RFå˜åŒ–èŒƒå›´
+         int AgileAnaMinNum,										//å‚åŠ æ·å˜åˆ†é€‰çš„æœ€å°è„‰å†²æ•°
+         int ScanThreshold,											//å‚åŠ æ‰«æåˆ†æçš„æœ€å°è„‰å†²æ•°
+		 int ParaUpdataTimeOut,										//å‚æ•°æ›´æ–°é—´éš”æ—¶é—´é•¿åº¦
+		 int DoaUpdataTimeOut>										//æ–¹ä½æ›´æ–°é—´éš”æ—¶é—´é•¿åº¦
 class _PdwDiscernDebug: public _PdwDiscern<_DualRamType,
 										   DualRamChannelNum,
 										   ChannelRadarMaxNo,
@@ -155,7 +155,7 @@ public:
 				);
 		ResultAnalyChannel = new _AnalyChannelType[900];
 	}
-	_PdwDiscernDebug(_DualRamType 	&DualRam_,													//Ê¹ÓÃ¸ÃÀàÊµÀı»¯¶ÔÏó£¬Ğè°ó¶¨Ò»¸ö_DualRamTypeÀàĞÍµÄ¶ÔÏóÒıÓÃ
+	_PdwDiscernDebug(_DualRamType 	&DualRam_,													//ä½¿ç”¨è¯¥ç±»å®ä¾‹åŒ–å¯¹è±¡ï¼Œéœ€ç»‘å®šä¸€ä¸ª_DualRamTypeç±»å‹çš„å¯¹è±¡å¼•ç”¨
 					 _TimerCount  	&TimerCount_,
 					 size_t 		&TimeBegin_,
 					 _SysCmd 		&SystemCmd_)
@@ -187,32 +187,32 @@ public:
 	{
 		_PdwDiscernType::RstBand(BandNo);
 	}
-	virtual void 	run(size_t& CtrlSign, size_t& TaskDeleteSign)																		//Ö÷º¯Êı
+	virtual void 	run(size_t& CtrlSign, size_t& TaskDeleteSign)																		//ä¸»å‡½æ•°
 	{
 		DEBUG_RUN(FuncStackOn,
 				DEBUG_RUN(FuncStatusOn,
-						COUTFUNCEND("ÔËĞĞ"),
-							COUTFUNC("ÔËĞĞ")));
+						COUTFUNCEND("è¿è¡Œ"),
+							COUTFUNC("è¿è¡Œ")));
 		DEBUG_RUN(FuncStatusOn,
-				COUTSECBEG("¿ªÊ¼ÔËĞĞ"));
+				COUTSECBEG("å¼€å§‹è¿è¡Œ"));
 		_PdwDiscernType::run(CtrlSign,TaskDeleteSign);
 		DEBUG_RUN(FuncStatusOn,
-				COUTSECEND("Í£Ö¹ÔËĞĞ"));
+				COUTSECEND("åœæ­¢è¿è¡Œ"));
 	}
-	virtual int  	CollectPulseToAnalyChannel()												//½«Ram»º³åÇø·ÖÎöÍ¨µÀRfÔÚAnalyChanRfTol·¶Î§ÄÚµÄÂö³åÊäÈëµ½ÁÙÊ±Í¨µÀ
+	virtual int  	CollectPulseToAnalyChannel()												//å°†Ramç¼“å†²åŒºåˆ†æé€šé“Rfåœ¨AnalyChanRfTolèŒƒå›´å†…çš„è„‰å†²è¾“å…¥åˆ°ä¸´æ—¶é€šé“
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("µ¥Í¨µÀÊÕ¼¯Âö³å"));
+				COUTFUNC("å•é€šé“æ”¶é›†è„‰å†²"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::CollectPulseToAnalyChannel();
 		DEBUG_RUN(FuncStatusOn,
 				COUTMSGVALEND(GetAnalyPulseNums()));
 		return Rtn;
 	}
-	virtual int  	CollectPulseToAnalyChannel(int ChannelNo)									//½«Ram»º³åÇøChannelNoÍ¨µÀRfÔÚ£¨Cmptn[i].Rfl,Cmptn[i].Rfh£©·¶Î§ÄÚµÄÂö³åÊäÈëµ½ÁÙÊ±Í¨µÀ
+	virtual int  	CollectPulseToAnalyChannel(int ChannelNo)									//å°†Ramç¼“å†²åŒºChannelNoé€šé“Rfåœ¨ï¼ˆCmptn[i].Rfl,Cmptn[i].Rfhï¼‰èŒƒå›´å†…çš„è„‰å†²è¾“å…¥åˆ°ä¸´æ—¶é€šé“
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½İ±äµ¥Í¨µÀÊÕ¼¯Âö³å"));
+				COUTFUNC("æ·å˜å•é€šé“æ”¶é›†è„‰å†²"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::CollectPulseToAnalyChannel(ChannelNo);
 		DEBUG_RUN(FuncStatusOn,
@@ -221,20 +221,20 @@ public:
 				ShowAnalyChannel());
 		return Rtn;
 	}
-	virtual int 	ClctAgilePulseToAnalChan(int *AgiChanNo, int ValidAgiChLens)				//¶àÍ¨µÀ½İ±äÂö³åÊäÈëµ½ÁÙÊ±Í¨µÀ, ToaTy Restrict
+	virtual int 	ClctAgilePulseToAnalChan(int *AgiChanNo, int ValidAgiChLens)				//å¤šé€šé“æ·å˜è„‰å†²è¾“å…¥åˆ°ä¸´æ—¶é€šé“, ToaTy Restrict
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½İ±ä¶àÍ¨µÀÊÕ¼¯Âö³å"));
+				COUTFUNC("æ·å˜å¤šé€šé“æ”¶é›†è„‰å†²"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::ClctAgilePulseToAnalChan(AgiChanNo,ValidAgiChLens);
 		DEBUG_RUN(FuncStatusOn,
 				COUTMSGVALEND(GetAnalyPulseNums()));
 		return Rtn;
 	}
-	virtual int		AnalChanDeductPrcs()														//È¥³ı·ÖÎöÍ¨µÀÖĞÒÑ·ÖÑ¡Âö³å
+	virtual int		AnalChanDeductPrcs()														//å»é™¤åˆ†æé€šé“ä¸­å·²åˆ†é€‰è„‰å†²
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("ÁÙÊ±Í¨µÀÒÑ·ÖÎöÂö³å¿Û³ı"));
+				COUTFUNC("ä¸´æ—¶é€šé“å·²åˆ†æè„‰å†²æ‰£é™¤"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::AnalChanDeductPrcs();
 		DEBUG_RUN(FuncStatusOn,
@@ -242,29 +242,29 @@ public:
 				ShowAnalyChannel());
 		return Rtn;
 	}
-	virtual void 	CancelDeduct()																//È¡ÏûRam»º³åÇø·ÖÎöÍ¨µÀÂö³å¿Û³ı±êÖ¾²¢ÖÃÂö³åÒÑ·ÖÎö±êÖ¾
+	virtual void 	CancelDeduct()																//å–æ¶ˆRamç¼“å†²åŒºåˆ†æé€šé“è„‰å†²æ‰£é™¤æ ‡å¿—å¹¶ç½®è„‰å†²å·²åˆ†ææ ‡å¿—
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("ÁÙÊ±Í¨µÀÈ¡Ïû¿Û³ı±êÖ¾"));
+				COUTFUNC("ä¸´æ—¶é€šé“å–æ¶ˆæ‰£é™¤æ ‡å¿—"));
 		_PdwDiscernType::CancelDeduct();
 	}
-	virtual bool	AllChanAnalysisedJudge()													//Ram»º³åÇøÓĞĞ§Í¨µÀÍê³É·ÖÑ¡ÅĞ¶Ï
+	virtual bool	AllChanAnalysisedJudge()													//Ramç¼“å†²åŒºæœ‰æ•ˆé€šé“å®Œæˆåˆ†é€‰åˆ¤æ–­
 	{
 		bool Rtn = _PdwDiscernType::AllChanAnalysisedJudge();
 		if(Rtn == true)
 		{
 			DEBUG_RUN(FuncStackOn,
-					COUTMSGSTR("µ¥Í¨µÀ³£¹æĞÅºÅ·ÖÑ¡Íê±Ï!"));
+					COUTMSGSTR("å•é€šé“å¸¸è§„ä¿¡å·åˆ†é€‰å®Œæ¯•!"));
 		}
 		return Rtn;
 	}
-	virtual int  	SingleChanAnalysis()														//Ô¤ÉèãĞÖµÆÕÍ¨·ÖÑ¡
+	virtual int  	SingleChanAnalysis()														//é¢„è®¾é˜ˆå€¼æ™®é€šåˆ†é€‰
 	{
 		DEBUG_RUN(FuncStackOn,
 				DEBUG_RUN(FuncStatusOn,
-						COUTFUNCEND("µ¥Í¨µÀĞÅºÅ·ÖÑ¡");
+						COUTFUNCEND("å•é€šé“ä¿¡å·åˆ†é€‰");
 						COUTSECBEG("SingleChanAnalysis"),
-								COUTFUNC("µ¥Í¨µÀĞÅºÅ·ÖÑ¡")));
+								COUTFUNC("å•é€šé“ä¿¡å·åˆ†é€‰")));
 		DEBUG_RUN(FuncStatusOn,
 				COUTMSGVAL(ChanNo));
 		int Rtn = 0;
@@ -273,260 +273,260 @@ public:
 				COUTSECEND("SingleChanAnalysis"));
 		return Rtn;
 	}
-	virtual int 	HistogramDiscern()															//Ö±·½Í¼·ÖÑ¡£¬·ÖÑ¡Ë³Ğò£º²Î²î -> ¹Ì¶¨ -> ¶¶¶¯
+	virtual int 	HistogramDiscern()															//ç›´æ–¹å›¾åˆ†é€‰ï¼Œåˆ†é€‰é¡ºåºï¼šå‚å·® -> å›ºå®š -> æŠ–åŠ¨
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("Ö±·½Í¼·ÖÑ¡"));
+				COUTFUNC("ç›´æ–¹å›¾åˆ†é€‰"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::HistogramDiscern();
 		return Rtn;
 	}
-	virtual int  	JaggDiscern()																//²Î²îĞÅºÅ·ÖÑ¡
+	virtual int  	JaggDiscern()																//å‚å·®ä¿¡å·åˆ†é€‰
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("²Î²îĞÅºÅ·ÖÑ¡"));
+				COUTFUNC("å‚å·®ä¿¡å·åˆ†é€‰"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::JaggDiscern();
 		return Rtn;
 	}
-	virtual int  	FixDiscern()																//¹Ì¶¨ĞÅºÅ·ÖÑ¡ 
+	virtual int  	FixDiscern()																//å›ºå®šä¿¡å·åˆ†é€‰ 
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("¹Ì¶¨ĞÅºÅ·ÖÑ¡"));
+				COUTFUNC("å›ºå®šä¿¡å·åˆ†é€‰"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::FixDiscern();
 		return Rtn;
 	}
-	virtual int  	DitherDiscern(int A1, int A2)												//¶¶¶¯ĞÅºÅ·ÖÑ¡
+	virtual int  	DitherDiscern(int A1, int A2)												//æŠ–åŠ¨ä¿¡å·åˆ†é€‰
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("¶¶¶¯ĞÅºÅ·ÖÑ¡"));
+				COUTFUNC("æŠ–åŠ¨ä¿¡å·åˆ†é€‰"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::DitherDiscern(A1, A2);
 		return Rtn;
 	}
-	virtual int 	MutiSignalDiscern()															//¶à²¿ĞÅºÅ·ÖÑ¡
+	virtual int 	MutiSignalDiscern()															//å¤šéƒ¨ä¿¡å·åˆ†é€‰
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("ĞòÁĞ¼ìË÷·¨ĞÅºÅ·ÖÑ¡"));
+				COUTFUNC("åºåˆ—æ£€ç´¢æ³•ä¿¡å·åˆ†é€‰"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::MutiSignalDiscern();
 		return Rtn;
 	}
-	virtual void 	SingChanAgileDiscern()														//µ¥Í¨µÀ½İ±äĞÅºÅ·ÖÑ¡
+	virtual void 	SingChanAgileDiscern()														//å•é€šé“æ·å˜ä¿¡å·åˆ†é€‰
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("µ¥Í¨µÀ½İ±äĞÅºÅ·ÖÑ¡"));
+				COUTFUNC("å•é€šé“æ·å˜ä¿¡å·åˆ†é€‰"));
 		_PdwDiscernType::SingChanAgileDiscern();
 	}
-	virtual int 	AgainDiscern()																//½İ±ä±ä²ÎÊıÔÙ´ÎĞÅºÅ·ÖÑ¡
+	virtual int 	AgainDiscern()																//æ·å˜å˜å‚æ•°å†æ¬¡ä¿¡å·åˆ†é€‰
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½İ±äĞÅºÅ·ÖÑ¡"));
+				COUTFUNC("æ·å˜ä¿¡å·åˆ†é€‰"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::AgainDiscern();
 		return Rtn;
 	}
-	virtual int 	AgileDitherDiscern()														//½İ±ä¶¶¶¯ĞÅºÅ·ÖÑ¡
+	virtual int 	AgileDitherDiscern()														//æ·å˜æŠ–åŠ¨ä¿¡å·åˆ†é€‰
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½İ±ä¶¶¶¯ĞÅºÅ·ÖÑ¡"));
+				COUTFUNC("æ·å˜æŠ–åŠ¨ä¿¡å·åˆ†é€‰"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::AgileDitherDiscern();
 		return Rtn;
 	}
-	virtual void 	DitherParaAnaly(ToaTy *PriArray, ToaTy PriRef, int PriInitSt)				//ÉèÖÃ½İ±ä¶¶¶¯²ÎÊı
+	virtual void 	DitherParaAnaly(ToaTy *PriArray, ToaTy PriRef, int PriInitSt)				//è®¾ç½®æ·å˜æŠ–åŠ¨å‚æ•°
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("¶¶¶¯ĞÅºÅ²ÎÊı·ÖÎö"));
+				COUTFUNC("æŠ–åŠ¨ä¿¡å·å‚æ•°åˆ†æ"));
 		_PdwDiscernType::DitherParaAnaly(PriArray, PriRef, PriInitSt);
 	}
-	virtual void 	MutiChanAgileDiscern()           											//¶àÍ¨µÀ½İ±äĞÅºÅ·ÖÑ¡
+	virtual void 	MutiChanAgileDiscern()           											//å¤šé€šé“æ·å˜ä¿¡å·åˆ†é€‰
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("¶àÍ¨µÀ½İ±äĞÅºÅ·ÖÑ¡"));
+				COUTFUNC("å¤šé€šé“æ·å˜ä¿¡å·åˆ†é€‰"));
 		_PdwDiscernType::MutiChanAgileDiscern();
 	}
-	virtual int 	T50ClctAgilePulseToAnalChan(int *AgiChanNo, int ValidAgiChLens)				//¶àÍ¨µÀ½İ±äÂö³åÊäÈëµ½ÁÙÊ±Í¨µÀ, ToaTy Restrict
+	virtual int 	T50ClctAgilePulseToAnalChan(int *AgiChanNo, int ValidAgiChLens)				//å¤šé€šé“æ·å˜è„‰å†²è¾“å…¥åˆ°ä¸´æ—¶é€šé“, ToaTy Restrict
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½İ±äĞÅºÅÊÕ¼¯Âö³å"));
+				COUTFUNC("æ·å˜ä¿¡å·æ”¶é›†è„‰å†²"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::T50ClctAgilePulseToAnalChan(AgiChanNo,ValidAgiChLens);
 		return Rtn;
 	}
-	virtual void 	T50MutiChanAgileDiscern()           										//¶àÍ¨µÀ½İ±äĞÅºÅ·ÖÑ¡
+	virtual void 	T50MutiChanAgileDiscern()           										//å¤šé€šé“æ·å˜ä¿¡å·åˆ†é€‰
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("¶àÍ¨µÀ½İ±äĞÅºÅ·ÖÑ¡"));
+				COUTFUNC("å¤šé€šé“æ·å˜ä¿¡å·åˆ†é€‰"));
 		_PdwDiscernType::T50MutiChanAgileDiscern();
 	}
-	virtual void 	ParaUpdate()        														//²ÎÊı¸üĞÂ
+	virtual void 	ParaUpdate()        														//å‚æ•°æ›´æ–°
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("²ÎÊı¸üĞÂ"));
+				COUTFUNC("å‚æ•°æ›´æ–°"));
 		_PdwDiscernType::ParaUpdate();
 	}
-	virtual void 	DoaUpdata()        															//·½Î»¸üĞÂ
+	virtual void 	DoaUpdata()        															//æ–¹ä½æ›´æ–°
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("·½Î»¸üĞÂ"));
+				COUTFUNC("æ–¹ä½æ›´æ–°"));
 		_PdwDiscernType::DoaUpdata();
 		DEBUG_RUN(FuncStackOn,
 				COUTEND);
 	}
-	virtual void 	DisappearJudge()        													//ÅĞÏûÊ§
+	virtual void 	DisappearJudge()        													//åˆ¤æ¶ˆå¤±
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("ĞÅºÅÏûÊ§ÅĞ¶Ï"));
+				COUTFUNC("ä¿¡å·æ¶ˆå¤±åˆ¤æ–­"));
 		_PdwDiscernType::DisappearJudge();
 	}
-	virtual void 	ScanAnalysis()																//É¨Ãè·ÖÎö
+	virtual void 	ScanAnalysis()																//æ‰«æåˆ†æ
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("É¨Ãè·ÖÎö"));
+				COUTFUNC("æ‰«æåˆ†æ"));
 		_PdwDiscernType::ScanAnalysis();
 	}
-	virtual void 	SetScanPara(int ResultNo)													//µ¥Í¨µÀÉ¨Ãè·ÖÎö
+	virtual void 	SetScanPara(int ResultNo)													//å•é€šé“æ‰«æåˆ†æ
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("É¨Ãè²ÎÊıÉèÖÃ"));
+				COUTFUNC("æ‰«æå‚æ•°è®¾ç½®"));
 		_PdwDiscernType::SetScanPara(ResultNo);
 	}
-	virtual int 	ResultTmpRfPwPaSet(_AddressPairType *AddrPartArray,int Lens)				//ÉèÖÃResultTmpµÄRf¡¢Pw¡¢Pa²ÎÊı²¢·µ»ØPaAnalArrayÓĞĞ§³¤¶È,ÊäÈëÊı¾İÎªAddressPartArray
+	virtual int 	ResultTmpRfPwPaSet(_AddressPairType *AddrPartArray,int Lens)				//è®¾ç½®ResultTmpçš„Rfã€Pwã€Paå‚æ•°å¹¶è¿”å›PaAnalArrayæœ‰æ•ˆé•¿åº¦,è¾“å…¥æ•°æ®ä¸ºAddressPartArray
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±íRf¡¢Pw¡¢PaÉèÖÃ£¨µØÖ·¶Ô£©"));
+				COUTFUNC("ç»“æœè¡¨Rfã€Pwã€Paè®¾ç½®ï¼ˆåœ°å€å¯¹ï¼‰"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::ResultTmpRfPwPaSet(AddrPartArray, Lens);
 		return Rtn;
 	}
-	virtual int 	ResultTmpRfPwPaSet(size_t *BarLocArray,int Lens)							//ÉèÖÃResultTmpµÄRf¡¢Pw¡¢Pa²ÎÊı²¢·µ»ØPaAnalArrayÓĞĞ§³¤¶È,ÊäÈëÊı¾İÎªBarLocArray
+	virtual int 	ResultTmpRfPwPaSet(size_t *BarLocArray,int Lens)							//è®¾ç½®ResultTmpçš„Rfã€Pwã€Paå‚æ•°å¹¶è¿”å›PaAnalArrayæœ‰æ•ˆé•¿åº¦,è¾“å…¥æ•°æ®ä¸ºBarLocArray
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±íRf¡¢Pw¡¢PaÉèÖÃ£¨Ö±·½Í¼£©"));
+				COUTFUNC("ç»“æœè¡¨Rfã€Pwã€Paè®¾ç½®ï¼ˆç›´æ–¹å›¾ï¼‰"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::ResultTmpRfPwPaSet(BarLocArray, Lens);
 		return Rtn;
 	}
-	virtual float 	MostPwSet(int n)															//PwµÄºÏÊÊÖµÉèÖÃ
+	virtual float 	MostPwSet(int n)															//Pwçš„åˆé€‚å€¼è®¾ç½®
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("PwÓÖÑ¡ÁË¸öºÏÊÊÒ»µãµÄÖµ"));
+				COUTFUNC("Pwåˆé€‰äº†ä¸ªåˆé€‚ä¸€ç‚¹çš„å€¼"));
 		float Rtn = 0;
 		Rtn = _PdwDiscernType::MostPwSet(n);
 		return Rtn;
 	}
-	virtual int 	CalculateDoa(int PaNums)													//»ñÈ¡PaAnalArrayÖĞÓĞĞ§Âö³åÊ¹ÓÃ±È·ù²âÏò·¨ÇóDoa
+	virtual int 	CalculateDoa(int PaNums)													//è·å–PaAnalArrayä¸­æœ‰æ•ˆè„‰å†²ä½¿ç”¨æ¯”å¹…æµ‹å‘æ³•æ±‚Doa
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("±È·ù²âÏòDoaÉèÖÃ"));
+				COUTFUNC("æ¯”å¹…æµ‹å‘Doaè®¾ç½®"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::CalculateDoa(PaNums);
 		return Rtn;
 	}
-	virtual int 	SeekPaToDoa(int *PaArray, int PaArrayLens, int *OutArray, int Gate)			//±êÖ¾Î»ÊÕ¼¯PaArrayÖĞÕı¸ºÓĞĞ§Âö³åÊıOutArray£¬·µ»ØÖµÎªOutArrayÓĞĞ§Êı£¬Èô²»³¬¹ıGate£¬·µ»Ø0
+	virtual int 	SeekPaToDoa(int *PaArray, int PaArrayLens, int *OutArray, int Gate)			//æ ‡å¿—ä½æ”¶é›†PaArrayä¸­æ­£è´Ÿæœ‰æ•ˆè„‰å†²æ•°OutArrayï¼Œè¿”å›å€¼ä¸ºOutArrayæœ‰æ•ˆæ•°ï¼Œè‹¥ä¸è¶…è¿‡Gateï¼Œè¿”å›0
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("×óÓÒÏÏÂö³åÂö³åÊı¹ıÖµ"));
+				COUTFUNC("å·¦å³èˆ·è„‰å†²è„‰å†²æ•°è¿‡å€¼"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::SeekPaToDoa(PaArray, PaArrayLens, OutArray, Gate);
 		return Rtn;
 	}
-	virtual int 	FindLorR(int AntenaNo, int AnalyNums)										//×óÓÒÏÏÓĞĞ§Âö³å·ù¶È×î´óÖµ
+	virtual int 	FindLorR(int AntenaNo, int AnalyNums)										//å·¦å³èˆ·æœ‰æ•ˆè„‰å†²å¹…åº¦æœ€å¤§å€¼
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("±È·ù²âÏòDoaÉèÖÃ"));
+				COUTFUNC("æ¯”å¹…æµ‹å‘Doaè®¾ç½®"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::FindLorR(AntenaNo, AnalyNums);
 		return Rtn;
 	}
-	virtual int 	FindValidPa(int PaNums, int *PaArray = NULL)								//È¡×î´óÖµ£¬¸öÊı³¬¹ıÃÅÏŞ£¬Ôò·µ»Ø¸ÃÖµÎ»ÖÃ,·ñÔòÈ¡´Î´óÖµ£¬Èç¹û¸öÊı³¬¹ıÃÅÏŞ£¬Ôò·µ»Ø¸ÃÖµÎ»ÖÃ,Èç¹ûÁ½¶¼¾ù²»¹ıÃÅÏŞ£¬Ôò·µ»Ø¸öÊı×î¶àµÄÖµÎ»ÖÃ
+	virtual int 	FindValidPa(int PaNums, int *PaArray = NULL)								//å–æœ€å¤§å€¼ï¼Œä¸ªæ•°è¶…è¿‡é—¨é™ï¼Œåˆ™è¿”å›è¯¥å€¼ä½ç½®,å¦åˆ™å–æ¬¡å¤§å€¼ï¼Œå¦‚æœä¸ªæ•°è¶…è¿‡é—¨é™ï¼Œåˆ™è¿”å›è¯¥å€¼ä½ç½®,å¦‚æœä¸¤éƒ½å‡ä¸è¿‡é—¨é™ï¼Œåˆ™è¿”å›ä¸ªæ•°æœ€å¤šçš„å€¼ä½ç½®
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("²éÕÒÓĞĞ§Pa"));
+				COUTFUNC("æŸ¥æ‰¾æœ‰æ•ˆPa"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::FindValidPa(PaNums, PaArray);
 		return Rtn;
 	}
-	virtual void 	ResultOutput()																//½á¹û±íÊä³ö
+	virtual void 	ResultOutput()																//ç»“æœè¡¨è¾“å‡º
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±íÈë¿Úº¯Êı"));
+				COUTFUNC("ç»“æœè¡¨å…¥å£å‡½æ•°"));
 		_PdwDiscernType::ResultOutput();
 	}
-	virtual int 	CompPara(int i)																//·ÖÑ¡À×´ïÁÙÊ±½á¹û±íÍ¬½á¹û±í²ÎÊı¶Ô±È
+	virtual int 	CompPara(int i)																//åˆ†é€‰é›·è¾¾ä¸´æ—¶ç»“æœè¡¨åŒç»“æœè¡¨å‚æ•°å¯¹æ¯”
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±í²ÎÊı¶Ô±È"));
+				COUTFUNC("ç»“æœè¡¨å‚æ•°å¯¹æ¯”"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::CompPara(i);
 		return Rtn;
 	}
-	virtual int 	DoubleModJudge(int Prf1, int Prf2, int DeltaPrf)							//ÇóÓàÅĞ¶ÏÊÇ·ñ¶ªÂö³åÈÔÔÚÈİ²î·¶Î§ÄÚ
+	virtual int 	DoubleModJudge(int Prf1, int Prf2, int DeltaPrf)							//æ±‚ä½™åˆ¤æ–­æ˜¯å¦ä¸¢è„‰å†²ä»åœ¨å®¹å·®èŒƒå›´å†…
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±íPrfÓàÊıÅĞ¶Ï"));
+				COUTFUNC("ç»“æœè¡¨Prfä½™æ•°åˆ¤æ–­"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::DoubleModJudge(Prf1, Prf2, DeltaPrf);
 		return Rtn;
 	}
-	virtual int 	AnalyIdenticalDoa(int i)													//ÏàÍ¬DoaÀÛ¼ÓÌæ»»
+	virtual int 	AnalyIdenticalDoa(int i)													//ç›¸åŒDoaç´¯åŠ æ›¿æ¢
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±íÏàÍ¬Doa´¦Àí"));
+				COUTFUNC("ç»“æœè¡¨ç›¸åŒDoaå¤„ç†"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::AnalyIdenticalDoa(i);
 		return Rtn;
 	}
-	virtual int 	AnalyDifferentDoa(int i,int DeltaDoa = 10)									//²»Í¬DoaÀÛ¼ÓÌæ»»
+	virtual int 	AnalyDifferentDoa(int i,int DeltaDoa = 10)									//ä¸åŒDoaç´¯åŠ æ›¿æ¢
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±í²»Í¬Doa´¦Àí"));
+				COUTFUNC("ç»“æœè¡¨ä¸åŒDoaå¤„ç†"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::AnalyDifferentDoa(i, DeltaDoa);
 		return Rtn;
 	}
-	virtual void 	FoundResult(int ResultNo, int CompParaRtn)									//µ±Ç°·ÖÑ¡ĞÍºÅÔÚ½á¹û±íÖĞ·¢ÏÖ
+	virtual void 	FoundResult(int ResultNo, int CompParaRtn)									//å½“å‰åˆ†é€‰å‹å·åœ¨ç»“æœè¡¨ä¸­å‘ç°
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("²éÕÒµ½½á¹û±í"));
+				COUTFUNC("æŸ¥æ‰¾åˆ°ç»“æœè¡¨"));
 		_PdwDiscernType::FoundResult(ResultNo, CompParaRtn);
 	}
-	virtual int 	NotFoundResult()															//µ±Ç°·ÖÑ¡ĞÍºÅÔÚ½á¹û±íÖĞÎ´·¢ÏÖ
+	virtual int 	NotFoundResult()															//å½“å‰åˆ†é€‰å‹å·åœ¨ç»“æœè¡¨ä¸­æœªå‘ç°
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("Î´²éÕÒµ½½á¹û±í"));
+				COUTFUNC("æœªæŸ¥æ‰¾åˆ°ç»“æœè¡¨"));
 		int Rtn = 0;
 		Rtn = _PdwDiscernType::NotFoundResult();
 		ResultAnalyChannel[ResultNums - 1] = AnalyChannel;
 		return Rtn;
 	}
-	virtual void 	AnalyDiffTypeAndPri(int i)													//²»Í¬ÀàĞÍºÍ²»Í¬PriµÄÀÛ¼ÓÌæ»»
+	virtual void 	AnalyDiffTypeAndPri(int i)													//ä¸åŒç±»å‹å’Œä¸åŒPriçš„ç´¯åŠ æ›¿æ¢
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±í²»Í¬ÀàĞÍºÍPri´¦Àí"));
+				COUTFUNC("ç»“æœè¡¨ä¸åŒç±»å‹å’ŒPriå¤„ç†"));
 		_PdwDiscernType::AnalyDiffTypeAndPri(i);
 	}
-	virtual void 	SetResultOtherPara(int i)													//ÉèÖÃ½á¹û±íÆäËü²ÎÊı
+	virtual void 	SetResultOtherPara(int i)													//è®¾ç½®ç»“æœè¡¨å…¶å®ƒå‚æ•°
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±íÆäËü²ÎÊıÉèÖÃ"));
+				COUTFUNC("ç»“æœè¡¨å…¶å®ƒå‚æ•°è®¾ç½®"));
 		_PdwDiscernType::SetResultOtherPara(i);
 	}
-	virtual void 	MsgExport()																	//Ö±½ÓÊä³öMsg
+	virtual void 	MsgExport()																	//ç›´æ¥è¾“å‡ºMsg
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±íÊä³ö±¨ÎÄ"));
+				COUTFUNC("ç»“æœè¡¨è¾“å‡ºæŠ¥æ–‡"));
 		_PdwDiscernType::MsgExport();
 	}
-	virtual void 	MsgExport(int ResultNo)														//Q¸æ¾¯
+	virtual void 	MsgExport(int ResultNo)														//Qå‘Šè­¦
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±íÊä³ö±¨ÎÄ"));
+				COUTFUNC("ç»“æœè¡¨è¾“å‡ºæŠ¥æ–‡"));
 		_PdwDiscernType::MsgExport(ResultNo);
 	}
-	virtual void 	SetMsg(int ResultNo)														//¸ù¾İ½á¹û±íÉèÖÃÊä³ö±¨ÎÄ
+	virtual void 	SetMsg(int ResultNo)														//æ ¹æ®ç»“æœè¡¨è®¾ç½®è¾“å‡ºæŠ¥æ–‡
 	{
 		if(Result[ResultNo].ResultData.Type == 3)
 		{
@@ -536,49 +536,49 @@ public:
 			}
 		}
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("±¨ÎÄÉèÖÃ²ÎÊı"));
+				COUTFUNC("æŠ¥æ–‡è®¾ç½®å‚æ•°"));
 		_PdwDiscernType::SetMsg(ResultNo);
 	}
-	virtual void 	SetMsg(_MsgCmd MsgCmd)														//ÊÖ¶¯ÉèÖÃÊä³ö±¨ÎÄ  All Type Not reply edit
+	virtual void 	SetMsg(_MsgCmd MsgCmd)														//æ‰‹åŠ¨è®¾ç½®è¾“å‡ºæŠ¥æ–‡  All Type Not reply edit
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("±¨ÎÄÉèÖÃ²ÎÊı"));
+				COUTFUNC("æŠ¥æ–‡è®¾ç½®å‚æ•°"));
 		_PdwDiscernType::SetMsg(MsgCmd);
 	}
-	virtual void 	SetMsg(_MsgCmd MsgCmd,_MsgPdwType &Ty,_MsgPdwPara &PdwPara,USHORT BatchNo)	//ÊÖ¶¯ÉèÖÃÊä³ö±¨ÎÄ LongMsgType ParaUpdataMsgType reply edit
+	virtual void 	SetMsg(_MsgCmd MsgCmd,_MsgPdwType &Ty,_MsgPdwPara &PdwPara,USHORT BatchNo)	//æ‰‹åŠ¨è®¾ç½®è¾“å‡ºæŠ¥æ–‡ LongMsgType ParaUpdataMsgType reply edit
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("±¨ÎÄÉèÖÃ²ÎÊı"));
+				COUTFUNC("æŠ¥æ–‡è®¾ç½®å‚æ•°"));
 		_PdwDiscernType::SetMsg(MsgCmd, Ty, PdwPara, BatchNo);
 	}
-	virtual void 	SetMsg(_MsgCmd MsgCmd,_MsgScanPara &MsgScanPara,USHORT BatchNo)				//ÊÖ¶¯ÉèÖÃÊä³ö±¨ÎÄ ShortMsgType reply edit
+	virtual void 	SetMsg(_MsgCmd MsgCmd,_MsgScanPara &MsgScanPara,USHORT BatchNo)				//æ‰‹åŠ¨è®¾ç½®è¾“å‡ºæŠ¥æ–‡ ShortMsgType reply edit
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("±¨ÎÄÉèÖÃ²ÎÊı"));
+				COUTFUNC("æŠ¥æ–‡è®¾ç½®å‚æ•°"));
 		_PdwDiscernType::SetMsg(MsgCmd, MsgScanPara, BatchNo);
 	}
-	virtual void 	SetMsg(_MsgCmd MsgCmd,USHORT BatchNo)										//ÊÖ¶¯ÉèÖÃÊä³ö±¨ÎÄ MissingMsgType reply edit
+	virtual void 	SetMsg(_MsgCmd MsgCmd,USHORT BatchNo)										//æ‰‹åŠ¨è®¾ç½®è¾“å‡ºæŠ¥æ–‡ MissingMsgType reply edit
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("±¨ÎÄÉèÖÃ²ÎÊı"));
+				COUTFUNC("æŠ¥æ–‡è®¾ç½®å‚æ•°"));
 		_PdwDiscernType::SetMsg(MsgCmd, BatchNo);
 	}
-	virtual void 	Clear()																		//È«Çå³ı
+	virtual void 	Clear()																		//å…¨æ¸…é™¤
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNCEND("²ÎÊıºÍÊı¾İÇå¿Õ"));
+				COUTFUNCEND("å‚æ•°å’Œæ•°æ®æ¸…ç©º"));
 		_PdwDiscernType::Clear();
 	}
-	virtual void 	ClearTmp()																	//ÁÙÊ±Í¨µÀ»º´æÇå³ı
+	virtual void 	ClearTmp()																	//ä¸´æ—¶é€šé“ç¼“å­˜æ¸…é™¤
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("»º³åÊı¾İÇå¿Õ"));
+				COUTFUNC("ç¼“å†²æ•°æ®æ¸…ç©º"));
 		_PdwDiscernType::ClearTmp();
 	}
 	virtual void 	ClearResultDataDoa(int i)
 	{
 		DEBUG_RUN(FuncStackOn,
-				COUTFUNC("½á¹û±íDoaÊı¾İÇå¿Õ"));
+				COUTFUNC("ç»“æœè¡¨Doaæ•°æ®æ¸…ç©º"));
 		_PdwDiscernType::ClearResultDataDoa(i);
 	}
 	virtual void	ShowResult(size_t ResultNo) const
