@@ -65,6 +65,18 @@ void drawFindNewTarget(Mat& srcMat, Mat& srcFindNewTargetMat, UINT row, UINT col
                 Scalar(50, 100, 200), 1.5, LINE_AA, false);      
 }
 
+
+struct _QtPriPara
+{
+    size_t   dPri       = 10000;
+    size_t   dRange     = 5000;
+    size_t   nPriNum    = 10;
+    size_t   nGroupNum 	= 1;
+    size_t   PriArrLen 	= 0;
+    size_t   dPriStep   = 1;
+    size_t   PriArr[10] = {0};
+};
+
 int main()
 {
     /**
@@ -83,11 +95,17 @@ int main()
     /** 20200421
      * 测试OpenCV读取图片以Rect加载图片至背景上
      */
-    Mat srcMat(1024, 1024, CV_8UC3);
-    Mat FindNewTargetMat = cv::imread("/home/admin/WorkSp/3.cpp/Tools/Imagesrc/FindNewTarget.png", cv::IMREAD_COLOR);
-    drawFindNewTarget(srcMat, FindNewTargetMat, 180, 360, 6);
-    cv::imshow("FindNewTargetMat", FindNewTargetMat);
-    cv::imshow("srcMat", srcMat);
-    cv::waitKey();
+    // Mat srcMat(1024, 1024, CV_8UC3);
+    // Mat FindNewTargetMat = cv::imread("/home/admin/WorkSp/3.cpp/Tools/Imagesrc/FindNewTarget.png", cv::IMREAD_COLOR);
+    // drawFindNewTarget(srcMat, FindNewTargetMat, 180, 360, 6);
+    // cv::imshow("FindNewTargetMat", FindNewTargetMat);
+    // cv::imshow("srcMat", srcMat);
+    // cv::waitKey();
+
+    /** 20200526
+     * 测试结构体初始赋值
+     */
+    _QtPriPara QtPriPara;
+    COUT(QtPriPara.dPri);
     return 1;
 }

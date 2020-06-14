@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>images/addPlatform.BMP</file>
+        <file>images/addRadar.bmp</file>
+        <file>images/addTrace.BMP</file>
+        <file>images/clear.bmp</file>
+        <file>images/run.bmp</file>
+        <file>images/stop.bmp</file>
+    </qresource>
+</RCC>

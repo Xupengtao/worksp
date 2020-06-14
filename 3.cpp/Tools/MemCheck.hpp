@@ -1,160 +1,203 @@
 /*
  * MemCheck.hpp
  * 内存堆栈地址检测类，建议使用宏MEMCHECK_INIT、MEMCHECK_ADDVAR和MEMCHECK_OVERFLOWCHECK完成对应操作
- *  Created on: Jun 27, 2019
- *      Author: xupengtao
+ * @Author: xupengtao
+ * @Created on: Jun 27, 2019
+ * @Last Modified time: 2020-05-19 10:55:35 
  */
 
-#ifndef MEMCHECK_H_
-#define MEMCHECK_H_
+#ifndef _MEMCHECK_H_
+#define _MEMCHECK_H_
 
-#include"ERROR.h"
-#include<iostream>
-#include<iomanip>
+#include <iostream>
+#include <string>
+#include <vector>
 using namespace std;
-#include"Macro.h"
 
-#define MEMCHECK_INIT 				_MemCheck MemCheck								//初始化
-#define MEMCHECK_ADDVAR1(var) 		MemCheck.ValAssembleAddrs(#var,var)				//添加检测变量
-#define MEMCHECK_ADDVAR2(var,lens) 	MemCheck.ValAssembleAddrs(#var,var,lens)		//添加检测变量
-#define MEMCHECK_ADDVAR(...) 		INVOKE_VAR_MACRO(MEMCHECK_ADDVAR,__VA_ARGS__)	//Magic宏
-#define MEMCHECK_OVERFLOWCHECK  	MemCheck.ValAddrOverflowCheck()					//打印检测结果
+#define MEMCHECK_INIT 				        _MemCheck MemCheck								// 初始化
+#define MEMCHECK_BORL                       cout<<MemCheck.BorLEndianCheck()<<endl          // 字节序大小端检测
+#define MEMCHECK_ADDVAR(var) 		        MemCheck.AddVal(#var, (var))		            // 添加检测变量
+#define MEMCHECK_ADDARRAY(var, lens, pos)   MemCheck.AddArray(#var, (var), (lens), (pos))   // 添加检测变量
+#define MEMCHECK_OVERFLOWCHECK  	        MemCheck.AddrOverflowCheck()					// 打印检测结果
+#define MEMCHECK_PRINT            	        MemCheck.print()					            // 打印检测结果
 
-#define MEMCHECK_ARRAY_SIZE 	100
-#define MEMCHECK_STRING_LENGTH 	60
+struct _MemDesc
+{
+    string      MemDescName;
+    size_t      StartAddr;
+    size_t      EndAddr;
+    size_t      ArrayLens;
+    size_t      sizeofType;
+    int*        Pos;
+    string      CheckResult;
+    _MemDesc()
+    {
+        init();
+    }
+    void init()
+    {
+        MemDescName = "";
+        StartAddr   = 0;
+        EndAddr     = 0;
+        ArrayLens   = 0;
+        sizeofType  = 0;
+        Pos         = NULL;
+        CheckResult = "Correct!";
+    }
+    void show()
+    {
+		cout<< MemDescName <<": "<<endl;
+		cout<<"      AddressZone: "<<hex<<uppercase<<"0x"<<StartAddr<<" -> "<<"0x"<<EndAddr<<endl;
+		cout<<"      sizeofType:  "<<hex<<uppercase<<"0x"<<sizeofType<<endl;
+		cout<<"      ArrayLens:   "<<dec<<ArrayLens<<endl;
+        cout<<"      Current Pos: "<<dec<<((Pos == NULL) ? size_t(Pos) : *Pos)<<endl;
+		cout<<"      CheckResult: "<<CheckResult<<endl;
+    }
+};
 
 class _MemCheck
 {
 private:
-	typedef char (_MemCheckStr)[MEMCHECK_STRING_LENGTH];
-	size_t *VarStartAddrs;
-	size_t *VarEndAddrs;
-	_MemCheckStr *VarNames;
-	size_t *ValLens;
-	_MemCheckStr *VarAddrCheckResult;
-	
-	size_t VarAddrsSize;
+	vector<_MemDesc>    MemDescVec;
+    size_t              Lens;
+    size_t              BorLEnd;
 public:
-	_MemCheck()
+	_MemCheck(int Size = 100)
 	{
-		VarStartAddrs = new size_t[MEMCHECK_ARRAY_SIZE];
-		VarEndAddrs   = new size_t[MEMCHECK_ARRAY_SIZE];
-		VarNames = new _MemCheckStr[MEMCHECK_ARRAY_SIZE];
-		ValLens  = new size_t[MEMCHECK_ARRAY_SIZE];
-		VarAddrCheckResult = new _MemCheckStr[MEMCHECK_ARRAY_SIZE];
 		clear();
+        MemDescVec.reserve(Size);
+        BorLEnd = BorLEndianCheck();
 	}
 	virtual ~_MemCheck()
 	{
-		delete[] VarStartAddrs;
-		delete[] VarEndAddrs;
-		delete[] VarNames;
-		delete[] ValLens;
-		delete[] VarAddrCheckResult;
-	};
-	void WriteStr(_MemCheckStr &CheckStr,char *Str)
-	{
-		for(size_t StrNum = 0;StrNum < MEMCHECK_STRING_LENGTH;StrNum++)
-		{
-			if(Str[StrNum] != '\0')
-			{
-				CheckStr[StrNum] = Str[StrNum];
-			}
-			else
-			{
-				CheckStr[StrNum] = Str[StrNum];
-				break;
-			}
-		}
+        ;
 	}
-	void CopyStr(_MemCheckStr &Strsrc,_MemCheckStr &Strdst)
-	{
-		for(size_t StrNum = 0;StrNum < MEMCHECK_STRING_LENGTH;StrNum++)
-		{
-			Strdst[StrNum] = Strsrc[StrNum];
-		}
-	}
+    int BorLEndianCheck()
+    {
+        union{
+            int  i;
+            char chTy[4];
+        } BorL;
+        if(size_t(&(BorL.chTy[0])) > size_t(&(BorL.chTy[3])))
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 	void clear()
 	{
-		VarAddrsSize = 0;
-		_MemCheckStr MemCheckStrTmp;
-		char *MemCheckStr2Char = "Correct!";
-		WriteStr(MemCheckStrTmp,MemCheckStr2Char);
-		for(size_t Num = 0;Num < MEMCHECK_ARRAY_SIZE;Num++)
-		{
-			CopyStr(MemCheckStrTmp,VarAddrCheckResult[Num]);
-		}
+        Lens = 0;
+        MemDescVec.clear();
 	}
-	template<typename Tx>
-	int ValAssembleAddrs(char *ValName,Tx &Val)
+	template<typename _T>
+	int AddVal(string ValName, _T& Val)
 	{
-		if(VarAddrsSize < MEMCHECK_ARRAY_SIZE)
-		{
-			VarStartAddrs[VarAddrsSize] = size_t(&Val);
-			WriteStr(VarNames[VarAddrsSize],ValName);
-			ValLens[VarAddrsSize] = sizeof(Tx);
-			VarEndAddrs[VarAddrsSize] = VarStartAddrs[VarAddrsSize]+ValLens[VarAddrsSize];
-			VarAddrsSize++;
-			return _OK;
-		}
-		else
-		{
-			return _ERROR;
-		}
+        _MemDesc MemDescTmp;
+        MemDescTmp.MemDescName  = ValName;
+        MemDescTmp.ArrayLens    = 1;
+        MemDescTmp.sizeofType   = sizeof(_T);
+        if(BorLEnd == 0)
+        {
+            MemDescTmp.StartAddr = size_t(&Val);
+            MemDescTmp.EndAddr   = MemDescTmp.StartAddr + MemDescTmp.ArrayLens * MemDescTmp.sizeofType - 1;
+        }
+        else
+        {
+            MemDescTmp.EndAddr   = size_t(&Val);
+            MemDescTmp.StartAddr = MemDescTmp.EndAddr - MemDescTmp.ArrayLens * MemDescTmp.sizeofType + 1;
+        }
+        MemDescTmp.Pos          = NULL;
+        MemDescTmp.CheckResult  = "Correct!";
+        MemDescVec.push_back(MemDescTmp);
+        Lens++;
+        return 0;
 	}
-	template<typename Tx>
-	int ValAssembleAddrs(char *ValName,Tx *Val,size_t Lens)
+	template<typename _T>
+	int AddArray(string ArrayName, _T* ArrayAddr, size_t ArrayLens, int* pPos)
 	{
-		if(VarAddrsSize < MEMCHECK_ARRAY_SIZE)
-		{
-			VarStartAddrs[VarAddrsSize] = size_t(Val);
-			WriteStr(VarNames[VarAddrsSize],ValName);
-			ValLens[VarAddrsSize] = sizeof(Tx)*Lens;
-			VarEndAddrs[VarAddrsSize] = VarStartAddrs[VarAddrsSize]+ValLens[VarAddrsSize];
-			VarAddrsSize++;
-			return _OK;
-		}
-		else
-		{
-			return _ERROR;
-		}
+        _MemDesc MemDescTmp;
+        MemDescTmp.MemDescName  = ArrayName;
+        MemDescTmp.ArrayLens    = ArrayLens;
+        MemDescTmp.sizeofType   = sizeof(_T);
+        if(BorLEnd == 0)
+        {
+            MemDescTmp.StartAddr = size_t(ArrayAddr);
+            MemDescTmp.EndAddr   = MemDescTmp.StartAddr + MemDescTmp.ArrayLens * MemDescTmp.sizeofType - 1;
+        }
+        else
+        {
+            MemDescTmp.EndAddr   = size_t(ArrayAddr);
+            MemDescTmp.StartAddr = MemDescTmp.EndAddr - MemDescTmp.ArrayLens * MemDescTmp.sizeofType + 1;
+        }
+        MemDescTmp.Pos          = pPos;
+        MemDescTmp.CheckResult  = "Correct!";
+        MemDescVec.push_back(MemDescTmp);
+        Lens++;
+        return 0;
 	}
-	void showNum(int Num)
+	int AddrOverflowCheck()
 	{
-		cout<<Num<<"."<<VarNames[Num]<<": "<<endl;
-		cout<<"      AddressZone:  "<<hex<<uppercase<<"0x"<<VarStartAddrs[Num]<<" -> "<<"0x"<<VarEndAddrs[Num]<<endl;
-		cout<<"      ValLens:      "<<hex<<"0x"<<ValLens[Num]<<endl;
-		cout<<"      CheckResult:  "<<VarAddrCheckResult[Num]<<endl;
-	}
-	
-	int ValAddrOverflowCheck()
-	{
-		for(size_t Seek_i = 0;Seek_i < VarAddrsSize;Seek_i++)
+		for(size_t i = 0; i < Lens; i++)
 		{
-			size_t startAddr = VarStartAddrs[Seek_i];
-			size_t endAddr = VarEndAddrs[Seek_i];
-			for(size_t Seek_j = Seek_i+1;Seek_j < VarAddrsSize;Seek_j++)
+			size_t startAddr = MemDescVec[i].StartAddr;
+			size_t endAddr   = MemDescVec[i].EndAddr;
+			for(size_t j = i+1; j < Lens; j++)
 			{
-				if((VarStartAddrs[Seek_j] < startAddr) && (VarEndAddrs[Seek_j] > startAddr))
+				if((MemDescVec[j].StartAddr < startAddr) && (MemDescVec[j].EndAddr > startAddr))
 				{
-					WriteStr(VarAddrCheckResult[Seek_i],"Memory Address Error!");
-					WriteStr(VarAddrCheckResult[Seek_j],"Memory Address Error!");
+					MemDescVec[i].CheckResult = "Memory Address Error!";
+					MemDescVec[j].CheckResult = "Memory Address Error!";
 				}
-				else if((VarStartAddrs[Seek_j] >= startAddr) && (VarStartAddrs[Seek_j] < endAddr))
+				else if((MemDescVec[j].StartAddr >= startAddr) && (MemDescVec[j].StartAddr < endAddr))
 				{
-					WriteStr(VarAddrCheckResult[Seek_i],"Memory Address Error!");
-					WriteStr(VarAddrCheckResult[Seek_j],"Memory Address Error!");
+					MemDescVec[i].CheckResult = "Memory Address Error!";
+					MemDescVec[j].CheckResult = "Memory Address Error!";
 				}
 			}
 		}
-		for(size_t Num = 0;Num < VarAddrsSize;Num++)
+        for(size_t i = 0; i < Lens; i++)
+        {
+            if(MemDescVec[i].ArrayLens != 1)
+            {
+                if(*(MemDescVec[i].Pos) > MemDescVec[i].ArrayLens)
+                {
+                    MemDescVec[i].CheckResult = "Error: Memory out of range!";
+                }
+            }
+        }
+		for(size_t i = 0; i < Lens; i++)
 		{
-			showNum(Num);
+            if(MemDescVec[i].CheckResult != "Correct!")
+            {
+			    show(i);
+            }
 		}
-		clear();
-		return _OK;
+		return 0;
 	}
-
+    int print()
+    {
+		for(size_t i = 0; i < Lens; i++)
+		{
+            show(i);
+		}
+		return 0;
+    }
+	int show(int i)
+	{
+        if(i < Lens)
+        {
+            cout <<i<<".";
+            MemDescVec[i].show();
+            return 0;
+        }
+        else
+        {
+            return -1;
+        }
+	}
 };
 
-#endif /* MEMCHECK_H_ */
+#endif /* _MEMCHECK_H_ */

@@ -198,11 +198,11 @@ public:
         curLine     = curLine + i;
         ReadLines   = i;
     }
-    void AddRead(CINT AddTime_ms, CINT ToaUnit_ns)
+    void AddRead(float AddTime_ms, CINT ToaUnit_ns)
     {
         CUINT   FileMsgTySize = sizeof(_FileMsgTy);
         UINT    i = 0;
-        CINT    AddTime = AddTime_ms*(1000000/ToaUnit_ns);
+        CINT    AddTime = CINT(AddTime_ms*(1000000/ToaUnit_ns));
         UINT    ToaSt = 0, ToaTmp;
         bool    ExceedTimeTag = false;
         for(i = 0; !ExceedTimeTag; i++)

@@ -28,7 +28,8 @@ HEADERS += \
            mainwindow.h \
            qenhancedgraphicsview.h \
            qcustomgraphicseffect.h \
-           ../../../Tools/PdwStruct/ElectromagneticVision.hpp
+           ../../../Tools/PdwStruct/ElectromagneticVision.hpp \
+            qt_threadelectvision.h
 
 FORMS   += \
            mainwindow.ui
@@ -50,3 +51,6 @@ LIBS += -L"/usr/local/lib" \
 
 # Add more language entries here, following the same naming rule
 TRANSLATIONS = language_cn.ts
+
+RESOURCES += \
+    resources.qrc

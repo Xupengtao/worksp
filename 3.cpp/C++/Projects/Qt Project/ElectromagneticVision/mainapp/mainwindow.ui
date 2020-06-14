@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>768</height>
+    <width>1512</width>
+    <height>950</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -35,31 +35,99 @@
          <item row="2" column="0">
           <layout class="QVBoxLayout" name="PdwVisionLayout">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QLineEdit" name="openLineEdit"/>
-             </item>
-             <item>
-              <widget class="QPushButton" name="openPushButton">
-               <property name="text">
-                <string>Open</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QPushButton" name="runPushButton">
-             <property name="text">
-              <string>Run</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QProgressBar" name="runProgressBar">
-             <property name="value">
-              <number>24</number>
-             </property>
+            <widget class="QGroupBox" name="groupBox_2">
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                  <item>
+                   <widget class="QLineEdit" name="openLineEdit"/>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="openPushButton">
+                    <property name="text">
+                     <string>Open</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/btn/Image/open.bmp</normaloff>:/btn/Image/open.bmp</iconset>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <item>
+                   <spacer name="horizontalSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="connectSimulatorPushButton">
+                    <property name="maximumSize">
+                     <size>
+                      <width>200</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Connect Simulator</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/btn/Image/select.bmp</normaloff>:/btn/Image/select.bmp</iconset>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="runPushButton">
+                    <property name="maximumSize">
+                     <size>
+                      <width>200</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Run</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/btn/Image/run.bmp</normaloff>:/btn/Image/run.bmp</iconset>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="stopPushButton">
+                    <property name="maximumSize">
+                     <size>
+                      <width>200</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>Stop</string>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/btn/Image/stop.bmp</normaloff>:/btn/Image/stop.bmp</iconset>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
@@ -73,11 +141,61 @@
          <string>View</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_6">
-         <item row="1" column="0">
-          <widget class="QEnhancedGraphicsView" name="graphicsView"/>
-         </item>
-         <item row="0" column="0">
+         <item row="2" column="0">
           <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Pixel Unit : </string>
+             </property>
+             <property name="buddy">
+              <cstring>lineEdit</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>ms</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSlider" name="horizontalSlider">
+             <property name="maximum">
+              <number>1000</number>
+             </property>
+             <property name="value">
+              <number>1000</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="tickPosition">
+              <enum>QSlider::TicksBelow</enum>
+             </property>
+             <property name="tickInterval">
+              <number>100</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QCheckBox" name="viewOriginalCheck">
              <property name="text">
@@ -86,6 +204,9 @@
             </widget>
            </item>
           </layout>
+         </item>
+         <item row="3" column="0">
+          <widget class="QEnhancedGraphicsView" name="graphicsView"/>
          </item>
         </layout>
        </widget>
@@ -100,8 +221,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
-     <height>25</height>
+     <width>1512</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -136,6 +257,18 @@
    <addaction name="menuPlugins"/>
    <addaction name="menuOptions"/>
    <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpenImage"/>
   </widget>
   <action name="actionOpenImage">
    <property name="text">
@@ -173,11 +306,6 @@
     <string>Theme</string>
    </property>
   </action>
-  <action name="action_Camera">
-   <property name="text">
-    <string>&amp;Camera</string>
-   </property>
-  </action>
   <action name="actionOpenFile">
    <property name="text">
     <string>Open File</string>
@@ -197,6 +325,8 @@
    <header>qenhancedgraphicsview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -13,7 +13,7 @@ typedef _Pdw<UINT, UINT, UINT, UINT, UINT> PdwType;
 
 int main(int argc, char **argv)
 {
-    _binaryFile<_fileMsg, PdwType> binaryFile("/home/admin/WorkSp/Data/文件32.data", 20, 1000000);
+    _binaryFile<_xyg_z, PdwType> binaryFile("/home/admin/WorkSp/Data/iRadarSimProGenData.data");
     binaryFile.showFileHeader();
     binaryFile.showStatus();
     _Timeit Timeit(3);

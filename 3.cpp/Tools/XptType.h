@@ -2,10 +2,12 @@
  * @Author: xpt 
  * @Date: 2019-12-23 00:20:26 
  * @Last Modified by: xpt
- * @Last Modified time: 2019-12-26 19:13:38
+ * @Last Modified time: 2020-05-19 21:13:05
  */
+
 #ifndef XPT_TYPE
 #define XPT_TYPE
+
 #include <iostream>
 #include <sstream>
 #include <assert.h>

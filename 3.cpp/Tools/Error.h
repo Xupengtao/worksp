@@ -5,15 +5,6 @@
  *      Author: xupengtao
  */
 
-
-
-/*
- * Macro.h
- *
- *  Created on: Jun 26, 2019
- *      Author: xupengtao
- */
-
 #ifndef ERROR_H_
 #define ERROR_H_
 

@@ -1,7 +1,7 @@
 #ifndef TIMER_H_
 #define TIMER_H_
-#include"Macro.h"
 
+#include"Macro.h"
 #include<iostream>
 #include<iomanip>
 using namespace std;

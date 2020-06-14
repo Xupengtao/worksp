@@ -633,6 +633,8 @@ public:
 	}
 	void	SetNoToaParaBuf(_PlatForm *PlatForm)
 	{
+        ResetGlobalToa();
+        ClearSortTimes();
 		for (UINT i = 0; i<PLAT_NUM; i++)
 		{
 			if (PlatForm[i].GetPlatFormEn() == true)
@@ -1393,8 +1395,18 @@ public:
 	UINT*		 GetPdwStatusAddr2() {return Receiver2.GetOutPdwStatusAddr();}
 	UINT*		 GetSortNumAddr1() 	 {return Receiver1.GetSortNumAddr();}
 	UINT*		 GetSortNumAddr2() 	 {return Receiver2.GetSortNumAddr();}
+	void Init(size_t PlatNum = PLAT_NUM)
+	{
+		ReceiverInit();
+		PlatFormInit(PlatNum);
+	}
 	bool ReceiverInit(float Rcs_ = 100, short Sensitivity_ = -10, short DynamicEquil_ = 500, _EsmType EsmType_ = NarrowBand)
 	{
+		ReceiverClear(Rcs_, Sensitivity_, DynamicEquil_, EsmType_);
+		return true;
+	}
+    bool ReceiverClear(float Rcs_ = 100, short Sensitivity_ = -10, short DynamicEquil_ = 500, _EsmType EsmType_ = NarrowBand)
+    {
 		RadarBuffer1.Clear();
 		RadarBuffer2.Clear();
 		Receiver1.BufferClear();
@@ -1402,20 +1414,11 @@ public:
 		Receiver1.Init(Rcs_, Sensitivity_, DynamicEquil_, EsmType_);
 		Receiver2.Init(Rcs_, Sensitivity_, DynamicEquil_, EsmType_);
 		return true;
-	}
-	void Init(size_t PlatNum = PLAT_NUM)
-	{
-		ReceiverInit();
-		PlatFormInit(PlatNum);
-	}
+    }
 	bool PlatFormInit(size_t PlatNum = PLAT_NUM)						// 按个数初始化平台
 	{
-		PlatFormClear(PlatNum);
 		PlatNum = (PlatNum > PLAT_NUM) ? PLAT_NUM : PlatNum;
-		for(UINT i = 0; i < PlatNum; i++)
-		{
-			PlatForm[i].EnablePlat();
-		}
+		PlatFormClear(PlatNum);
 		return true;
 	}
 	bool PlatFormClear(size_t PlatNum = PLAT_NUM)
@@ -1838,7 +1841,7 @@ public:
 			}
 		}
 	}
-	void run_onetimes()
+	void run_onetimes()                                             // 雷达参数不清空
 	{
 		RadarBuffer1.SetNoToaParaBuf(PlatForm);
 		RadarBuffer2.SetNoToaParaBuf(PlatForm);
@@ -1858,10 +1861,8 @@ public:
         Receiver1.OutPdwStatus = IDLE;
         Receiver2.OutPdwStatus = IDLE;
 	}
-    void WriteFile(const string& filepath, UINT runSec)
+    void WriteFile(const string& filepath, UINT runSec)                 // 雷达参数清空
     {
-        RadarBuffer1.ResetGlobalToa();
-        RadarBuffer1.ClearSortTimes();
         UINT runTimes = runSec*1000/336;
         ofstream svfile(filepath, ios::binary);
         if(!svfile.is_open())
@@ -1904,6 +1905,30 @@ public:
             }
         }
         svfile.close();
+        ReceiverClear();
+        PlatFormClear();
+    }
+    void runThread(bool& StopSign, int& runtimes)                       // 雷达参数清空
+    {
+		RadarBuffer1.SetNoToaParaBuf(PlatForm);
+		RadarBuffer2.SetNoToaParaBuf(PlatForm);
+        while(StopSign)
+        {
+            MutiPlatPriRun(RadarBuffer1);
+            MutiPlatPwRun(RadarBuffer1);
+            MutiPlatRFRun(RadarBuffer1);
+            RadarBuffer1.ToaSort(PlatForm);
+            MutiPlatPriRun(RadarBuffer2);
+            MutiPlatPwRun(RadarBuffer2);
+            MutiPlatRFRun(RadarBuffer2);
+            RadarBuffer2.ToaSort(PlatForm);
+            ParallelPDWSort();
+            COUTS("BufferSortNum1 - ", *GetSortNumAddr1(), ", BufferArrivalLossRate1 - ", Receiver1.GetArrivalLossRate(),
+                ", BufferSortNum2 - ", *GetSortNumAddr2(), ", BufferArrivalLossRate2 - ", Receiver2.GetArrivalLossRate());
+            runtimes++;
+        }
+        ReceiverClear();
+        PlatFormClear();
     }
 	void ShowOutBuffer(UINT NumStart, UINT NumStop, USHORT PlatRadarSn = PLAT_NUM*RADAR_NUM, size_t sel = 0)
 	{

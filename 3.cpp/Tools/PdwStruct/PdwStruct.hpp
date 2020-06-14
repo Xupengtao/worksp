@@ -1,6 +1,6 @@
 /*
- * @Author: xpt 
- * @Date: 2019-12-20 17:17:39 
+ * @Author: xpt
+ * @Date: 2019-12-20 17:17:39
  * @Last Modified by: xpt
  * @Last Modified time: 2020-04-14 15:20:24
  */
@@ -12,7 +12,6 @@
 #include "../XptType.h"
 #include <vector>
 #include <cmath>
-#include "../imageTools/BMPImage.h"
 #include "../iRadarSimPro/iRadarSimPro.h"
 
 struct _fileMsg                                     //XYG-C
@@ -144,7 +143,7 @@ struct _PdwMap2D
 	typedef typename _PdwTy::ToaTy   ToaTy;
 	typedef typename _PdwTy::DoaTy   DoaTy;
     typedef _Map2DTy Map2DTy;
-    
+
     RfTy    RfMin;
     float   RfNormalUnit;
     PaTy    PaMin;
@@ -259,15 +258,6 @@ struct _Pdw
     static _PdwArrayDesc<_ThisType> PdwArrayDesc;
     static CUSHORT lineHead = 0;
     static CUSHORT lineTail = 0;
-    
-    // inline void operator = (_fileMsg &fileMsg)
-    // {
-    //     Rf  = EndianSwap(fileMsg.rf);
-    //     Toa = (EndianSwap(fileMsg.toah)<<16) + EndianSwap(fileMsg.toal);
-    //     Doa = EndianSwap(fileMsg.doa);
-    //     Pa  = EndianSwap(fileMsg.pa);
-    //     Pw  = (EndianSwap(fileMsg.pwh)<<16) + EndianSwap(fileMsg.pwl);
-    // }
     inline void operator = (_fileMsg &fileMsg)
     {
         Pa  = EndianSwap(fileMsg.pa);
@@ -644,7 +634,7 @@ struct _Pdw
         PdwMap2D.Map2DUnit.b = uchar((Rf - PdwMap2D.RfMin)/PdwMap2D.RfNormalUnit);
         PdwMap2D.Map2DUnit.g = uchar((Pw - PdwMap2D.PwMin)/PdwMap2D.PwNormalUnit);
     }
-    
+
     inline void print() const
     {
         COUTSWIDTH(12, "Rf - ", Rf,
@@ -663,15 +653,15 @@ _PdwArrayDesc<_Pdw<_RfTy, _PwTy, _PaTy, _ToaTy, _DoaTy>> _Pdw<_RfTy, _PwTy, _PaT
 template<typename _PdwType>
 struct _PdwMemorySwap
 {
-    _PdwType*   PdwAddr;
-    UINT        PdwAnalyCapcity;
     UINT&       PdwSize;
+    _PdwType*   PdwAddr;
     _PdwType*   PdwBufAddr1;
     _PdwType*   PdwBufAddr2;
     UINT*       Status1;
     UINT*       Status2;
     UINT*       SortNum1;
     UINT*       SortNum2;
+    UINT        PdwAnalyCapcity;
     UINT        PdwReadLocal;                                   // 记录当前Pdw缓存池读取位置
     UINT        Sel;
     _PdwMemorySwap():PdwSize(*(new UINT))
@@ -702,14 +692,14 @@ struct _PdwMemorySwap
     }
     inline void Init(_iRadarSimPro<_PdwType>& iRadarSimPro)
     {
-        Sel          = 1;
-        PdwReadLocal = 0;
         PdwBufAddr1 = iRadarSimPro.GetPdwBufAddr1();
         PdwBufAddr2 = iRadarSimPro.GetPdwBufAddr2();
         Status1     = iRadarSimPro.GetPdwStatusAddr1();
         Status2     = iRadarSimPro.GetPdwStatusAddr2();
         SortNum1    = iRadarSimPro.GetSortNumAddr1();
         SortNum2    = iRadarSimPro.GetSortNumAddr2();
+        PdwReadLocal = 0;
+        Sel          = 1;
     }
     inline void Resize(_PdwType** PdwAddr_, UINT PdwAnalyCapcity_)
     {

@@ -880,6 +880,7 @@ public:
         }
         this->CvTools.ImageMatClear(this->ImageMat, this->BackGround);
         this->PdwMatrix.clear();
+        PdwRfPwMapClt.Clear();
         return *this;
     }
     _ThisType& CloseFile()                                                                              // 关闭文件
@@ -896,7 +897,7 @@ public:
         Timeit.End(0);
         return *this;
     }
-    _ThisType& AddTimeReadData(UINT AddTime_ms = 100, UINT ToaUnit_ns = 80)                             // 文件追加读取以ToaUnit_ns为TOA单位，AddTime_ms内的数据
+    _ThisType& AddTimeReadData(float AddTime_ms = 100, UINT ToaUnit_ns = 80)                            // 文件追加读取以ToaUnit_ns为TOA单位，AddTime_ms内的数据
     {
         Timeit.Start(1, "读取文件AddTimeReadData，共计(us): ");
         _PdwType::PdwArrayDescClear();                          //读取之前清零
@@ -1133,180 +1134,11 @@ public:
                         PaMin, PaNormalUnit, RfMin, RfNormalUnit, PwMin, PwNormalUnit);
         return *this;
     }
-    _ThisType& ContourAnalyVideo(string save_path, int seekst = 0,                                      // 以添加的方式生成轮廓分析视频流，以AVI格式保存至save_path
-                                 CINT AddTime_ms = 100, CINT ToaUnit_ns = 80,
-                                 UINT ReadDataSize_ = 1000000, int readSize = 0)
-    {
-        int rows = ImageMat.rows;
-        int cols = ImageMat.cols;
-        Mat BGRMat                      (rows, cols, CV_8UC3, cv::Scalar::all(0));                  // BGR
-        Mat DensityMat                  (rows, cols, CV_8UC1);                                      // 密度图，为ImageMat的alpha通道
-        Mat DensityBinMat               (rows, cols, CV_8UC1);                                      // 二值图
-        Mat DensityBinInvMat            (rows, cols, CV_8UC1);                                      // 二值互斥图
-        Mat DensityDilateMat            (rows, cols, CV_8UC1);                                      // 密度膨胀图
-        Mat BGRDensityMat               (rows, cols, CV_8UC3);                                      // 密度BGR图
-        Mat BGRDensityDilateMat         (rows, cols, CV_8UC3);                                      // 密度BGR膨胀图
-        Mat RemapBGRDensityMat          (rows, cols, CV_8UC3);                                      // 密度BGR映射图
-        Mat RemapBGRDensityDilateMat    (rows, cols, CV_8UC3);                                      // 密度BGR膨胀映射图
-        Mat VideoFrameMat(cols + 400, 3 * rows + 600, CV_8UC3, cv::Scalar::all(255));               // 视频写入帧
-        Mat VideoFrame1  = VideoFrameMat(Rect(0, 100, rows+200, cols+200));                         // BGR映射图
-        Mat VideoFrame21 = VideoFrameMat(Rect(rows+199, 0, rows/2+200, cols/2+200));                // 密度图ParDown
-        Mat VideoFrame22 = VideoFrameMat(Rect(rows+199, cols/2+199, rows/2+200, cols/2+200));       // 密度膨胀图ParDown
-        Mat VideoFrame31 = VideoFrameMat(Rect(rows+rows/2+399, 0, rows/2+200, cols/2+200));         // 颜色直方图
-        Mat VideoFrame32 = VideoFrameMat(Rect(rows+rows/2+399, cols/2+199, rows/2+200, cols/2+200));// 密度直方图
-        Mat AnalysisTextMat = VideoFrameMat(Rect(2 * rows +599, 200, rows, cols));                  // 分析图
-        Mat RemapBGRMat;
-        Mat pyrDownDensityMat;
-        Mat pyrDownDensityDilateMat;
-        Mat BGRHistogram;
-        Mat DensityHistogram;
-        _cvCoordinateMap<> CoordinateVideoFrame1(RemapBGRMat, VideoFrame1, rows, cols);
-        {
-            CoordinateVideoFrame1.xlabel("DOA", Scalar(100, 50, 50), 0, 1024, 10);
-            CoordinateVideoFrame1.ylabel("TOA(s)", Scalar(100, 50, 50), 10, 0, 10);
-            CoordinateVideoFrame1.title("DOA-TOA Analysis");
-        }
-        _cvCoordinateMap<> CoordinateVideoFrame21(pyrDownDensityMat, VideoFrame21, rows/2, cols/2);
-        {
-            CoordinateVideoFrame21.xlabel("DOA", Scalar(100, 50, 50), 0, 1024, 10);
-            CoordinateVideoFrame21.ylabel("TOA(s)", Scalar(100, 50, 50), 10, 0, 10);
-            CoordinateVideoFrame21.title("Density Map");
-        }
-        _cvCoordinateMap<> CoordinateVideoFrame22(pyrDownDensityDilateMat, VideoFrame22, rows/2, cols/2);
-        {
-            CoordinateVideoFrame22.xlabel("DOA", Scalar(100, 50, 50), 0, 1024, 10);
-            CoordinateVideoFrame22.ylabel("TOA(s)", Scalar(100, 50, 50), 10, 0, 10);
-            CoordinateVideoFrame22.title("Density Dilate Map");
-        }
-        _cvCoordinateMap<> CoordinateVideoFrame31(BGRHistogram, VideoFrame31, rows/2, cols/2);
-        {
-            CoordinateVideoFrame31.xlabel("Pixel value", Scalar(100, 50, 50), 0, 255, 10);
-            CoordinateVideoFrame31.ylabel("NaN", Scalar(100, 50, 50), 0, 100, 10);
-            CoordinateVideoFrame31.title("Channels Histogram");
-        }
-        _cvCoordinateMap<> CoordinateVideoFrame32(DensityHistogram, VideoFrame32, rows/2, cols/2);
-        {
-            CoordinateVideoFrame32.xlabel("Pixel value", Scalar(100, 50, 50), 0, 255, 10);
-            CoordinateVideoFrame32.ylabel("NaN", Scalar(100, 50, 50), 0, 500, 10);
-            CoordinateVideoFrame32.title("Density Histogram");
-        }
-
-        _cvTextImage<>  cvTextMat(AnalysisTextMat, 36, 3, BackGround);					                // 分析cvTextImage对象
-        Mat         ChannelOutMat[] = {BGRMat, DensityMat};										        // 输出通道
-        UINT        CurrentFrameNo = 0;                                                                 // 当前帧数
-        int         from_to[] = {0,0,1,1,2,2,3,3};												        // 0, 1, 2 -> BGRMat; 3 -> DensityMat
-        int         nPairs = 4;																	        // 四通道
-        const float PixelToaUnit = float(AddTime_ms)/AddCol;							                // 像素值Toa单位
-        double      Threshold = (PixelToaUnit<=0xFE) ? ((PixelToaUnit > 1) ? PixelToaUnit : 1) : 0xFE;  // 像素点阈值
-        int         SizeTemp = 0;																        // 数据文件读取长度值
-        VideoWriter writer;																                // 创建视频流对象
-        int         codec = VideoWriter::fourcc('M', 'J', 'P', 'G');							        // 设置视频流格式
-        double      fps = 10.0;																            // 设置视频流帧数
-        ReadDataResize(ReadDataSize_);													                // 调整数据文件读取缓存区大小
-        binaryFile.seekg(seekst);														                // 设置数据文件读取起始位置
-        writer.open(save_path, codec, fps, VideoFrameMat.size(), true);					                // 创建视频流文件
-        if (!writer.isOpened())
-        {
-            ERRORMSG("Could not open the output video file for write");
-            return *this;
-        }
-        Timeit.Start(5, "保存视频AddSaveHistogramVideo，共计(us): ");
-        CvTools.ImageMatClear(ImageMat, BackGround);
-        PdwMatrix.clear();
-        if(ReadDataType == 1)
-        {
-            PdwMemorySwap.CheckBufferReady();
-        }
-        readSize = (readSize == 0) ? binaryFile.GetFileLines() : readSize;
-        boost::progress_display pd(readSize);
-        while(1)
-        {
-            if(ReadDataType == 0)
-            {
-                if(binaryFile.isEOF())												    // 文件读取至尾部
-                {
-                    break;
-                }
-                AddTimeReadData(AddTime_ms, ToaUnit_ns);							    // 以ToaUnit_ns为单位，按AddTime_ms时进读取数据。
-                PdwSize = binaryFile.GetDataValidLines();							    // 获取读取有效数据长度
-            }
-            else
-            {
-                PdwMemorySwap.AddRead(AddTime_ms, ToaUnit_ns);
-            }
-            if(SizeTemp >= readSize)													// 文件读取长度大于readSize
-            {
-                break;
-            }
-            else
-            {
-                SizeTemp += PdwSize;
-                pd.restart(readSize);
-                pd += SizeTemp;
-            }
-            cvTextMat.Clear();											                // 清空分析结果区图像
-            PdwRfPwMapClt.NewFrameInit();
-            string Str = "CurrentFrameNo : " + tostring(CurrentFrameNo);
-            cvTextMat.Title(Str);
-            Str = " ";
-            cvTextMat.Title(Str);                                                       // 空行
-            cvTextMat.Title(Str);
-            AddBGRAImageAndPdwMatrix(ToaDoa, 1, 0, 1.0, 0, 1, 2000, 255, 0, 10);	    // 以时进拼接方式生成图片
-            cv::mixChannels(&ImageMat, 1, ChannelOutMat, 2, from_to, 4);				// ImageMat多通道分离至ChannelOutMat中的BGRMat, DensityMat
-            CvTools.CalcMatHistogram(BGRMat, BGRHistogram, BackGround);				    // 计算BGRMat的直方图BGRHistogram
-            CvTools.CalcMatHistogram(DensityMat, DensityHistogram, BackGround);		    // 计算DensityMat的直方图DensityHistogram
-            // Generage Image
-            cv::threshold(DensityMat, DensityBinMat, Threshold, 255, THRESH_BINARY);	// 密度图以Threshold为最小阈值进行阈值操作生成二值图DensityBinMat
-            cv::threshold(DensityMat, DensityBinInvMat, Threshold,0, THRESH_TOZERO_INV);// 密度图以Threshold为最大阈值进行阈值操作(高于阈值像素值设置为0)生成生成DensityBinInvMat
-            cv::threshold(DensityBinInvMat, DensityBinInvMat, 0, 255, THRESH_BINARY);	// DensityBinInvMat以Threshold为最小阈值进行阈值操作生成二值图DensityBinInvMat
-            CvTools.cvDilate(DensityBinMat, DensityDilateMat);					        // DensityBinMat进行图像膨胀操作
-            // Analysis
-            PdwImageAnalysis(BGRMat, DensityDilateMat, PdwRfPwMapClt, cvTextMat, PixelToaUnit); // 图像分析
-            // Generage VideoFrame
-            CvTools.MatInv(DensityMat, DensityMat);
-            CvTools.MatInv(DensityDilateMat, DensityDilateMat);
-            cv::cvtColor(DensityMat, BGRDensityMat, COLOR_GRAY2BGR);					// 灰度图DensityMat转BGR图BGRDensityMat以实现图像组合
-            cv::cvtColor(DensityDilateMat, BGRDensityDilateMat, COLOR_GRAY2BGR);		// 灰度图DensityDilateMat转BGR图BGRDensityDilateMat以实现图像组合
-            if(ImageMat.rows == ImageMat.cols)
-            {
-                CvTools.Remap(BGRDensityMat, RemapBGRDensityMat, xMapImage, yMapImage, BackGround);			    // 图像重映射
-                CvTools.Remap(BGRDensityDilateMat, RemapBGRDensityDilateMat, xMapImage, yMapImage, BackGround); // 图像重映射
-                cv::pyrDown(RemapBGRDensityMat, pyrDownDensityMat);						// 图像缩放
-                cv::pyrDown(RemapBGRDensityDilateMat, pyrDownDensityDilateMat);			// 图像缩放
-            }
-            else
-            {
-                cv::pyrDown(BGRDensityMat, pyrDownDensityMat);
-                cv::pyrDown(BGRDensityDilateMat, pyrDownDensityDilateMat);
-            }
-            cv::drawContours(BGRMat, Contours, -1, Scalar(0, 255, 0), 2, CV_AA);		// 在图像BGRMat上绘制轮廓组Contours
-            CvTools.Remap(BGRMat, RemapBGRMat, xMapImage, yMapImage, BackGround);	    // 图像重映射
-            PdwRfPwMapClt.EndFrameProcess(RemapBGRMat, cvTextMat);
-            CurrentFrameNo++;
-            writer.write(VideoFrameMat);												// 将图像VideoFrameMat写入视频帧
-            // showImage(BGRMat);
-            // cv::imshow("DensityBinMat", DensityBinMat);
-            // cv::imshow("DensityBinInvMat", DensityBinInvMat);
-            // PdwRfPwMapClt.ShowVaildMat(0);
-            // cvTextMat.showImage();
-            // cv::waitKey();
-        }
-        Timeit.End(5);
-        return *this;
-    }
-    _ThisType& AddVideoAnalyStream(string save_path, int seekst = 0,                                    // 生成AddCol视频帧分析流，以AVI格式保存至save_path
-                                   CINT AddTime_ms = 100, CINT ToaUnit_ns = 80,
-                                   UINT ReadDataSize_ = 1000000, int readSize = 6000000)
-    {
-        return *this;
-    }
-
     /****************************************** PdwAnalysis Area Beg ************************************/
     _ThisType& PdwImageAnalysis(Mat& srcMat,                                                            // 脉冲映射图像分析
                                 Mat& srcBinMat,
                                 _PdwRfPwMapClt& PdwRfPwMapClt_,
-                                _cvTextImage<cv::FONT_HERSHEY_COMPLEX_SMALL> &AnalysisTextMat,
-                                const float PixelToaUnit)
+                                _cvTextImage<cv::FONT_HERSHEY_COMPLEX_SMALL> &AnalysisTextMat)
     {
         int rows = srcBinMat.rows;
         int cols = srcBinMat.cols;
@@ -1842,7 +1674,7 @@ public:
         return *this;
     }
     _ThisType& AddSaveVideo(string save_path, int seekst = 0,                                           // 生成Addol视频流，以AVI格式保存至save_path
-                            CINT AddTime_ms = 100, CINT ToaUnit_ns = 80,
+                            float AddTime_ms = 100, CINT ToaUnit_ns = 80,
                             UINT ReadDataSize_ = 1000000, int readSize = 6000000)
     {
         int rows = RemapImageMat.rows;
@@ -1884,6 +1716,173 @@ public:
             writer.write(BGRImageMat);
         }
         Timeit.End(14);
+        return *this;
+    }
+    _ThisType& ContourAnalyVideo(string save_path, int seekst = 0,                                      // 以添加的方式生成轮廓分析视频流，以AVI格式保存至save_path
+                                 float AddTime_ms = 100, CINT ToaUnit_ns = 80,
+                                 UINT ReadDataSize_ = 1000000, int readSize = 0)
+    {
+        int rows = ImageMat.rows;
+        int cols = ImageMat.cols;
+        Mat BGRMat                      (rows, cols, CV_8UC3, cv::Scalar::all(0));                  // BGR
+        Mat DensityMat                  (rows, cols, CV_8UC1);                                      // 密度图，为ImageMat的alpha通道
+        Mat DensityBinMat               (rows, cols, CV_8UC1);                                      // 二值图
+        Mat DensityBinInvMat            (rows, cols, CV_8UC1);                                      // 二值互斥图
+        Mat DensityDilateMat            (rows, cols, CV_8UC1);                                      // 密度膨胀图
+        Mat BGRDensityMat               (rows, cols, CV_8UC3);                                      // 密度BGR图
+        Mat BGRDensityDilateMat         (rows, cols, CV_8UC3);                                      // 密度BGR膨胀图
+        Mat RemapBGRDensityMat          (rows, cols, CV_8UC3);                                      // 密度BGR映射图
+        Mat RemapBGRDensityDilateMat    (rows, cols, CV_8UC3);                                      // 密度BGR膨胀映射图
+        Mat VideoFrameMat(cols + 400, 3 * rows + 600, CV_8UC3, cv::Scalar::all(255));               // 视频写入帧
+        Mat VideoFrame1  = VideoFrameMat(Rect(0, 100, rows+200, cols+200));                         // BGR映射图
+        Mat VideoFrame21 = VideoFrameMat(Rect(rows+199, 0, rows/2+200, cols/2+200));                // 密度图ParDown
+        Mat VideoFrame22 = VideoFrameMat(Rect(rows+199, cols/2+199, rows/2+200, cols/2+200));       // 密度膨胀图ParDown
+        Mat VideoFrame31 = VideoFrameMat(Rect(rows+rows/2+399, 0, rows/2+200, cols/2+200));         // 颜色直方图
+        Mat VideoFrame32 = VideoFrameMat(Rect(rows+rows/2+399, cols/2+199, rows/2+200, cols/2+200));// 密度直方图
+        Mat AnalysisTextMat = VideoFrameMat(Rect(2 * rows +599, 200, rows, cols));                  // 分析图
+        Mat RemapBGRMat;
+        Mat pyrDownDensityMat;
+        Mat pyrDownDensityDilateMat;
+        Mat BGRHistogram;
+        Mat DensityHistogram;
+        _cvCoordinateMap<> CoordinateVideoFrame1(RemapBGRMat, VideoFrame1, rows, cols);
+        {
+            CoordinateVideoFrame1.xlabel("DOA", Scalar(100, 50, 50), 0, 1024, 10);
+            CoordinateVideoFrame1.ylabel("TOA(s)", Scalar(100, 50, 50), 10, 0, 10);
+            CoordinateVideoFrame1.title("DOA-TOA Analysis");
+        }
+        _cvCoordinateMap<> CoordinateVideoFrame21(pyrDownDensityMat, VideoFrame21, rows/2, cols/2);
+        {
+            CoordinateVideoFrame21.xlabel("DOA", Scalar(100, 50, 50), 0, 1024, 10);
+            CoordinateVideoFrame21.ylabel("TOA(s)", Scalar(100, 50, 50), 10, 0, 10);
+            CoordinateVideoFrame21.title("Density Map");
+        }
+        _cvCoordinateMap<> CoordinateVideoFrame22(pyrDownDensityDilateMat, VideoFrame22, rows/2, cols/2);
+        {
+            CoordinateVideoFrame22.xlabel("DOA", Scalar(100, 50, 50), 0, 1024, 10);
+            CoordinateVideoFrame22.ylabel("TOA(s)", Scalar(100, 50, 50), 10, 0, 10);
+            CoordinateVideoFrame22.title("Density Dilate Map");
+        }
+        _cvCoordinateMap<> CoordinateVideoFrame31(BGRHistogram, VideoFrame31, rows/2, cols/2);
+        {
+            CoordinateVideoFrame31.xlabel("Pixel value", Scalar(100, 50, 50), 0, 255, 10);
+            CoordinateVideoFrame31.ylabel("NaN", Scalar(100, 50, 50), 0, 100, 10);
+            CoordinateVideoFrame31.title("Channels Histogram");
+        }
+        _cvCoordinateMap<> CoordinateVideoFrame32(DensityHistogram, VideoFrame32, rows/2, cols/2);
+        {
+            CoordinateVideoFrame32.xlabel("Pixel value", Scalar(100, 50, 50), 0, 255, 10);
+            CoordinateVideoFrame32.ylabel("NaN", Scalar(100, 50, 50), 0, 500, 10);
+            CoordinateVideoFrame32.title("Density Histogram");
+        }
+
+        _cvTextImage<>  cvTextMat(AnalysisTextMat, 36, 3, BackGround);					                // 分析cvTextImage对象
+        Mat         ChannelOutMat[] = {BGRMat, DensityMat};										        // 输出通道
+        UINT        CurrentFrameNo = 0;                                                                 // 当前帧数
+        int         from_to[] = {0,0,1,1,2,2,3,3};												        // 0, 1, 2 -> BGRMat; 3 -> DensityMat
+        int         nPairs = 4;																	        // 四通道
+        const float PixelToaUnit = float(AddTime_ms)/AddCol;							                // 像素值Toa单位
+        double      Threshold = (PixelToaUnit<=0xFE) ? ((PixelToaUnit > 1) ? PixelToaUnit : 1) : 0xFE;  // 像素点阈值
+        int         SizeTemp = 0;																        // 数据文件读取长度值
+        VideoWriter writer;																                // 创建视频流对象
+        int         codec = VideoWriter::fourcc('M', 'J', 'P', 'G');							        // 设置视频流格式
+        double      fps = 10.0;																            // 设置视频流帧数
+        ReadDataResize(ReadDataSize_);													                // 调整数据文件读取缓存区大小
+        binaryFile.seekg(seekst);														                // 设置数据文件读取起始位置
+        writer.open(save_path, codec, fps, VideoFrameMat.size(), true);					                // 创建视频流文件
+        if (!writer.isOpened())
+        {
+            ERRORMSG("Could not open the output video file for write");
+            return *this;
+        }
+        Timeit.Start(5, "保存视频AddSaveHistogramVideo，共计(us): ");
+        CvTools.ImageMatClear(ImageMat, BackGround);
+        PdwMatrix.clear();
+        if(ReadDataType == 1)
+        {
+            PdwMemorySwap.CheckBufferReady();
+        }
+        readSize = (readSize == 0) ? binaryFile.GetFileLines() : readSize;
+        boost::progress_display pd(readSize);
+        while(1)
+        {
+            if(ReadDataType == 0)
+            {
+                if(binaryFile.isEOF())												    // 文件读取至尾部
+                {
+                    break;
+                }
+                AddTimeReadData(AddTime_ms, ToaUnit_ns);							    // 以ToaUnit_ns为单位，按AddTime_ms时进读取数据。
+                PdwSize = binaryFile.GetDataValidLines();							    // 获取读取有效数据长度
+            }
+            else
+            {
+                PdwMemorySwap.AddRead(AddTime_ms, ToaUnit_ns);
+            }
+            if(SizeTemp >= readSize)													// 文件读取长度大于readSize
+            {
+                break;
+            }
+            else
+            {
+                SizeTemp += PdwSize;
+                pd.restart(readSize);
+                pd += SizeTemp;
+            }
+            cvTextMat.Clear();											                // 清空分析结果区图像
+            PdwRfPwMapClt.NewFrameInit();
+            string Str = "CurrentFrameNo : " + tostring(CurrentFrameNo);
+            cvTextMat.Title(Str);
+            Str = " ";
+            cvTextMat.Title(Str);                                                       // 空行
+            cvTextMat.Title(Str);
+            AddBGRAImageAndPdwMatrix(ToaDoa, 1, 0, 1.0, 0, 1, 2000, 255, 0, 10);	    // 以时进拼接方式生成图片
+            cv::mixChannels(&ImageMat, 1, ChannelOutMat, 2, from_to, 4);				// ImageMat多通道分离至ChannelOutMat中的BGRMat, DensityMat
+            CvTools.CalcMatHistogram(BGRMat, BGRHistogram, BackGround);				    // 计算BGRMat的直方图BGRHistogram
+            CvTools.CalcMatHistogram(DensityMat, DensityHistogram, BackGround);		    // 计算DensityMat的直方图DensityHistogram
+            // Generage Image
+            cv::threshold(DensityMat, DensityBinMat, Threshold, 255, THRESH_BINARY);	// 密度图以Threshold为最小阈值进行阈值操作生成二值图DensityBinMat
+            cv::threshold(DensityMat, DensityBinInvMat, Threshold,0, THRESH_TOZERO_INV);// 密度图以Threshold为最大阈值进行阈值操作(高于阈值像素值设置为0)生成生成DensityBinInvMat
+            cv::threshold(DensityBinInvMat, DensityBinInvMat, 0, 255, THRESH_BINARY);	// DensityBinInvMat以Threshold为最小阈值进行阈值操作生成二值图DensityBinInvMat
+            CvTools.cvDilate(DensityBinMat, DensityDilateMat);					        // DensityBinMat进行图像膨胀操作
+            // Analysis
+            PdwImageAnalysis(BGRMat, DensityDilateMat, PdwRfPwMapClt, cvTextMat);       // 图像分析
+            // Generage VideoFrame
+            CvTools.MatInv(DensityMat, DensityMat);
+            CvTools.MatInv(DensityDilateMat, DensityDilateMat);
+            cv::cvtColor(DensityMat, BGRDensityMat, COLOR_GRAY2BGR);					// 灰度图DensityMat转BGR图BGRDensityMat以实现图像组合
+            cv::cvtColor(DensityDilateMat, BGRDensityDilateMat, COLOR_GRAY2BGR);		// 灰度图DensityDilateMat转BGR图BGRDensityDilateMat以实现图像组合
+            if(ImageMat.rows == ImageMat.cols)
+            {
+                CvTools.Remap(BGRDensityMat, RemapBGRDensityMat, xMapImage, yMapImage, BackGround);			    // 图像重映射
+                CvTools.Remap(BGRDensityDilateMat, RemapBGRDensityDilateMat, xMapImage, yMapImage, BackGround); // 图像重映射
+                cv::pyrDown(RemapBGRDensityMat, pyrDownDensityMat);						// 图像缩放
+                cv::pyrDown(RemapBGRDensityDilateMat, pyrDownDensityDilateMat);			// 图像缩放
+            }
+            else
+            {
+                cv::pyrDown(BGRDensityMat, pyrDownDensityMat);
+                cv::pyrDown(BGRDensityDilateMat, pyrDownDensityDilateMat);
+            }
+            cv::drawContours(BGRMat, Contours, -1, Scalar(0, 255, 0), 2, CV_AA);		// 在图像BGRMat上绘制轮廓组Contours
+            CvTools.Remap(BGRMat, RemapBGRMat, xMapImage, yMapImage, BackGround);	    // 图像重映射
+            PdwRfPwMapClt.EndFrameProcess(RemapBGRMat, cvTextMat);
+            CurrentFrameNo++;
+            writer.write(VideoFrameMat);												// 将图像VideoFrameMat写入视频帧
+            // showImage(BGRMat);
+            // cv::imshow("DensityBinMat", DensityBinMat);
+            // cv::imshow("DensityBinInvMat", DensityBinInvMat);
+            // PdwRfPwMapClt.ShowVaildMat(0);
+            // cvTextMat.showImage();
+            // cv::waitKey();
+        }
+        Timeit.End(5);
+        return *this;
+    }
+    _ThisType& AddVideoAnalyStream(string save_path, int seekst = 0,                                    // 生成AddCol视频帧分析流，以AVI格式保存至save_path
+                                   CINT AddTime_ms = 100, CINT ToaUnit_ns = 80,
+                                   UINT ReadDataSize_ = 1000000, int readSize = 6000000)
+    {
         return *this;
     }
     /**************************************** Cold Code Area END ****************************************/

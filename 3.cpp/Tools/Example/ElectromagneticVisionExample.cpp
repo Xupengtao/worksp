@@ -13,12 +13,23 @@ std::string savepath("/home/admin/WorkSp/Analysis/");
 int main(int argc, char **argv)
 {
     _ElectromagneticVision<_xyg_z, PdwType, cv::Vec4b> ElectromagneticVision(1024, 1024);
-    ElectromagneticVision.OpenFile(filepath + "z");
+    ElectromagneticVision.OpenFile(filepath + "iRadarSimProGenData.data");
     while(1)
     {
-        Mat procMat = ElectromagneticVision.ProcessFrame();
-        imshow("procMat", procMat);
-        cv::waitKey();
+        static float i = 1;
+        // ElectromagneticVision.SetAddTime(0.1 * i);
+        i++;
+        _rtnQtFrameDesc& rtnQtFrameDesc = ElectromagneticVision.ProcessFrame();
+        if(rtnQtFrameDesc.GetEnable())
+        {
+            imshow("VideoFrameMat", rtnQtFrameDesc.VideoFrameMat);
+            COUT(rtnQtFrameDesc.Progress);
+            cv::waitKey();
+        }
+        else
+        {
+            break;
+        }
     }
     ElectromagneticVision.CloseFile();
 }
