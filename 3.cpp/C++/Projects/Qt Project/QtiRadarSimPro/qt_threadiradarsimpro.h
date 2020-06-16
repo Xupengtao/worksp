@@ -23,6 +23,7 @@ private:
     QReadWriteLock                  RwLock;
     bool                            ThreadSign      = true;
     bool                            RunSign         = false;
+    bool                            saveFileSign    = false;
     QString                         saveFileName;
     _iRadarSimPro<_iRadar_Xyg>      iRadarSimPro;
     QMap<QString, _RadarMode>       RadarModeMap;       // 雷达参数Map
@@ -36,11 +37,6 @@ protected:
         {
             if(RunSign == true)
             {
-                QtPlatFormParaVec.clear();
-                foreach(const QString &str, QtPlatFormParaMap.keys())
-                {
-                    QtPlatFormParaVec.push_back(QtPlatFormParaMap[str]);
-                }
                 bool hasPlatForm = false;
                 for(size_t i = 0; i < QtPlatFormParaVec.size(); i++)
                 {
@@ -71,9 +67,15 @@ protected:
                     RunSign = false;
                     continue;
                 }
-//                int runtimes = 0;
-//                iRadarSimPro.runThread(RunSign, runtimes);
-                iRadarSimPro.WriteFile(saveFileName.toStdString(), 100);
+                int runtimes = 0;
+                if(saveFileSign == true)
+                {
+                    iRadarSimPro.WriteFile(saveFileName.toStdString(), 100);
+                }
+                else
+                {
+                    iRadarSimPro.runThread(RunSign, runtimes);
+                }
                 RunSign = false;
             }
             msleep(500);
@@ -170,17 +172,8 @@ public slots:
             }
             else
             {
-                DoaInitTmp = QInputDialog::getInt(nullptr, tr("Doa"), tr("Please enter the platform doa val"), 0, 0, 1024, 1, &OkSign);
-                if(OkSign)
-                {
-                    QtPlatFormPara.DoaInit = DoaInitTmp;
-                    QtPlatFormParaMap.insert(PlatFormName, QtPlatFormPara);
-                    AddSign = true;
-                }
-                else
-                {
-                    AddSign = false;
-                }
+                QtPlatFormParaMap.insert(PlatFormName, QtPlatFormPara);
+                AddSign = true;
             }
         }
         else
@@ -221,6 +214,10 @@ public slots:
     void    PlatformAddTrace(_LocVec &LocVec)
     {
 
+    }
+    void    saveFileSignSet(bool saveFileSign_)
+    {
+        saveFileSign = saveFileSign_;
     }
     void    ProcessStart()
     {

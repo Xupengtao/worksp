@@ -95,16 +95,18 @@ public:
 //        ui->situationGraphicsView->setDragMode(QGraphicsView::RubberBandDrag);        // 可视选定区域
         QObject::connect(ui->situationGraphicsView, SIGNAL(SituationAddPlatformSignal(QPoint, QString)),
                          this, SLOT(SituationAddPlatform(QPoint, QString)));
-        QObject::connect(ui->situationGraphicsView, SIGNAL(mouseMovePoint(QPoint, QPoint)),
-                         this, SLOT(mouseMovePoint(QPoint, QPoint)));
-        QObject::connect(ui->situationGraphicsView, SIGNAL(mouseClicked(QPoint)),
-                         this, SLOT(mouseClicked(QPoint)));
-        QObject::connect(ui->situationGraphicsView, SIGNAL(mouseReleased()),
-                         this, SLOT(mouseReleased()));
+        QObject::connect(ui->situationGraphicsView, SIGNAL(situationMouseMovePoint(QPoint, QPoint)),
+                         this, SLOT(situationMouseMovePoint(QPoint, QPoint)));
+        QObject::connect(ui->situationGraphicsView, SIGNAL(situationMouseClicked(QPoint)),
+                         this, SLOT(situationMouseClicked(QPoint)));
+        QObject::connect(ui->situationGraphicsView, SIGNAL(situationMouseReleased()),
+                         this, SLOT(situationMouseReleased()));
         QObject::connect(ui->situationGraphicsView, SIGNAL(mouseDoubleClick(QPoint)),
-                         this, SLOT(mouseDoubleClick(QPoint)));
+                         this, SLOT(situationMouseDoubleClick(QPoint)));
         QObject::connect(ui->situationGraphicsView, SIGNAL(keyPress(QKeyEvent*)),
-                         this, SLOT(keyPress(QKeyEvent*)));
+                         this, SLOT(situationKeyPress(QKeyEvent*)));
+        QObject::connect(this, SIGNAL(saveFileRunSignal(bool)),
+                         &iRadarSimPro, SLOT(saveFileSignSet(bool)));
         QObject::connect(this, SIGNAL(saveFilePathSignal(QString)),
                          &iRadarSimPro, SLOT(setSaveFilePath(QString)));
         QObject::connect(ui->platformTreeView, SIGNAL(PlatformAddRadarSignal(QPoint, QString)),
@@ -213,14 +215,25 @@ private slots:
     {
         iRadarSimPro.Clear();
     }
-    void on_runAction_triggered()
+    void on_pathPushButton_clicked()
     {
         QString curPath   = QDir::currentPath();                                            // 获取系统当前目录
-    //  QString  curPath  = QCoreApplication::applicationDirPath();                         // 获取应用程序的路径
         QString dlgTitle  = tr("保存文件");                                                  // 对话框标题
-        QString filter    = "";                                                             // 文件过滤器
+        QString filter    = tr("");                                                         // 文件过滤器
         QString aFileName = QFileDialog::getSaveFileName(this, dlgTitle, curPath, filter);
+        ui->saveFilePathLineEdit->setText(aFileName);
         emit saveFilePathSignal(aFileName);
+    }
+    void on_runAction_triggered()
+    {
+        if(ui->saveCheckBox->checkState() == Qt::Checked)
+        {
+            emit saveFileRunSignal(true);
+        }
+        else
+        {
+            emit saveFileRunSignal(false);
+        }
         if(iRadarSimPro.isRunning())
         {
             iRadarSimPro.ProcessStart();
@@ -280,7 +293,7 @@ private slots:
             AddSign = false;
         }
     }
-    void mouseMovePoint(QPoint point1, QPoint point2)               // 鼠标移动事件，point是 GraphicsView的坐标,物理坐标
+    void situationMouseMovePoint(QPoint point1, QPoint point2)               // 鼠标移动事件，point是 GraphicsView的坐标,物理坐标
     {
         if(recordTraceSign == true)
         {
@@ -305,7 +318,7 @@ private slots:
         }
     }
 
-    void mouseClicked(QPoint point)                                 // 鼠标单击事件
+    void situationMouseClicked(QPoint point)                                 // 鼠标单击事件
     {
         QPointF pointScene = ui->situationGraphicsView->mapToScene(point);          // 转换到Scene坐标
         QGraphicsItem *item = nullptr;
@@ -322,7 +335,7 @@ private slots:
             }
         }
     }
-    void mouseReleased()
+    void situationMouseReleased()
     {
         if(recordTraceSign == true)
         {
@@ -333,7 +346,7 @@ private slots:
         scene->clearSelection();
         recordTraceSign = false;
     }
-//    void mouseDoubleClick(QPoint point)                             // 鼠标双击事件, 调用相应的对话框, 设置填充颜色、线条颜色或字体
+//    void situationMouseDoubleClick(QPoint point)                             // 鼠标双击事件, 调用相应的对话框, 设置填充颜色、线条颜色或字体
 //    {
 //        QPointF pointScene = ui->situationGraphicsView->mapToScene(point);      // 转换到Scene坐标
 //        QGraphicsItem *item=nullptr;
@@ -391,7 +404,7 @@ private slots:
 //        }
 //    }
 
-//    void keyPress(QKeyEvent *event)                                 // 按键事件
+//    void situationKeyPress(QKeyEvent *event)                                 // 按键事件
 //    {
 //        if (scene->selectedItems().count() != 1)
 //        {
@@ -676,6 +689,7 @@ private slots:
 //        item->setSelected(true);
 //    }
 signals:
+    void saveFileRunSignal(bool saveFileSign);
     void saveFilePathSignal(QString aFileName);
 };
 

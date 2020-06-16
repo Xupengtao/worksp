@@ -4,6 +4,7 @@
 #include <math.h>
 #include <QDrag>
 #include <QPoint>
+#include <QDebug>
 #include <QObject>
 #include <QMimeData>
 #include <QMouseEvent>
@@ -23,6 +24,7 @@ public:
     }
     void dropEvent(QDropEvent *event)
     {
+        qDebug()<<"dropEvent";
         if(event->mimeData()->hasText())
         {
             PlatformName = event->mimeData()->text();
@@ -46,6 +48,7 @@ protected:
     }
     void mouseMoveEvent(QMouseEvent *event)                     // 鼠标移动事件
     {
+        qDebug()<<"mouseMoveEvent";
         if(leftButtonPressSign == true)
         {
             move_point = event->pos();                      // QGraphicsView的坐标

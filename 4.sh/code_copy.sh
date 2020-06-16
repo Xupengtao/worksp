@@ -5,6 +5,7 @@ cd WorkSp
 cp -r ~/WorkSp/2.py .
 cp -r ~/WorkSp/3.cpp .
 cp -r ~/WorkSp/4.sh .
+cp -r ~/WorkSp/7.Markdown .
 cd 2.py
 rm Analysis
 rm Data
