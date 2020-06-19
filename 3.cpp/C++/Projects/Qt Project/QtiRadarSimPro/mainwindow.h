@@ -95,11 +95,11 @@ public:
 //        ui->situationGraphicsView->setDragMode(QGraphicsView::RubberBandDrag);        // 可视选定区域
         QObject::connect(ui->situationGraphicsView, SIGNAL(SituationAddPlatformSignal(QPoint, QString)),
                          this, SLOT(SituationAddPlatform(QPoint, QString)));
-        QObject::connect(ui->situationGraphicsView, SIGNAL(situationMouseMovePoint(QPoint, QPoint)),
+        QObject::connect(ui->situationGraphicsView, SIGNAL(mouseMovePoint(QPoint, QPoint)),
                          this, SLOT(situationMouseMovePoint(QPoint, QPoint)));
-        QObject::connect(ui->situationGraphicsView, SIGNAL(situationMouseClicked(QPoint)),
+        QObject::connect(ui->situationGraphicsView, SIGNAL(mouseClicked(QPoint)),
                          this, SLOT(situationMouseClicked(QPoint)));
-        QObject::connect(ui->situationGraphicsView, SIGNAL(situationMouseReleased()),
+        QObject::connect(ui->situationGraphicsView, SIGNAL(mouseReleased()),
                          this, SLOT(situationMouseReleased()));
         QObject::connect(ui->situationGraphicsView, SIGNAL(mouseDoubleClick(QPoint)),
                          this, SLOT(situationMouseDoubleClick(QPoint)));

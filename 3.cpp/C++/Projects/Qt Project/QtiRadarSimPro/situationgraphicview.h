@@ -77,6 +77,7 @@ protected:
             leftButtonPressSign = false;
             emit mouseReleased();
         }
+        QGraphicsView::mouseReleaseEvent(event);
     }
     void mouseDoubleClickEvent(QMouseEvent *event)              // 鼠标双击事件
     {
