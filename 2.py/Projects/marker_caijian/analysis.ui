@@ -1,0 +1,1185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Marker</class>
+ <widget class="QMainWindow" name="Marker">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1708</width>
+    <height>1061</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>全脉冲情报分析软件</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="spacing">
+     <number>6</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1708</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <widget class="QMenu" name="menuDataSource">
+     <property name="title">
+      <string>数据来源选择</string>
+     </property>
+     <addaction name="actionStruct"/>
+     <addaction name="actionXxg"/>
+     <addaction name="actionXxg_z"/>
+     <addaction name="actionXd"/>
+     <addaction name="actionX5_DGN"/>
+    </widget>
+    <widget class="QMenu" name="menu_4">
+     <property name="title">
+      <string>读取模式选择</string>
+     </property>
+     <addaction name="actionTime"/>
+     <addaction name="actionPlsnum"/>
+    </widget>
+    <addaction name="actionDaka"/>
+    <addaction name="actionClose_File"/>
+    <addaction name="actionDebugMode"/>
+    <addaction name="menuDataSource"/>
+    <addaction name="menu_4"/>
+    <addaction name="actionOrigin_dataparse"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>显示</string>
+    </property>
+    <widget class="QMenu" name="menu_3">
+     <property name="title">
+      <string>文件信息</string>
+     </property>
+     <addaction name="actionFileShow"/>
+     <addaction name="actionFileHide"/>
+    </widget>
+    <addaction name="actionLog_dock"/>
+    <addaction name="actionDraw_dock"/>
+    <addaction name="menu_3"/>
+    <addaction name="tbBgColorAction"/>
+    <addaction name="drawBgColorAction"/>
+   </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>功能</string>
+    </property>
+    <addaction name="action_histMark"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_5"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="info_dock">
+   <property name="baseSize">
+    <size>
+     <width>180</width>
+     <height>360</height>
+    </size>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="windowTitle">
+    <string>信息</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <item row="0" column="0">
+      <layout class="QGridLayout" name="gridLayout_15">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>文件设置</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="0" column="1">
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="13" column="1" colspan="6">
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QLineEdit" name="prg_LE">
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>/</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="tot_LE">
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="5" column="1">
+             <widget class="QLabel" name="label_28">
+              <property name="text">
+               <string>脉宽范围</string>
+              </property>
+             </widget>
+            </item>
+            <item row="12" column="1" colspan="6">
+             <widget class="QSlider" name="prg_Slider">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="QLabel" name="label_23">
+              <property name="text">
+               <string>幅度范围</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="6">
+             <widget class="QLabel" name="label_24">
+              <property name="text">
+               <string>°</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="4">
+             <widget class="QLabel" name="label_26">
+              <property name="text">
+               <string>~</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="5">
+             <widget class="QLineEdit" name="st_pa_max_le">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>200</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="5">
+             <widget class="QLineEdit" name="st_pw_max_le">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>200</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="4">
+             <widget class="QLabel" name="label_29">
+              <property name="text">
+               <string>~</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="6">
+             <widget class="QLabel" name="label_30">
+              <property name="text">
+               <string>us</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="5">
+             <widget class="QLineEdit" name="st_doa_max_le">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>360</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="6">
+             <widget class="QLabel" name="label_25">
+              <property name="text">
+               <string>dBm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLabel" name="label_22">
+              <property name="text">
+               <string>方位范围</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="4">
+             <widget class="QLabel" name="label_27">
+              <property name="text">
+               <string>~</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="6">
+             <widget class="QLabel" name="label_20">
+              <property name="text">
+               <string>MHz</string>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="1" colspan="6">
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QPushButton" name="st_read_btn">
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="text">
+                 <string>自动处理</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="once_read_btn">
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="text">
+                 <string>单步处理</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="close_file_btn">
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="text">
+                 <string>结束读取</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="3" column="5">
+             <widget class="QLineEdit" name="st_rf_max_le">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>18000</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="4">
+             <widget class="QLabel" name="label_21">
+              <property name="text">
+               <string>~</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="choose_file_btn">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>选择文件</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>文件名：</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3" colspan="4">
+             <widget class="QLineEdit" name="file_name_le">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLabel" name="label_19">
+              <property name="text">
+               <string>载频范围</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2" colspan="2">
+             <widget class="QLineEdit" name="st_rf_min_le">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>8000</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="2" colspan="2">
+             <widget class="QLineEdit" name="st_doa_min_le">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="2" colspan="2">
+             <widget class="QLineEdit" name="st_pw_min_le">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="2" colspan="2">
+             <widget class="QLineEdit" name="st_pa_min_le">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="2" colspan="4">
+             <widget class="QPushButton" name="st_para_set_btn">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>参数设置</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>单步长度</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="2" colspan="4">
+             <widget class="QLineEdit" name="pdw_num_le">
+              <property name="text">
+               <string>100</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="6">
+             <widget class="QLabel" name="unit_label">
+              <property name="text">
+               <string>ms</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>功能按钮</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_13">
+          <item row="0" column="2">
+           <widget class="QGroupBox" name="groupBox_8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>结果显示与保存</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_17">
+             <item row="4" column="1">
+              <widget class="QPushButton" name="save_res_btn">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>保存辐射源结果</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QPushButton" name="draw_btn">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>绘制全景图</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QPushButton" name="save_all_flag_btn">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>保存全部标记结果</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="save_flag_f_btn">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>保存当前标记结果</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QPushButton" name="draw_hist_btn">
+               <property name="text">
+                <string>绘制直方图</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QGroupBox" name="groupBox_9">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="title">
+             <string>分析</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_19">
+             <item row="1" column="1">
+              <widget class="QPushButton" name="trgt_choose_btn">
+               <property name="text">
+                <string>目标筛选</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QPushButton" name="filter_wnd_btn">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>全脉冲人工分析</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="reset_trgt_btn">
+               <property name="text">
+                <string>清空辐射源结果</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QPushButton" name="set_prog_btn">
+               <property name="text">
+                <string>设置进度</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="3">
+           <widget class="QGroupBox" name="groupBox_7">
+            <property name="title">
+             <string>标注率</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_16">
+             <item row="0" column="4">
+              <widget class="QLineEdit" name="AllMarkRate_le"/>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="curMarkRate_le"/>
+             </item>
+             <item row="0" column="3">
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>总标注率</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>当前标注率</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>%</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="5">
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>%</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QGroupBox" name="table_groupBox">
+       <property name="title">
+        <string>表格显示</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_18">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_14">
+          <item row="0" column="0">
+           <widget class="QTabWidget" name="res_tab">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="tab">
+             <attribute name="title">
+              <string>辐射源</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QTableView" name="edw_tableView"/>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tab_3">
+             <attribute name="title">
+              <string>结果</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout">
+              <item>
+               <widget class="QTableView" name="res_tableView"/>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tab_2">
+             <attribute name="title">
+              <string>脉冲描述字</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QTableView" name="pdw_tableView"/>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QGroupBox" name="detail_gB">
+       <property name="title">
+        <string>目标详细信息</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="title">
+           <string>载频(MHz)</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <layout class="QGridLayout" name="gridLayout_8">
+             <item row="3" column="0">
+              <widget class="QLabel" name="Label_15">
+               <property name="text">
+                <string>最小值</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2" rowspan="4">
+              <widget class="QListWidget" name="rf_listWidget"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="Label_16">
+               <property name="text">
+                <string>中心值</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="Label_12">
+               <property name="text">
+                <string>最大值</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="Label_13">
+               <property name="text">
+                <string>类 型</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="rf_max_LE">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="rft_LE">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="rf_mid_LE">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="rf_min_LE">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="0" column="1">
+            <spacer name="horizontalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
+           <string>重复周期(us)</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_9">
+           <item row="0" column="0">
+            <layout class="QGridLayout" name="gridLayout_10">
+             <item row="3" column="0">
+              <widget class="QLabel" name="Label_17">
+               <property name="text">
+                <string>最小值</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2" rowspan="4">
+              <widget class="QListWidget" name="pri_listWidget"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="Label_18">
+               <property name="text">
+                <string>中心值</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="Label_14">
+               <property name="text">
+                <string>最大值</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="Label_19">
+               <property name="text">
+                <string>类 型</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="pri_max_LE">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="typeLineEdit">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="pri_mid_LE">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="pri_min_LE">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="title">
+           <string>脉宽(us)</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_11">
+           <item row="0" column="0">
+            <layout class="QGridLayout" name="gridLayout_12">
+             <item row="3" column="0">
+              <widget class="QLabel" name="Label_20">
+               <property name="text">
+                <string>最小值</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2" rowspan="4">
+              <widget class="QListWidget" name="pw_listWidget"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="Label_21">
+               <property name="text">
+                <string>中心值</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="Label_22">
+               <property name="text">
+                <string>最大值</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="Label_23">
+               <property name="text">
+                <string>类 型</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="pw_max_LE">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="typeLineEdit_2">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="pw_mid_LE">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="pw_min_LE">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="0">
+           <widget class="QLabel" name="Label_11">
+            <property name="text">
+             <string>批号</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLabel" name="label_17">
+            <property name="text">
+             <string>幅度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="Label_10">
+            <property name="text">
+             <string>脉宽</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="pw_LE">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>°</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QLabel" name="label_18">
+            <property name="text">
+             <string>dBm</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QLineEdit" name="doa_LE">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="pihao_LE">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="Label_9">
+            <property name="text">
+             <string>方位</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="label_16">
+            <property name="text">
+             <string>us</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLineEdit" name="pa_LE">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="draw_dock">
+   <property name="minimumSize">
+    <size>
+     <width>720</width>
+     <height>180</height>
+    </size>
+   </property>
+   <property name="windowTitle">
+    <string>绘图</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <property name="baseSize">
+     <size>
+      <width>720</width>
+      <height>360</height>
+     </size>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_6"/>
+   </widget>
+  </widget>
+  <action name="actionDaka">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionLog_dock">
+   <property name="text">
+    <string>info_dock</string>
+   </property>
+  </action>
+  <action name="actionClose_File">
+   <property name="text">
+    <string>Close File</string>
+   </property>
+  </action>
+  <action name="actionDraw_dock">
+   <property name="text">
+    <string>draw_dock</string>
+   </property>
+  </action>
+  <action name="actionFileShow">
+   <property name="text">
+    <string>show</string>
+   </property>
+  </action>
+  <action name="actionFileHide">
+   <property name="text">
+    <string>hide</string>
+   </property>
+  </action>
+  <action name="actionDebugMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>DebugMode</string>
+   </property>
+  </action>
+  <action name="actionXxg">
+   <property name="text">
+    <string>xxg_c</string>
+   </property>
+  </action>
+  <action name="actionStruct">
+   <property name="text">
+    <string>struct</string>
+   </property>
+  </action>
+  <action name="actionOrigin_dataparse">
+   <property name="text">
+    <string>原始数据解析</string>
+   </property>
+  </action>
+  <action name="actionTime">
+   <property name="text">
+    <string>按时间读取</string>
+   </property>
+  </action>
+  <action name="actionPlsnum">
+   <property name="text">
+    <string>按脉冲数读取</string>
+   </property>
+  </action>
+  <action name="actionXd">
+   <property name="text">
+    <string>xd</string>
+   </property>
+  </action>
+  <action name="actionXxg_z">
+   <property name="text">
+    <string>xxg_z</string>
+   </property>
+  </action>
+  <action name="tbBgColorAction">
+   <property name="text">
+    <string>设置表格背景颜色</string>
+   </property>
+  </action>
+  <action name="drawBgColorAction">
+   <property name="text">
+    <string>设置绘图背景颜色</string>
+   </property>
+  </action>
+  <action name="action_histMark">
+   <property name="text">
+    <string>历史信息标注</string>
+   </property>
+  </action>
+  <action name="actionX5_DGN">
+   <property name="text">
+    <string>x5_dgn</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionLog_dock</sender>
+   <signal>triggered()</signal>
+   <receiver>info_dock</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>445</x>
+     <y>332</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDraw_dock</sender>
+   <signal>triggered()</signal>
+   <receiver>draw_dock</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>956</x>
+     <y>332</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFileHide</sender>
+   <signal>triggered()</signal>
+   <receiver>groupBox_3</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>596</x>
+     <y>206</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFileShow</sender>
+   <signal>triggered()</signal>
+   <receiver>groupBox_3</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>599</x>
+     <y>206</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

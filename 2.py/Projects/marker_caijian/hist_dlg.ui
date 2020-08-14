@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1030</width>
+    <height>614</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>历史信息及自定义标注</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>格式选择</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QLineEdit" name="le_filename"/>
+   </item>
+   <item row="1" column="7">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>%</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_29">
+     <property name="text">
+      <string>标注方式</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="le_marknum"/>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="cb_fmt">
+     <item>
+      <property name="text">
+       <string>xxgC</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>STRU</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>xD</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>xxgZ</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="0" column="5">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>单步长度</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="7">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>ms</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QPushButton" name="btn_chooseFile">
+     <property name="text">
+      <string>选择文件</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="6">
+    <widget class="QLineEdit" name="le_step_length">
+     <property name="inputMask">
+      <string>0000000</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="5">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>标注率</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>标注数</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="8">
+    <widget class="QLabel" name="label_28">
+     <property name="text">
+      <string>标注结果</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>总数</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QLineEdit" name="le_totalnum"/>
+   </item>
+   <item row="1" column="6">
+    <widget class="QLineEdit" name="le_markrate"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_24">
+     <property name="text">
+      <string>dDOAThr</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="8">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>历史目标标注</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QPushButton" name="btn_getHistoryTgt">
+         <property name="text">
+          <string>获取历史目标</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="btn_tgtsMark">
+         <property name="text">
+          <string>目标表标注</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="btn_tgtMark">
+         <property name="text">
+          <string>单目标标注</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="3">
+        <widget class="QTableView" name="tableView_trgt"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>自定义目标标注</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>RFmin</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QLineEdit" name="le_rfmax"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="le_doamin">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>DOAmax</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="4">
+        <widget class="QLineEdit" name="le_primax"/>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="le_primin"/>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>RFmax</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QLabel" name="label_22">
+         <property name="text">
+          <string>PAmax</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="le_pamin">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="QLineEdit" name="le_doamax">
+         <property name="text">
+          <string>1024</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>PRImin</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>PRImax</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>DOAmin</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="le_rfmin"/>
+       </item>
+       <item row="4" column="4">
+        <widget class="QLineEdit" name="le_pamax">
+         <property name="text">
+          <string>3000</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>PWmin</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_23">
+         <property name="text">
+          <string>PAmin</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="le_pwmin">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="4">
+        <widget class="QLineEdit" name="le_pwmax">
+         <property name="text">
+          <string>3000</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QLabel" name="label_26">
+         <property name="text">
+          <string>PWmax</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QPushButton" name="btn_mark">
+         <property name="text">
+          <string>开始标注</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="cb_markMethod">
+     <item>
+      <property name="text">
+       <string>单步标注</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>全部标注</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QLineEdit" name="le_drfthr">
+     <property name="text">
+      <string>200</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="8" rowspan="5" colspan="2">
+    <widget class="QTableView" name="tableView_markRes">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="5">
+    <widget class="QLabel" name="label_25">
+     <property name="text">
+      <string>multi</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="le_ddoathr">
+     <property name="text">
+      <string>10</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="6">
+    <widget class="QLineEdit" name="le_multi">
+     <property name="text">
+      <string>2</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QLabel" name="label_27">
+     <property name="text">
+      <string>dRFThr</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

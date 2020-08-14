@@ -1,5 +1,6 @@
-#ifndef _ZMQ_CONTENT_HPP
-#define _ZMQ_CONTENT_HPP
+#ifndef _ZMQ_SOCKET_HPP
+#define _ZMQ_SOCKET_HPP
+
 #include <zmq.h>
 #include <stdlib.h>
 #include <string.h>
@@ -71,6 +72,7 @@ class _ZmqSocket
     string          ConnectPort  = "";
     bool            Connected    = false;
     char            *RecvBuffer  = NULL;
+    string          RecvStr;
     CINT            RecvBufferSize;
 public:
     _ZmqSocket(_CommProtocol CommProtocol_, string ConnectPort_, _ZmqType ZmqType_, _ZmqBindType ZmqBindType_ = ZmqBind, int RecvBufferSize_ = 1024)
@@ -125,9 +127,11 @@ public:
         switch(CommProtocol)
         {
         case ZmqThread:
+            StrAddr = "inproc://"+ConnectPort;
+            addr    = stringtochar(StrAddr);
             break;
         case ZmqProcess:
-            StrAddr = "ipc:///"+ConnectPort;
+            StrAddr = "ipc://"+ConnectPort;
             addr    = stringtochar(StrAddr);
             break;
         case ZmqTcpIp:
@@ -150,12 +154,15 @@ public:
         }
         if(ConnectRtn != -1)
         {
+            string frontMsg = "Socket connect successed! IP/Port: ";
+            string coutMsg  = frontMsg + addr;
+            COUTS(coutMsg);
             Connected = true;
         }
         else
         {
-            string frontErrMsg = "Socket connect failed! IP/Port:";
-            string errMsg = frontErrMsg + addr;
+            string frontMsg = "Socket connect failed! IP/Port: ";
+            string errMsg   = frontMsg + addr;
             ERRORMSG(errMsg);
         }
         return ConnectRtn;
@@ -182,18 +189,20 @@ public:
     }
     inline int SendMore(char *string) 
     {
-        int size = zmq_send(ZmqSocket, string, strlen (string), ZMQ_SNDMORE);
+        int size = zmq_send(ZmqSocket, string, strlen(string), ZMQ_SNDMORE);
         return size;
     }
-    inline char* Recv()
+    inline string Recv()
     {
         int size = zmq_recv(ZmqSocket, RecvBuffer, RecvBufferSize - 1, 0);
         if(size == -1)
         {
-            return NULL;
+            RecvStr = "";
+            return RecvStr;
         }
         RecvBuffer[size] = '\0';
-        return RecvBuffer;
+        RecvStr = string(RecvBuffer);
+        return RecvStr;
     }
     inline void Dump()
     {
@@ -236,4 +245,4 @@ public:
     }
 };
 
-#endif  // _ZMQ_CONTENT_HPP
+#endif  // _ZMQ_SOCKET_HPP

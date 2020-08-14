@@ -1,5 +1,5 @@
 #include <iostream>
-#include "BMPImage.h"
+#include "../imageTools/BMPImage.h"
 
 void testBMP8()
 {

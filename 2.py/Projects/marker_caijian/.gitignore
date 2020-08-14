@@ -1,0 +1,7 @@
+build
+dist
+guiqwt
+__pycache__
+*.png
+*.docx
+*.ICO

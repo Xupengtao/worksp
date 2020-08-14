@@ -1,0 +1,7 @@
+#/bin/bash
+cd back
+swig -python -c++ interface.i
+make
+mv back.py ../sp.py
+mv _sp.so ../_back.so
+cd ../

@@ -34,11 +34,11 @@ int main(int argc, char** args)
     {
         string argStr1 = chartostring(args[1]);
         string argStr2 = chartostring(args[2]);
-        char *recvBuffer;
+        string recvBuffer;
         if(argStr1 == "0")
         {
             COUTS("as Rep");
-            _ZmqSocket ZmqSocket(ZmqTcpIp, argStr2, ZmqRep, ZmqBind);
+            _ZmqSocket ZmqSocket(ZmqProcess, argStr2, ZmqRep, ZmqBind);
             while (1)
             {
                 recvBuffer = ZmqSocket.Recv();
@@ -50,7 +50,7 @@ int main(int argc, char** args)
         else if(argStr1 == "1")
         {
             COUTS("as Req");
-            _ZmqSocket ZmqSocket(ZmqTcpIp, argStr2, ZmqReq, ZmqConnect);
+            _ZmqSocket ZmqSocket(ZmqProcess, argStr2, ZmqReq, ZmqConnect);
             while (1)
             {
                 ZmqSocket.Send("Hello!");
@@ -85,7 +85,7 @@ int main(int argc, char** args)
         {
             COUTS("as Push");
             _ZmqSocket ZmqSocket(ZmqTcpIp, argStr2, ZmqPush, ZmqBind);
-            _ZmqSocket sinkSocket(ZmqTcpIp, "localhost:5568", ZmqPush, ZmqConnect);
+            _ZmqSocket sinkSocket(ZmqTcpIp, "192.168.1.21:6020", ZmqPush, ZmqConnect);
             COUTS("准备好后按任意键开始: ");
             cin.get();
             COUTS("分配任务...");
@@ -109,21 +109,21 @@ int main(int argc, char** args)
         {
             COUTS("as Pull");
             _ZmqSocket ZmqSocket(ZmqTcpIp, argStr2, ZmqPull, ZmqConnect);
-            _ZmqSocket sendSocket(ZmqTcpIp, "localhost:5568", ZmqPush, ZmqConnect);
+            _ZmqSocket sendSocket(ZmqTcpIp, "192.168.1.21:6020", ZmqPush, ZmqConnect);
             while(1)
             {
-                char *chStr = ZmqSocket.Recv();
+                string chStr = ZmqSocket.Recv();
                 fflush(stdout);
                 COUTS("", chStr);
-                s_sleep(atoi(chStr));
+                s_sleep(atoi(chStr.c_str()));
                 sendSocket.Send("");
             }
         }
         else if(argStr1 == "6")
         {
             COUTS("as Pull Collect");
-            _ZmqSocket ZmqSocket(ZmqTcpIp, "*:5568", ZmqPull, ZmqBind);
-            char *chStr = ZmqSocket.Recv();
+            _ZmqSocket ZmqSocket(ZmqTcpIp, "192.168.1.21:6020", ZmqPull, ZmqBind);
+            string chStr = ZmqSocket.Recv();
             int64_t startTime = s_clock();
             int taskCnt;
             for(taskCnt = 0; taskCnt < 100; taskCnt++)

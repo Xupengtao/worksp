@@ -183,7 +183,6 @@ public:
                 {
                     ERRORMSG("文件读取格式错误!");
                     COUT(i);
-                    break;
                 }
             }
         }

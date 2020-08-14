@@ -12,6 +12,7 @@
 #include "../XptType.h"
 #include <vector>
 #include <cmath>
+#include "../imageTools/BMPImage.h"
 #include "../iRadarSimPro/iRadarSimPro.h"
 
 struct _fileMsg                                     //XYG-C
@@ -52,27 +53,27 @@ struct _xyg_z                                       //XYG-Z
     static CUSHORT lineHead     = 0xAA55;
     static CUSHORT lineTail     = 0x55AA;
     USHORT head;
-    USHORT unused1;
+    USHORT flag;
     USHORT unused2;
-    USHORT unused3;
-    USHORT unused4;
+    USHORT pdwcountl;
+    USHORT pdwcounth;
     USHORT toal;
     USHORT toah;
     USHORT rf;
-    USHORT unused7;
+    USHORT bw;
     USHORT doa;
-    USHORT unused9;
+    USHORT trflag;
     USHORT pa;
     USHORT pwl;
     USHORT pwh;
-    USHORT unused14;
+    USHORT shipangle;
     USHORT unused15;
     USHORT unused16;
-    USHORT unused17;
+    USHORT sensitivity;
     USHORT unused18;
-    USHORT unused19;
-    USHORT unused20;
-    USHORT unused21;
+    USHORT direc_p;
+    USHORT seccntl;
+    USHORT seccnth;
     USHORT unused22;
     USHORT unused23;
     USHORT unused24;
@@ -285,7 +286,7 @@ struct _Pdw
             PdwArrayDesc.RfMax = (PdwArrayDesc.RfMax < Rf) ? Rf : PdwArrayDesc.RfMax;
             PdwArrayDesc.PwMin = (PdwArrayDesc.PwMin > Pw) ? Pw : PdwArrayDesc.PwMin;
             PdwArrayDesc.PwMax = (PdwArrayDesc.PwMax < Pw) ? Pw : PdwArrayDesc.PwMax;
-            if(Toa > PdwArrayDesc.PreToaTmp)
+            if(Toa >= PdwArrayDesc.PreToaTmp)
             {
                 PdwArrayDesc.ToaReverseCount = 0;
                 PdwArrayDesc.ToaErrorCount = 0;
@@ -355,7 +356,7 @@ struct _Pdw
             PdwArrayDesc.RfMax = (PdwArrayDesc.RfMax < Rf) ? Rf : PdwArrayDesc.RfMax;
             PdwArrayDesc.PwMin = (PdwArrayDesc.PwMin > Pw) ? Pw : PdwArrayDesc.PwMin;
             PdwArrayDesc.PwMax = (PdwArrayDesc.PwMax < Pw) ? Pw : PdwArrayDesc.PwMax;
-            if(Toa > PdwArrayDesc.PreToaTmp)
+            if(Toa >= PdwArrayDesc.PreToaTmp)
             {
                 PdwArrayDesc.ToaReverseCount = 0;
                 PdwArrayDesc.ToaErrorCount = 0;
